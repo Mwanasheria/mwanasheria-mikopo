@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MWANASHERIA MIKOPO CO.LTD</title>
+  <meta name="description" content="Affordable and flexible student allowance loans - Mwanasheria Mikopo Co. Ltd">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 15px 10px 25px;
+      text-align: center;
+      position: relative;
+    }
+    header img.logo {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      border-radius: 10px;
+    }
+    nav {
+      margin-top: 10px;
+    }
+    nav a {
+      margin: 0 10px;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    section {
+      display: none;
+      padding: 20px;
+      max-width: 950px;
+      margin: auto;
+      background: white;
+      margin-top: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    section.active {
+      display: block;
+    }
+    h2 {
+      color: #004080;
+    }
+    .btn {
+      background: #004080;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+    }
+    .poster-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .poster-gallery img {
+      width: 200px;
+      height: 150px;
+      cursor: pointer;
+      border-radius: 5px;
+      object-fit: cover;
+    }
+    #posterModal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    #posterModalContent {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      text-align: center;
+    }
+    footer {
+      background-color: #eee;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+    .leader {
+      display: flex;
+      align-items: center;
+      margin-top: 15px;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .leader img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-right: 20px;
+    }
+  </style>
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function showPoster(caption) {
+      document.getElementById('posterCaption').innerText = caption;
+      document.getElementById('posterModal').style.display = 'flex';
+    }
+
+    function closePoster() {
+      document.getElementById('posterModal').style.display = 'none';
+    }
+
+    window.onload = function () {
+      alert("Thank you for visiting MWANASHERIA MIKOPO CO.LTD!");
+      showSection('welcome');
+    }
+  </script>
+</head>
+<body>
+
+  <header>
+    <img src="logo.jpg" alt="Company Logo" class="logo">
+    <h1>MWANASHERIA MIKOPO CO.LTD</h1>
+    <nav>
+      <a onclick="showSection('welcome')">Home</a>
+      <a onclick="showSection('offers')">Available Offers</a>
+      <a onclick="showSection('about')">About</a>
+      <a onclick="showSection('contact')">Contact</a>
+      <a onclick="showSection('terms')">Terms</a>
+    </nav>
+  </header>
+
+  <section id="welcome" class="active">
+    <h2>Welcome to MWANASHERIA MIKOPO CO.LTD</h2>
+    <p>We are a microfinance company committed to supporting students with timely, affordable, and flexible loans. Our services aim to reduce the financial stress on students, allowing them to focus fully on their studies.</p>
+    <ul>
+      <li>Student allowance loans</li>
+      <li>Emergency financial assistance</li>
+      <li>Simple collateral-based approvals</li>
+      <li>Flexible repayment options</li>
+    </ul>
+    <p><strong>Empowering education, one student at a time.</strong></p>
+
+    <h3>Our Posters</h3>
+    <div class="poster-gallery">
+      <img src="poster1.jpg" onclick="showPoster('🎓 New Offer: Get up to TZS 70,000 with 5% interest for 7 days!')" alt="Poster 1">
+      <img src="poster2.jpg" onclick="showPoster('💰 Refer a friend and earn TZS 5,000 instantly.')" alt="Poster 2">
+      <img src="poster3.jpg" onclick="showPoster('⚖️ Legal & Finance Week: Free consultation for all clients this month.')" alt="Poster 3">
+    </div>
+  </section>
+
+  <section id="offers">
+    <h2>Available Offers</h2>
+    <ul>
+      <li><strong>Instant Student Loan:</strong> Up to TZS 50,000 (5% interest if repaid in 7 days)</li>
+      <li><strong>Collateral Loan:</strong> Based on asset value (20% interest after 30 days)</li>
+      <li><strong>Referral Bonus:</strong> Earn TZS 5,000 per referral</li>
+    </ul>
+  </section>
+
+  <section id="about">
+    <h2>About MWANASHERIA MIKOPO CO.LTD</h2>
+    <p><strong>Founded:</strong> December 15, 2022</p>
+    <p><strong>Employees:</strong> 8</p>
+    <p><strong>Mission:</strong> To provide fast, secure, and affordable financial support for students in need. We believe in education as a right, not a privilege.</p>
+    <p><strong>How We Operate:</strong> Students can apply online or visit our branches. If they qualify, the loan is processed within minutes after verification. We support both collateral-based and guarantor-based models.</p>
+    <p><strong>Working Hours:</strong> Monday to Saturday — 8:00 AM to 5:00 PM | Sunday — Closed</p>
+
+    <h3>Leadership</h3>
+    <div class="leader">
+      <img src="ceo.jpg" alt="CEO - Silvester Mhagama" />
+      <div>
+        <p><strong>Position:</strong> CEO</p>
+        <p><strong>Name:</strong> Silvester Mhagama</p>
+        <p><strong>Contact:</strong> +255 687 030 949</p>
+      </div>
+    </div>
+
+    <div class="leader">
+      <img src="gm.jpg" alt="GM - Tarcisius Mhagama" />
+      <div>
+        <p><strong>Position:</strong> General Manager</p>
+        <p><strong>Name:</strong> Tarcisius Mhagama</p>
+        <p><strong>Contact:</strong> +255 696 378 787</p>
+      </div>
+    </div>
+
+    <h3>Other Key Roles</h3>
+    <ul>
+      <li>Finance Manager</li>
+      <li>Operations Manager</li>
+      <li>Risk & Compliance Manager</li>
+      <li>Marketing & Sales Manager</li>
+      <li>Customer Service Manager</li>
+      <li>HR Manager / Secretary</li>
+    </ul>
+
+    <h3>Branch Locations</h3>
+    <p>Dar es Salaam | Mbeya</p>
+  </section>
+
+  <section id="contact">
+  <h2>Contact Us</h2>
+
+  <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-around;">
+
+    <!-- CEO Contact -->
+    <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
+      <h3>Contact CEO</h3>
+      <p><strong>Name:</strong> Silvester Mhagama</p>
+      <a class="btn" href="https://wa.me/255687030949" target="_blank">WhatsApp CEO</a><br/><br/>
+      <a class="btn" href="https://instagram.com/silvester_tzofficially" target="_blank">Instagram CEO</a>
+    </div>
+
+    <!-- GM Contact -->
+    <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
+      <h3>Contact GM</h3>
+      <p><strong>Name:</strong> Tarcisius Mhagama</p>
+      <a class="btn" href="https://wa.me/255696378787" target="_blank">WhatsApp GM</a><br/><br/>
+      <a class="btn" href="https://instagram.com/tarcisius.official" target="_blank">Instagram GM</a>
+    </div>
+
+  </div>
+</section>
+
+
+ <section id="terms">
+  <h2>Terms & Conditions</h2>
+  <p>To qualify for a loan, a student must meet one of the two criteria:</p>
+  <ol>
+    <li>Provide collateral worth at least 40% of the requested amount (e.g. phone, laptop, TV, motorbike)
+      <ul>
+        <li>Repay in 30 days with 20% interest.</li>
+        <li>Late? An additional 20% is added.</li>
+      </ul>
+    </li>
+    <li>Be guaranteed by HESLB and show financial proof. Max: TZS 50,000.</li>
+  </ol>
+  <p><strong>Note:</strong> Non-repayment may result in sale of collateral.</p>
+
+  <h3>Downloadable Documents</h3>
+  <p>You can download our official PDF documents below:</p>
+  <a class="btn" href="loan_contract.pdf" download>Download Loan Contract (PDF)</a><br/><br/>
+  <a class="btn" href="terms_conditions.pdf" download>Download Terms & Conditions (PDF)</a>
+</section>
+
+
+  <footer>
+    &copy; 2025 MWANASHERIA MIKOPO CO.LTD | All Rights Reserved
+  </footer>
+
+  <!-- Poster Modal -->
+  <div id="posterModal" onclick="closePoster()">
+    <div id="posterModalContent">
+      <p id="posterCaption"></p>
+      <button class="btn" onclick="closePoster()">Close</button>
+    </div>
+  </div>
+
+</body>
+</html>
