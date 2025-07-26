@@ -151,12 +151,27 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <!-- EmailJS SDK -->
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-  <script>
-    (function(){
-      emailjs.init("T2FkZ6yAbunYeTZvg"); // Replace with your EmailJS user ID
-    })();
-  </script>
+   
+  <script type="module">
+  import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
+  emailjs.init('T2FkZ6yAbunYeTZvg'); // e.g. 41rJm6FlJto5Wt3vZR0uD
+
+  window.sendLoanApplication = function () {
+    emailjs.send('service_mwanasheria', 'template_Admin', {
+      to_name: 'John Doe',
+      loan_amount: '500,000 TZS',
+      repayment_period: '6 months'
+    })
+    .then(function(response) {
+      alert('Email sent!');
+      console.log('SUCCESS!', response.status, response.text);
+    }, function(error) {
+      alert('Failed to send email.');
+      console.log('FAILED...', error);
+    });
+  };
+</script>
+
 
   <script>
     const firebaseConfig = {
@@ -589,5 +604,32 @@ const db = firebase.firestore();
     });
   }
 </script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+      emailjs.init("T2FkZ6yAbunYeTZvg"); // Your public key
+
+      document.getElementById("loanApplicationForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const formData = {
+          applicant_name: document.getElementById("applicant_name").value,
+          phone: document.getElementById("phone").value,
+          loan_amount: document.getElementById("loan_amount").value,
+          repayment_period: document.getElementById("repayment_period").value,
+          collateral: document.getElementById("collateral").value,
+          submitted_time: new Date().toLocaleString(),
+        };
+
+        emailjs.send("service_mwanasheria", "template_Admin", formData)
+          .then(() => {
+            alert("Loan request sent to admin successfully!");
+          })
+          .catch((error) => {
+            console.error("FAILED...", error);
+            alert("Failed to send email. Please check the console.");
+          });
+      });
+    </script>
+
 
 </html>
