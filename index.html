@@ -150,43 +150,20 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <!-- EmailJS SDK -->
-   
-  <script type="module">
-  import emailjs from 'https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js';
-  emailjs.init('T2FkZ6yAbunYeTZvg'); // e.g. 41rJm6FlJto5Wt3vZR0uD
-
-  window.sendLoanApplication = function () {
-    emailjs.send('service_mwanasheria', 'template_Admin', {
-      to_name: 'John Doe',
-      loan_amount: '500,000 TZS',
-      repayment_period: '6 months'
-    })
-    .then(function(response) {
-      alert('Email sent!');
-      console.log('SUCCESS!', response.status, response.text);
-    }, function(error) {
-      alert('Failed to send email.');
-      console.log('FAILED...', error);
-    });
-  };
-</script>
-
-
   <script>
     const firebaseConfig = {
-  apiKey: "AIzaSyAbvFUyy0pGrVON2Jvg16AEhsXAh4NClU4",
-  authDomain: "mwanasheria-mikopo-d1679.firebaseapp.com",
-  projectId: "mwanasheria-mikopo-d1679",
-  storageBucket: "mwanasheria-mikopo-d1679.firebasestorage.app",
-  messagingSenderId: "292041566660",
-  appId: "1:292041566660:web:d0b05de12ee91545bc1c91"
-};
+      apiKey: "AIzaSyAbvFUyy0pGrVON2Jvg16AEhsXAh4NClU4",
+      authDomain: "mwanasheria-mikopo-d1679.firebaseapp.com",
+      projectId: "mwanasheria-mikopo-d1679",
+      storageBucket: "mwanasheria-mikopo-d1679.firebasestorage.app",
+      messagingSenderId: "292041566660",
+      appId: "1:292041566660:web:d0b05de12ee91545bc1c91"
+    };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
     function showSection(id) {
       document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
@@ -341,14 +318,11 @@ const db = firebase.firestore();
       }
 
       try {
-        // Get current user email
-        const userEmail = user.email;
-
         // Save to Firestore
         await db.collection('loanApplications').add({
           userId: user.uid,
           fullName,
-          email: userEmail,
+          email: user.email,
           phone,
           loanAmount,
           repaymentPeriodDays: repayment,
@@ -357,30 +331,11 @@ const db = firebase.firestore();
           submittedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // Send email to user (confirmation)
-       await emailjs.send('service_mwanasheria', 'template_UserConfirm', {
-  name: fullName,
-  email: userEmail,
-  loanAmount: loanAmount,
-  repaymentPeriod: repayment,
-  collateral: collateral
-});
-
-        // Send email to admin (notification)
-      await emailjs.send('service_mwanasheria', 'template_Admin', {
-  name: fullName,
-  email: userEmail,
-  phone: phone,
-  loanAmount: loanAmount,
-  repaymentPeriod: repayment,
-  collateral: collateral
-});
-
         alert('Your loan application has been submitted. We will contact you soon!');
         showDashboard();
         document.getElementById('applicationForm').reset();
       } catch (error) {
-        alert('Failed to submit application or send email: ' + error.message);
+        alert('Failed to submit application: ' + error.message);
       }
     }
 
@@ -391,7 +346,7 @@ const db = firebase.firestore();
       });
     }
   </script>
-  
+
 </head>
 <body>
 
@@ -420,7 +375,7 @@ const db = firebase.firestore();
       <li>Simple collateral-based approvals</li>
       <li>Flexible repayment options</li>
     </ul>
-    <p><strong>Empowering education, one student at a time.</strong></p>
+    <p><strong>We bring Sunshine!</strong></p>
 
     <h3>Our Posters</h3>
     <div class="poster-gallery">
@@ -447,7 +402,7 @@ const db = firebase.firestore();
     <p><strong>Employees:</strong> 8</p>
     <p><strong>Mission:</strong> To provide fast, secure, and affordable financial support for students in need. We believe in education as a right, not a privilege.</p>
     <p><strong>How We Operate:</strong> Students can apply online or visit our branches. If they qualify, the loan is processed within minutes after verification. We support both collateral-based and guarantor-based models.</p>
-    <p><strong>Working Hours:</strong> Monday to Saturday — 8:00 AM to 5:00 PM | Sunday — Closed</p>
+    <p><strong>Working Hours:</strong> Monday to saturday — 8:00 AM to 5:00 PM | Sunday — Closed</p>
 
     <h3>Leadership</h3>
     <div class="leader">
@@ -488,13 +443,13 @@ const db = firebase.firestore();
     <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-around;">
       <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
         <h3>Contact CEO</h3>
-        <p><strong>Name:</strong> Silvester Mhagama</p>
+        <p><strong>Name:</strong> Silvester Mhagama for Mbeya</p>
         <a class="btn" href="https://wa.me/255687030949" target="_blank" rel="noopener">WhatsApp CEO</a><br /><br />
         <a class="btn" href="tel:+255687030949">Call CEO</a>
       </div>
 
       <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
-        <h3>Contact GM</h3>
+        <h3>Contact GM for Dar es salaam </h3>
         <p><strong>Name:</strong> Tarcisius Mhagama</p>
         <a class="btn" href="https://wa.me/255696378787" target="_blank" rel="noopener">WhatsApp GM</a><br /><br />
         <a class="btn" href="tel:+255696378787">Call GM</a>
@@ -506,130 +461,97 @@ const db = firebase.firestore();
   <section id="terms">
     <h2>Terms and Conditions</h2>
     <ul>
-      <li>All loans must be repaid within the agreed period.</li>
-      <li>Interest rates are as stated in the offers.</li>
-      <li>Collateral must be legal and verifiable.</li>
-      <li>Guarantors must consent and provide valid identification.</li>
-      <li>Late payments may incur penalties.</li>
-      <li>Loan approval is subject to credit checks and verification.</li>
+      <li>1. All loans must be repaid within the agreed period.</li>
+      <li>2. Interest rates are as stated in the offers.</li>
+      <li>3. Collateral must be legal and verifiable.</li>
+      <li>4. Guarantors must consent and provide valid identification.</li>
+      <li>5. Late payments may incur penalties.</li>
+      <li>6. Loan approval is subject to credit assessment.</li>
     </ul>
   </section>
 
-  <!-- Registration -->
+  <!-- Register -->
   <section id="register">
     <h2>Register</h2>
-    <form onsubmit="handleRegister(event)">
+    <form id="registerForm" onsubmit="handleRegister(event)">
       <label for="regFullName">Full Name:</label>
       <input type="text" id="regFullName" required />
       <label for="regEmail">Email:</label>
       <input type="email" id="regEmail" required />
       <label for="regPassword">Password:</label>
-      <input type="password" id="regPassword" required minlength="6" />
+      <input type="password" id="regPassword" required />
       <button type="submit" class="btn">Register</button>
-      <p>Already registered? <a href="#" onclick="showLogin()">Login here</a></p>
     </form>
+    <p>Already have an account? <a href="#" onclick="showLogin()">Login here</a>.</p>
   </section>
 
   <!-- Login -->
-  <section id="login">
-    <h2>Login</h2>
-    <form onsubmit="handleLogin(event)">
-      <label for="loginEmail">Email:</label>
-      <input type="email" id="loginEmail" required />
-      <label for="loginPassword">Password:</label>
-      <input type="password" id="loginPassword" required />
-      <button type="submit" class="btn">Login</button>
-      <p>New user? <a href="#" onclick="showRegister()">Register here</a></p>
-    </form>
-  </section>
+<section id="login">
+  <h2>Login</h2>
+  <form id="loginForm">
+    <label for="loginEmail">Email:</label>
+    <input type="email" id="loginEmail" required />
+    <label for="loginPassword">Password:</label>
+    <input type="password" id="loginPassword" required />
+    <button type="submit" class="btn">Login</button>
+  </form>
+  <p>Don't have an account? <a href="#" onclick="showRegister()">Register here</a>.</p>
+</section>
 
-  <!-- Loan Application -->
-  <section id="application">
-    <h2>Loan Application Form</h2>
-    <form id="applicationForm" onsubmit="handleApplicationSubmit(event)">
-      <label for="appFullName">Full Name:</label>
-      <input type="text" id="appFullName" required />
-      <label for="appPhone">Phone Number:</label>
-      <input type="tel" id="appPhone" required pattern="\\+?\\d{9,15}" placeholder="+255..." />
-      <label for="appLoanAmount">Loan Amount (TZS):</label>
-      <input type="number" id="appLoanAmount" min="1000" max="1000000" required />
-      <label for="appRepayment">Repayment Period:</label>
-      <select id="appRepayment" required>
-        <option value="" disabled selected>Select days</option>
-        <option value="7">7 days</option>
-        <option value="14">14 days</option>
-        <option value="30">30 days</option>
-      </select>
-      <label for="appCollateral">Collateral Description:</label>
-      <input type="text" id="appCollateral" required />
-      <button type="submit" class="btn">Submit Application</button>
-    </form>
-  </section>
 
-  <!-- Dashboard -->
-  <section id="dashboard">
-    <h2>Welcome, <span id="dashFullName"></span>!</h2>
-    <p id="loanStatus" class="status"></p>
-    <div id="dashboardLoanDetails"></div>
-    <button onclick="handleLogout()" class="btn">Logout</button>
-  </section>
-
-  <!-- Poster Modal -->
-  <div id="posterModal" onclick="closePoster()" style="display:none;">
-    <div id="posterModalContent">
-      <p id="posterCaption"></p>
-      <button onclick="closePoster()" class="btn">Close</button>
-    </div>
-  </div>
+  
 
   <footer>
-    &copy; 2023 MWANASHERIA MIKOPO CO.LTD | Contact: +255 687 030 949
+    <p>&copy; 2023 MWANASHERIA MIKOPO CO.LTD | All rights reserved.</p>
   </footer>
 
-</body>
-<button onclick="sendTestEmail()">Send Test Email</button>
 
-<script>
-  function sendTestEmail() {
-    emailjs.send("service_mwanasheria", "template_userConfirm", {
-      to_name: "silvester",
-      loan_amount: "500,000 TZS",
-      repayment_period: "5 months",
-    }).then(function(response) {
-      alert("Test email sent successfully!");
-      console.log("SUCCESS!", response.status, response.text);
-    }, function(error) {
-      alert("Failed to send email.");
-      console.log("FAILED...", error);
-    });
-  }
-</script>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script>
-      emailjs.init("T2FkZ6yAbunYeTZvg"); // Your public key
+  
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth,
+    signInWithEmailAndPassword,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-      document.getElementById("loanApplicationForm").addEventListener("submit", function (e) {
-        e.preventDefault();
+  const firebaseConfig = {
+    apiKey: "AIzaSyAbvFUyy0pGrVON2Jvg16AEhsXAh4NClU4",
+    authDomain: "mwanasheria-mikopo-d1679.firebaseapp.com",
+    projectId: "mwanasheria-mikopo-d1679",
+    storageBucket: "mwanasheria-mikopo-d1679.appspot.com",
+    messagingSenderId: "292041566660",
+    appId: "1:292041566660:web:d0b05de12ee91545bc1c91"
+  };
 
-        const formData = {
-          applicant_name: document.getElementById("applicant_name").value,
-          phone: document.getElementById("phone").value,
-          loan_amount: document.getElementById("loan_amount").value,
-          repayment_period: document.getElementById("repayment_period").value,
-          collateral: document.getElementById("collateral").value,
-          submitted_time: new Date().toLocaleString(),
-        };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-        emailjs.send("service_mwanasheria", "template_Admin", formData)
-          .then(() => {
-            alert("Loan request sent to admin successfully!");
-          })
-          .catch((error) => {
-            console.error("FAILED...", error);
-            alert("Failed to send email. Please check the console.");
-          });
+  // ✅ Paste your actual admin UID from Firebase console here:
+  const adminUID = "WPCA4owtu8Y1ARgLlKHnDqoULEF3";
+
+  // ✅ Handle Login Form Submit
+  document.getElementById("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const email = document.getElementById("loginEmail").value;
+    const password = document.getElementById("loginPassword").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        if (user.uid === adminUID) {
+          window.location.href = "admin.html";
+        } else {
+          window.location.href = "dashboard.html";
+        }
+      })
+      .catch((error) => {
+        alert("Login failed: " + error.message);
       });
-    </script>
+  });
+</script>
 
-
+</body>
 </html>
