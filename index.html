@@ -1,557 +1,596 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MWANASHERIA MIKOPO CO.LTD</title>
-  <meta name="description" content="Affordable and flexible student allowance loans - Mwanasheria Mikopo Co. Ltd">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f9f9f9;
-      color: #333;
-    }
-    header {
-      background-color: #004080;
-      color: white;
-      padding: 15px 10px 25px;
-      text-align: center;
-      position: relative;
-    }
-    header img.logo {
-      width: 100px;
-      height: 100px;
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      border-radius: 10px;
-    }
-    nav {
-      margin-top: 10px;
-    }
-    nav a {
-      margin: 0 10px;
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    section {
-      display: none;
-      padding: 20px;
-      max-width: 950px;
-      margin: 20px auto;
-      background: white;
-      border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    section.active {
-      display: block;
-    }
-    h2 {
-      color: #004080;
-    }
-    .btn {
-      background: #004080;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 5px;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 10px;
-      cursor: pointer;
-      border: none;
-      font-size: 1rem;
-    }
-    .poster-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .poster-gallery img {
-      width: 200px;
-      height: 150px;
-      cursor: pointer;
-      border-radius: 5px;
-      object-fit: cover;
-    }
-    #posterModal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      justify-content: center;
-      align-items: center;
-    }
-    #posterModalContent {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 500px;
-      text-align: center;
-    }
-    footer {
-      background-color: #eee;
-      text-align: center;
-      padding: 15px;
-      margin-top: 30px;
-    }
-    .leader {
-      display: flex;
-      align-items: center;
-      margin-top: 15px;
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
-    }
-    .leader img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin-right: 20px;
-    }
-    form {
-      max-width: 500px;
-      margin-top: 10px;
-    }
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-    }
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    .form-note {
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 6px;
-    }
-    /* Dashboard style */
-    #dashboard p.status {
-      font-weight: bold;
-      font-size: 1.2rem;
-      margin-top: 20px;
-      color: #004080;
-    }
-  </style>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAbvFUyy0pGrVON2Jvg16AEhsXAh4NClU4",
-      authDomain: "mwanasheria-mikopo-d1679.firebaseapp.com",
-      projectId: "mwanasheria-mikopo-d1679",
-      storageBucket: "mwanasheria-mikopo-d1679.firebasestorage.app",
-      messagingSenderId: "292041566660",
-      appId: "1:292041566660:web:d0b05de12ee91545bc1c91"
-    };
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    function showSection(id) {
-      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    function showPoster(caption) {
-      document.getElementById('posterCaption').innerText = caption;
-      document.getElementById('posterModal').style.display = 'flex';
-    }
-    function closePoster() {
-      document.getElementById('posterModal').style.display = 'none';
-    }
-
-    window.onload = function () {
-      alert("Thank you for visiting MWANASHERIA MIKOPO CO.LTD!");
-      showSection('welcome');
-    }
-
-    function showRegister() {
-      showSection('register');
-    }
-    function showLogin() {
-      showSection('login');
-    }
-    function showApplication() {
-      // Auto-fill full name in application form if logged in
-      const user = auth.currentUser;
-      if(user) {
-        db.collection('users').doc(user.uid).get().then(doc => {
-          if(doc.exists) {
-            document.getElementById('appFullName').value = doc.data().fullName;
-          }
-        });
-      } else {
-        document.getElementById('appFullName').value = '';
-      }
-      showSection('application');
-    }
-
-    // Show dashboard with status
-    async function showDashboard() {
-      const user = auth.currentUser;
-      if (!user) {
-        alert("Please login or register first.");
-        showRegister();
-        return;
-      }
-      try {
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        if (!userDoc.exists) {
-          alert("User profile not found.");
-          showRegister();
-          return;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MWANASHERIA MIKOPO CO.LTD</title>
+    <meta name="description" content="Affordable and flexible student allowance loans - Mwanasheria Mikopo Co. Ltd">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f9f9f9;
+            color: #333;
         }
-        document.getElementById('dashFullName').innerText = userDoc.data().fullName;
+        
+        header {
+            background-color: #004080;
+            color: white;
+            padding: 15px 10px 25px;
+            text-align: center;
+            position: relative;
+        }
+        
+        header img.logo {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            border-radius: 10px;
+        }
+        
+        nav {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        section {
+            display: none;
+            padding: 20px;
+            max-width: 950px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        section.active {
+            display: block;
+        }
+        
+        h2 {
+            color: #004080;
+        }
+        
+        .btn {
+            background: #004080;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .poster-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .poster-gallery img {
+            width: 100%;
+            max-width: 200px;
+            height: 150px;
+            cursor: pointer;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        
+        #posterModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #posterModalContent {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            text-align: center;
+            width: 90%;
+        }
+        
+        footer {
+            background-color: #eee;
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+        }
+        
+        .leader {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .leader img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        form {
+            max-width: 500px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+        
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        .form-note {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 6px;
+        }
+        /* Dashboard style */
+        
+        #dashboard p.status {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            color: #004080;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            header img.logo {
+                width: 60px;
+                height: 60px;
+            }
+            nav a {
+                font-size: 0.9rem;
+                padding: 6px 10px;
+            }
+            .leader {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .poster-gallery img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            section {
+                padding: 15px;
+                margin: 15px;
+            }
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
 
-        // Check loan application status
-        const appsSnapshot = await db.collection('loanApplications')
-          .where('userId', '==', user.uid)
-          .orderBy('submittedAt', 'desc')
-          .limit(1)
-          .get();
+<body>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-        if (appsSnapshot.empty) {
-          document.getElementById('loanStatus').innerText = "You have no loan applications yet.";
-          document.getElementById('dashboardLoanDetails').innerHTML = "";
-        } else {
-          const appData = appsSnapshot.docs[0].data();
-          document.getElementById('loanStatus').innerText = `Your latest loan application status: ${appData.status}`;
-          document.getElementById('dashboardLoanDetails').innerHTML = `
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbvFUyy0pGrVON2Jvg16AEhsXAh4NClU4",
+            authDomain: "mwanasheria-mikopo-d1679.firebaseapp.com",
+            projectId: "mwanasheria-mikopo-d1679",
+            storageBucket: "mwanasheria-mikopo-d1679.firebasestorage.app",
+            messagingSenderId: "292041566660",
+            appId: "1:292041566660:web:d0b05de12ee91545bc1c91"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function showPoster(caption) {
+            document.getElementById('posterCaption').innerText = caption;
+            document.getElementById('posterModal').style.display = 'flex';
+        }
+
+        function closePoster() {
+            document.getElementById('posterModal').style.display = 'none';
+        }
+
+        window.onload = function() {
+            alert("Thank you for visiting MWANASHERIA MIKOPO CO.LTD!");
+            showSection('welcome');
+        }
+
+        function showRegister() {
+            showSection('register');
+        }
+
+        function showLogin() {
+            showSection('login');
+        }
+
+        function showApplication() {
+            // Auto-fill full name in application form if logged in
+            const user = auth.currentUser;
+            if (user) {
+                db.collection('users').doc(user.uid).get().then(doc => {
+                    if (doc.exists) {
+                        document.getElementById('appFullName').value = doc.data().fullName;
+                    }
+                });
+            } else {
+                document.getElementById('appFullName').value = '';
+            }
+            showSection('application');
+        }
+
+        // Show dashboard with status
+        async function showDashboard() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert("Please login or register first.");
+                showRegister();
+                return;
+            }
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists) {
+                    alert("User profile not found.");
+                    showRegister();
+                    return;
+                }
+                document.getElementById('dashFullName').innerText = userDoc.data().fullName;
+
+                // Check loan application status
+                const appsSnapshot = await db.collection('loanApplications')
+                    .where('userId', '==', user.uid)
+                    .orderBy('submittedAt', 'desc')
+                    .limit(1)
+                    .get();
+
+                if (appsSnapshot.empty) {
+                    document.getElementById('loanStatus').innerText = "You have no loan applications yet.";
+                    document.getElementById('dashboardLoanDetails').innerHTML = "";
+                } else {
+                    const appData = appsSnapshot.docs[0].data();
+                    document.getElementById('loanStatus').innerText = `Your latest loan application status: ${appData.status}`;
+                    document.getElementById('dashboardLoanDetails').innerHTML = `
             <p><strong>Loan Amount:</strong> TZS ${appData.loanAmount}</p>
             <p><strong>Repayment Period:</strong> ${appData.repaymentPeriodDays} days</p>
             <p><strong>Collateral:</strong> ${appData.collateral}</p>
             <p><strong>Submitted At:</strong> ${appData.submittedAt ? appData.submittedAt.toDate().toLocaleString() : 'N/A'}</p>
           `;
+                }
+                showSection('dashboard');
+            } catch (error) {
+                alert("Error loading dashboard: " + error.message);
+            }
         }
-        showSection('dashboard');
-      } catch (error) {
-        alert("Error loading dashboard: " + error.message);
-      }
-    }
 
-    async function handleRegister(event) {
-      event.preventDefault();
-      const fullName = document.getElementById('regFullName').value.trim();
-      const email = document.getElementById('regEmail').value.trim().toLowerCase();
-      const password = document.getElementById('regPassword').value;
+        async function handleRegister(event) {
+            event.preventDefault();
+            const fullName = document.getElementById('regFullName').value.trim();
+            const email = document.getElementById('regEmail').value.trim().toLowerCase();
+            const password = document.getElementById('regPassword').value;
 
-      if (!fullName || !email || !password) {
-        alert('Please fill all registration fields');
-        return;
-      }
-      try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-        await db.collection('users').doc(user.uid).set({
-          fullName: fullName,
-          email: email,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        alert('Registration successful! Please login now.');
-        showLogin();
-      } catch (error) {
-        alert('Registration error: ' + error.message);
-      }
-    }
-
-    async function handleLogin(event) {
-      event.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-      const password = document.getElementById('loginPassword').value;
-
-      if (!email || !password) {
-        alert('Please enter email and password');
-        return;
-      }
-      try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        if (!userDoc.exists) {
-          alert('User profile not found!');
-          return;
+            if (!fullName || !email || !password) {
+                alert('Please fill all registration fields');
+                return;
+            }
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                await db.collection('users').doc(user.uid).set({
+                    fullName: fullName,
+                    email: email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert('Registration successful! Please login now.');
+                showLogin();
+            } catch (error) {
+                alert('Registration error: ' + error.message);
+            }
         }
-        alert(`Welcome back, ${userDoc.data().fullName}!`);
-        showDashboard();
-      } catch (error) {
-        alert('Login failed: ' + error.message);
-      }
-    }
 
-    async function handleApplicationSubmit(event) {
-      event.preventDefault();
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+            const password = document.getElementById('loginPassword').value;
 
-      const user = auth.currentUser;
-      if (!user) {
-        alert('Please login first.');
-        showLogin();
-        return;
-      }
-
-      const fullName = document.getElementById('appFullName').value.trim();
-      const phone = document.getElementById('appPhone').value.trim();
-      const loanAmount = parseInt(document.getElementById('appLoanAmount').value);
-      const repayment = document.getElementById('appRepayment').value;
-      const collateral = document.getElementById('appCollateral').value.trim();
-
-      if (!fullName || !phone || !loanAmount || !repayment || !collateral) {
-        alert('Please fill all application fields');
-        return;
-      }
-
-      try {
-        // Save to Firestore
-        await db.collection('loanApplications').add({
-          userId: user.uid,
-          fullName,
-          email: user.email,
-          phone,
-          loanAmount,
-          repaymentPeriodDays: repayment,
-          collateral,
-          status: 'Pending',
-          submittedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        alert('Your loan application has been submitted. We will contact you soon!');
-        showDashboard();
-        document.getElementById('applicationForm').reset();
-      } catch (error) {
-        alert('Failed to submit application: ' + error.message);
-      }
-    }
-
-    function handleLogout() {
-      auth.signOut().then(() => {
-        alert('Logged out successfully');
-        showSection('welcome');
-      });
-    }
-  </script>
-
-</head>
-<body>
-
-  <header>
-    <img src="logo.jpg" alt="Company Logo" class="logo" />
-    <h1>MWANASHERIA MIKOPO CO.LTD</h1>
-    <nav>
-      <a onclick="showSection('welcome')">Home</a>
-      <a onclick="showSection('offers')">Available Offers</a>
-      <a onclick="showSection('about')">About</a>
-      <a onclick="showSection('contact')">Contact</a>
-      <a onclick="showSection('terms')">Terms</a>
-      <a onclick="showRegister()">Apply</a>
-    </nav>
-  </header>
-
-  <!-- Sections -->
-
-  <!-- Welcome -->
-  <section id="welcome" class="active">
-    <h2>Welcome to MWANASHERIA MIKOPO CO.LTD</h2>
-    <p>We are a microfinance company committed to supporting students with timely, affordable, and flexible loans. Our services aim to reduce the financial stress on students, allowing them to focus fully on their studies.</p>
-    <ul>
-      <li>Student allowance loans</li>
-      <li>Emergency financial assistance</li>
-      <li>Simple collateral-based approvals</li>
-      <li>Flexible repayment options</li>
-    </ul>
-    <p><strong>We bring Sunshine!</strong></p>
-
-    <h3>Our Posters</h3>
-    <div class="poster-gallery">
-      <img src="poster1.jpg" onclick="showPoster('🎓 New Offer: Get up to TZS 70,000 with 5% interest for 7 days!')" alt="Poster 1" />
-      <img src="poster2.jpg" onclick="showPoster('💰 Refer a friend and earn TZS 5,000 instantly.')" alt="Poster 2" />
-      <img src="poster3.jpg" onclick="showPoster('⚖️ Legal & Finance Week: Free consultation for all clients this month.')" alt="Poster 3" />
-    </div>
-  </section>
-
-  <!-- Offers -->
-  <section id="offers">
-    <h2>Available Offers</h2>
-    <ul>
-      <li><strong>Instant Student Loan:</strong> Up to TZS 50,000 (5% interest if repaid in 7 days)</li>
-      <li><strong>Collateral Loan:</strong> Based on asset value (20% interest after 30 days)</li>
-      <li><strong>Referral Bonus:</strong> Earn TZS 5,000 per referral</li>
-    </ul>
-  </section>
-
-  <!-- About -->
-  <section id="about">
-    <h2>About MWANASHERIA MIKOPO CO.LTD</h2>
-    <p><strong>Founded:</strong> December 15, 2022</p>
-    <p><strong>Employees:</strong> 8</p>
-    <p><strong>Mission:</strong> To provide fast, secure, and affordable financial support for students in need. We believe in education as a right, not a privilege.</p>
-    <p><strong>How We Operate:</strong> Students can apply online or visit our branches. If they qualify, the loan is processed within minutes after verification. We support both collateral-based and guarantor-based models.</p>
-    <p><strong>Working Hours:</strong> Monday to saturday — 8:00 AM to 5:00 PM | Sunday — Closed</p>
-
-    <h3>Leadership</h3>
-    <div class="leader">
-      <img src="ceo.jpg" alt="CEO - Silvester Mhagama" />
-      <div>
-        <p><strong>Position:</strong> CEO</p>
-        <p><strong>Name:</strong> Silvester Mhagama</p>
-        <p><strong>Contact:</strong> +255 687 030 949</p>
-      </div>
-    </div>
-
-    <div class="leader">
-      <img src="gm.jpg" alt="GM - Tarcisius Mhagama" />
-      <div>
-        <p><strong>Position:</strong> General Manager</p>
-        <p><strong>Name:</strong> Tarcisius Mhagama</p>
-        <p><strong>Contact:</strong> +255 696 378 787</p>
-      </div>
-    </div>
-
-    <h3>Other Key Roles</h3>
-    <ul>
-      <li>Finance Manager</li>
-      <li>Operations Manager</li>
-      <li>Risk & Compliance Manager</li>
-      <li>Marketing & Sales Manager</li>
-      <li>Customer Service Manager</li>
-      <li>HR Manager / Secretary</li>
-    </ul>
-
-    <h3>Branch Locations</h3>
-    <p>Dar es Salaam | Mbeya</p>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-around;">
-      <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
-        <h3>Contact CEO</h3>
-        <p><strong>Name:</strong> Silvester Mhagama for Mbeya</p>
-        <a class="btn" href="https://wa.me/255687030949" target="_blank" rel="noopener">WhatsApp CEO</a><br /><br />
-        <a class="btn" href="tel:+255687030949">Call CEO</a>
-      </div>
-
-      <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
-        <h3>Contact GM for Dar es salaam </h3>
-        <p><strong>Name:</strong> Tarcisius Mhagama</p>
-        <a class="btn" href="https://wa.me/255696378787" target="_blank" rel="noopener">WhatsApp GM</a><br /><br />
-        <a class="btn" href="tel:+255696378787">Call GM</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Terms -->
-  <section id="terms">
-    <h2>Terms and Conditions</h2>
-    <ul>
-      <li>1. All loans must be repaid within the agreed period.</li>
-      <li>2. Interest rates are as stated in the offers.</li>
-      <li>3. Collateral must be legal and verifiable.</li>
-      <li>4. Guarantors must consent and provide valid identification.</li>
-      <li>5. Late payments may incur penalties.</li>
-      <li>6. Loan approval is subject to credit assessment.</li>
-    </ul>
-  </section>
-
-  <!-- Register -->
-  <section id="register">
-    <h2>Register</h2>
-    <form id="registerForm" onsubmit="handleRegister(event)">
-      <label for="regFullName">Full Name:</label>
-      <input type="text" id="regFullName" required />
-      <label for="regEmail">Email:</label>
-      <input type="email" id="regEmail" required />
-      <label for="regPassword">Password:</label>
-      <input type="password" id="regPassword" required />
-      <button type="submit" class="btn">Register</button>
-    </form>
-    <p>Already have an account? <a href="#" onclick="showLogin()">Login here</a>.</p>
-  </section>
-
-  <!-- Login -->
-<section id="login">
-  <h2>Login</h2>
-  <form id="loginForm">
-    <label for="loginEmail">Email:</label>
-    <input type="email" id="loginEmail" required />
-    <label for="loginPassword">Password:</label>
-    <input type="password" id="loginPassword" required />
-    <button type="submit" class="btn">Login</button>
-  </form>
-  <p>Don't have an account? <a href="#" onclick="showRegister()">Register here</a>.</p>
-</section>
-
-
-  
-
-  <footer>
-    <p>&copy; 2023 MWANASHERIA MIKOPO CO.LTD | All rights reserved.</p>
-  </footer>
-
-
-  
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getAuth,
-    signInWithEmailAndPassword,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAbvFUyy0pGrVON2Jvg16AEhsXAh4NClU4",
-    authDomain: "mwanasheria-mikopo-d1679.firebaseapp.com",
-    projectId: "mwanasheria-mikopo-d1679",
-    storageBucket: "mwanasheria-mikopo-d1679.appspot.com",
-    messagingSenderId: "292041566660",
-    appId: "1:292041566660:web:d0b05de12ee91545bc1c91"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // ✅ Paste your actual admin UID from Firebase console here:
-  const adminUID = "WPCA4owtu8Y1ARgLlKHnDqoULEF3";
-
-  // ✅ Handle Login Form Submit
-  document.getElementById("loginForm").addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const email = document.getElementById("loginEmail").value;
-    const password = document.getElementById("loginPassword").value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-
-        if (user.uid === adminUID) {
-          window.location.href = "admin.html";
-        } else {
-          window.location.href = "dashboard.html";
+            if (!email || !password) {
+                alert('Please enter email and password');
+                return;
+            }
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists) {
+                    alert('User profile not found!');
+                    return;
+                }
+                alert(`Welcome back, ${userDoc.data().fullName}!`);
+                showDashboard();
+            } catch (error) {
+                alert('Login failed: ' + error.message);
+            }
         }
-      })
-      .catch((error) => {
-        alert("Login failed: " + error.message);
-      });
-  });
-</script>
 
-</body>
+        async function handleApplicationSubmit(event) {
+            event.preventDefault();
+
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please login first.');
+                showLogin();
+                return;
+            }
+
+            const fullName = document.getElementById('appFullName').value.trim();
+            const phone = document.getElementById('appPhone').value.trim();
+            const loanAmount = parseInt(document.getElementById('appLoanAmount').value);
+            const repayment = document.getElementById('appRepayment').value;
+            const collateral = document.getElementById('appCollateral').value.trim();
+
+            if (!fullName || !phone || !loanAmount || !repayment || !collateral) {
+                alert('Please fill all application fields');
+                return;
+            }
+
+            try {
+                // Save to Firestore
+                await db.collection('loanApplications').add({
+                    userId: user.uid,
+                    fullName,
+                    email: user.email,
+                    phone,
+                    loanAmount,
+                    repaymentPeriodDays: repayment,
+                    collateral,
+                    status: 'Pending',
+                    submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert('Your loan application has been submitted. We will contact you soon!');
+                showDashboard();
+                document.getElementById('applicationForm').reset();
+            } catch (error) {
+                alert('Failed to submit application: ' + error.message);
+            }
+        }
+
+        function handleLogout() {
+            auth.signOut().then(() => {
+                alert('Logged out successfully');
+                showSection('welcome');
+            });
+        }
+    </script>
+
+    </head>
+
+    <body>
+
+        <header>
+            <img src="logo.jpg" alt="Company Logo" class="logo" />
+            <h1>MWANASHERIA MIKOPO CO.LTD</h1>
+            <nav>
+                <a onclick="showSection('welcome')">Home</a>
+                <a onclick="showSection('offers')">Available Offers</a>
+                <a onclick="showSection('about')">About</a>
+                <a onclick="showSection('contact')">Contact</a>
+                <a onclick="showSection('terms')">Terms</a>
+                <a onclick="showRegister()">Apply</a>
+            </nav>
+        </header>
+
+        <!-- Sections -->
+
+        <!-- Welcome -->
+        <section id="welcome" class="active">
+            <h2>Welcome to MWANASHERIA MIKOPO CO.LTD</h2>
+            <p>We are a microfinance company committed to supporting students with timely, affordable, and flexible loans. Our services aim to reduce the financial stress on students, allowing them to focus fully on their studies.</p>
+            <ul>
+                <li>Student allowance loans</li>
+                <li>Emergency financial assistance</li>
+                <li>Simple collateral-based approvals</li>
+                <li>Flexible repayment options</li>
+            </ul>
+            <p><strong>We bring Sunshine!</strong></p>
+
+            <h3>Our Posters</h3>
+            <div class="poster-gallery">
+                <img src="poster1.jpg" onclick="showPoster('🎓 New Offer: Get up to TZS 70,000 with 5% interest for 7 days!')" alt="Poster 1" />
+                <img src="poster2.jpg" onclick="showPoster('💰 Refer a friend and earn TZS 5,000 instantly.')" alt="Poster 2" />
+                <img src="poster3.jpg" onclick="showPoster('⚖️ Legal & Finance Week: Free consultation for all clients this month.')" alt="Poster 3" />
+            </div>
+        </section>
+
+        <!-- Offers -->
+        <section id="offers">
+            <h2>Available Offers</h2>
+            <ul>
+                <li><strong>Instant Student Loan:</strong> Up to TZS 50,000 (5% interest if repaid in 7 days)</li>
+                <li><strong>Collateral Loan:</strong> Based on asset value (20% interest after 30 days)</li>
+                <li><strong>Referral Bonus:</strong> Earn TZS 5,000 per referral</li>
+            </ul>
+        </section>
+
+        <!-- About -->
+        <section id="about">
+            <h2>About MWANASHERIA MIKOPO CO.LTD</h2>
+            <p><strong>Founded:</strong> December 15, 2022</p>
+            <p><strong>Employees:</strong> 8</p>
+            <p><strong>Mission:</strong> To provide fast, secure, and affordable financial support for students in need. We believe in education as a right, not a privilege.</p>
+            <p><strong>How We Operate:</strong> Students can apply online or visit our branches. If they qualify, the loan is processed within minutes after verification. We support both collateral-based and guarantor-based models.</p>
+            <p><strong>Working Hours:</strong> Monday to saturday — 8:00 AM to 5:00 PM | Sunday — Closed</p>
+
+            <h3>Leadership</h3>
+            <div class="leader">
+                <img src="ceo.jpg" alt="CEO - Silvester Mhagama" />
+                <div>
+                    <p><strong>Position:</strong> CEO</p>
+                    <p><strong>Name:</strong> Silvester Mhagama</p>
+                    <p><strong>Contact:</strong> +255 687 030 949</p>
+                </div>
+            </div>
+
+            <div class="leader">
+                <img src="gm.jpg" alt="GM - Tarcisius Mhagama" />
+                <div>
+                    <p><strong>Position:</strong> General Manager</p>
+                    <p><strong>Name:</strong> Tarcisius Mhagama</p>
+                    <p><strong>Contact:</strong> +255 696 378 787</p>
+                </div>
+            </div>
+
+            <h3>Other Key Roles</h3>
+            <ul>
+                <li>Finance Manager</li>
+                <li>Operations Manager</li>
+                <li>Risk & Compliance Manager</li>
+                <li>Marketing & Sales Manager</li>
+                <li>Customer Service Manager</li>
+                <li>HR Manager / Secretary</li>
+            </ul>
+
+            <h3>Branch Locations</h3>
+            <p>Dar es Salaam | Mbeya</p>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact">
+            <h2>Contact Us</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-around;">
+                <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
+                    <h3>Contact CEO</h3>
+                    <p><strong>Name:</strong> Silvester Mhagama for Mbeya</p>
+                    <a class="btn" href="https://wa.me/255687030949" target="_blank" rel="noopener">WhatsApp CEO</a><br /><br />
+                    <a class="btn" href="tel:+255687030949">Call CEO</a>
+                </div>
+
+                <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
+                    <h3>Contact GM for Dar es salaam </h3>
+                    <p><strong>Name:</strong> Tarcisius Mhagama</p>
+                    <a class="btn" href="https://wa.me/255696378787" target="_blank" rel="noopener">WhatsApp GM</a><br /><br />
+                    <a class="btn" href="tel:+255696378787">Call GM</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Terms -->
+        <section id="terms">
+            <h2>Terms and Conditions</h2>
+            <ul>
+                <li>1. All loans must be repaid within the agreed period.</li>
+                <li>2. Interest rates are as stated in the offers.</li>
+                <li>3. Collateral must be legal and verifiable.</li>
+                <li>4. Guarantors must consent and provide valid identification.</li>
+                <li>5. Late payments may incur penalties.</li>
+                <li>6. Loan approval is subject to credit assessment.</li>
+            </ul>
+        </section>
+
+        <!-- Register -->
+        <section id="register">
+            <h2>Register</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <label for="regFullName">Full Name:</label>
+                <input type="text" id="regFullName" required />
+                <label for="regEmail">Email:</label>
+                <input type="email" id="regEmail" required />
+                <label for="regPassword">Password:</label>
+                <input type="password" id="regPassword" required />
+                <button type="submit" class="btn">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="showLogin()">Login here</a>.</p>
+        </section>
+
+        <!-- Login -->
+        <section id="login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="loginEmail">Email:</label>
+                <input type="email" id="loginEmail" required />
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" required />
+                <button type="submit" class="btn">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" onclick="showRegister()">Register here</a>.</p>
+        </section>
+
+
+
+
+        <footer>
+            <p>&copy; 2025 MWANASHERIA MIKOPO CO.LTD | All rights reserved.</p>
+        </footer>
+
+
+
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"; import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"; const firebaseConfig = {
+            apiKey: "AIzaSyAbvFUyy0pGrVON2Jvg16AEhsXAh4NClU4", authDomain: "mwanasheria-mikopo-d1679.firebaseapp.com", projectId: "mwanasheria-mikopo-d1679", storageBucket: "mwanasheria-mikopo-d1679.appspot.com", messagingSenderId: "292041566660", appId:
+            "1:292041566660:web:d0b05de12ee91545bc1c91" }; const app = initializeApp(firebaseConfig); const auth = getAuth(app); // ✅ Paste your actual admin UID from Firebase console here: const adminUID = "WPCA4owtu8Y1ARgLlKHnDqoULEF3"; // ✅ Handle
+            Login Form Submit document.getElementById("loginForm").addEventListener("submit", function (event) { event.preventDefault(); const email = document.getElementById("loginEmail").value; const password = document.getElementById("loginPassword").value;
+            signInWithEmailAndPassword(auth, email, password) .then((userCredential) => { const user = userCredential.user; if (user.uid === adminUID) { window.location.href = "admin.html"; } else { window.location.href = "dashboard.html"; } }) .catch((error)
+            => { alert("Login failed: " + error.message); }); });
+        </script>
+    </body>
+
 </html>
