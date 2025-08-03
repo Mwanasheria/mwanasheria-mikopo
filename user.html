@@ -21,6 +21,7 @@
             background-color: #343a40;
             padding-top: 60px;
             color: white;
+            transition: all 0.3s ease;
         }
         
         .sidebar a {
@@ -37,6 +38,7 @@
         .main-content {
             margin-left: 220px;
             padding: 20px;
+            transition: margin-left 0.3s ease;
         }
         
         .topbar {
@@ -51,12 +53,47 @@
             justify-content: space-between;
             padding: 0 20px;
             color: white;
+            transition: left 0.3s ease;
+        }
+        
+        .toggle-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+        }
+        
+        .dropdown-menu-end {
+            right: 0;
+            left: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -220px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .topbar {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .main-content.shifted {
+                margin-left: 220px;
+            }
+            .toggle-btn {
+                display: inline-block;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <h5 class="text-center">MWANASHERIA</h5>
         <a href="#" onclick="showDashboard()">📊 Dashboard</a>
         <a href="#" onclick="showLoanForm()">📝 Apply for Loan</a>
@@ -64,12 +101,25 @@
         <div class="mt-4 px-3 small" id="userInfo"></div>
     </div>
 
-    <div class="topbar">
+    <div class="topbar" id="topbar">
+        <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         <div>User Dashboard</div>
-        <div><button class="btn btn-sm btn-light" onclick="logout()">Logout</button></div>
+        <div class="dropdown">
+            <button class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Profile
+      </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><span class="dropdown-item-text" id="profileName"></span></li>
+                <li><span class="dropdown-item-text" id="profileEmail"></span></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><button class="dropdown-item text-danger" onclick="logout()">Logout</button></li>
+            </ul>
+        </div>
     </div>
 
-    <div class="main-content">
+    <div class="main-content" id="mainContent">
         <div id="dashboardSection">
             <h4>Welcome to Your Dashboard</h4>
             <p>Here is your loan status and history:</p>
@@ -117,6 +167,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyB7mJE1bdNsTfGI08YmkhmZHca0xU_3qwU",
@@ -130,6 +181,11 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+            document.getElementById("mainContent").classList.toggle("shifted");
+        }
+
         function showDashboard() {
             document.getElementById("dashboardSection").style.display = "block";
             document.getElementById("loanFormSection").style.display = "none";
@@ -141,7 +197,7 @@
         }
 
         function logout() {
-            auth.signOut().then(() => window.location.href = "login.html");
+            auth.signOut().then(() => window.location.href = "index.html");
         }
 
         function loadUserLoans(userId) {
@@ -198,18 +254,20 @@
                         window.location.href = "admin.html";
                     } else {
                         document.getElementById("userInfo").innerHTML = `
-              <div><strong>${user.displayName}</strong></div>
+              <div><strong>${user.displayName || 'User'}</strong></div>
               <div>${user.email}</div>
             `;
+                        document.getElementById("profileName").textContent = user.displayName || "User";
+                        document.getElementById("profileEmail").textContent = user.email;
+                        Swal.fire("Welcome", "You are logged in!", "success");
                         loadUserLoans(user.uid);
                     }
                 });
             } else {
-                window.location.href = "index.html";
+                window.location.href = "login.html";
             }
         });
     </script>
 </body>
 
 </html>
-
