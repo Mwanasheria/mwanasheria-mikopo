@@ -24,6 +24,7 @@
             left: -250px;
             transition: left 0.3s ease;
             padding-top: 60px;
+            z-index: 999;
         }
         
         .sidebar a {
@@ -53,18 +54,27 @@
             width: 100%;
             top: 0;
             left: 0;
-            z-index: 10;
+            z-index: 1000;
         }
         
         .main {
             margin-top: 60px;
             padding: 20px;
-            margin-left: 0;
             transition: margin-left 0.3s ease;
         }
         
         .main.shifted {
             margin-left: 250px;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .main.shifted {
+                margin-left: 0;
+            }
+            .sidebar.open {
+                width: 100%;
+                left: 0;
+            }
         }
     </style>
 </head>
@@ -84,7 +94,6 @@
     <div class="sidebar" id="sidebar">
         <a href="#" onclick="loadLoans()">📋 All Loan Requests</a>
         <a href="#" onclick="exportLoans()">📤 Export to CSV</a>
-        <a href="#" onclick="logout()">🚪 Logout</a>
     </div>
 
     <div class="main" id="mainContent">
@@ -116,7 +125,7 @@
             apiKey: "AIzaSyB7mJE1bdNsTfGI08YmkhmZHca0xU_3qwU",
             authDomain: "mwanasheria-mikopo-4628c.firebaseapp.com",
             projectId: "mwanasheria-mikopo-4628c",
-            storageBucket: "mwanasheria-mikopo-4628c.firebasestorage.app",
+            storageBucket: "mwanasheria-mikopo-4628c.appspot.com",
             messagingSenderId: "464496542374",
             appId: "1:464496542374:web:04104078d413b9f25c2a67"
         };
@@ -130,7 +139,7 @@
         }
 
         function logout() {
-            auth.signOut().then(() => window.location.href = 'login.html');
+            auth.signOut().then(() => window.location.href = 'index.html');
         }
 
         function loadLoans() {
@@ -150,8 +159,7 @@
             <td>
               <button class="btn btn-success btn-sm" onclick="approveLoan('${doc.id}')">Approve</button>
               <button class="btn btn-danger btn-sm" onclick="declineLoan('${doc.id}')">Decline</button>
-            </td>
-          `;
+            </td>`;
                     tbody.appendChild(row);
                 });
             });
@@ -224,11 +232,10 @@
                     }
                 });
             } else {
-                window.location.href = "index.html";
+                window.location.href = "login.html";
             }
         });
     </script>
 </body>
 
 </html>
-
