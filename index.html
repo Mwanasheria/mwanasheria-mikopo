@@ -34,6 +34,25 @@
         .inactive-section {
             display: none;
         }
+        
+        .leader {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            gap: 20px;
+        }
+        
+        .leader img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0d6efd;
+        }
+        
+        footer {
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -143,19 +162,19 @@
         <!-- Contact Section -->
         <section id="contact" class="inactive-section">
             <h2>Contact Us</h2>
-            <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: space-around;">
-                <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
-                    <h3>Contact CEO for Mbeya</h3>
+            <div class="d-flex flex-wrap gap-4 justify-content-around">
+                <div class="p-3 bg-light rounded shadow-sm" style="min-width:250px; max-width:400px;">
+                    <h5>Contact CEO for Mbeya</h5>
                     <p><strong>Name:</strong> Silvester Mhagama</p>
-                    <a class="btn" href="https://wa.me/255687030949" target="_blank">WhatsApp CEO</a><br /><br />
-                    <a class="btn" href="tel:+255687030949">Call CEO</a>
+                    <a class="btn btn-success btn-sm" href="https://wa.me/255687030949" target="_blank">WhatsApp CEO</a><br /><br />
+                    <a class="btn btn-primary btn-sm" href="tel:+255687030949">Call CEO</a>
                 </div>
 
-                <div style="flex: 1; min-width: 250px; max-width: 400px; background: #f0f4ff; padding: 20px; border-radius: 10px;">
-                    <h3>Contact GM for Dar es Salaam</h3>
+                <div class="p-3 bg-light rounded shadow-sm" style="min-width:250px; max-width:400px;">
+                    <h5>Contact GM for Dar es Salaam</h5>
                     <p><strong>Name:</strong> Tarcisius Mhagama</p>
-                    <a class="btn" href="https://wa.me/255696378787" target="_blank">WhatsApp GM</a><br /><br />
-                    <a class="btn" href="tel:+255696378787">Call GM</a>
+                    <a class="btn btn-success btn-sm" href="https://wa.me/255696378787" target="_blank">WhatsApp GM</a><br /><br />
+                    <a class="btn btn-primary btn-sm" href="tel:+255696378787">Call GM</a>
                 </div>
             </div>
         </section>
