@@ -1,0 +1,3 @@
+Sitemap: https://mwanasheria.github.io/sitemap.xml
+User-agent: *
+Disallow:
