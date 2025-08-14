@@ -7,6 +7,7 @@
     <title>MWANASHERIA MIKOPO CO.LTD</title>
     <meta name="description" content="Affordable and flexible student allowance loans - Mwanasheria Mikopo Co. Ltd">
     <meta name="google-site-verification" content="eRQ0h2yZUfDdxJqu4QnL3wf9b9qJ7ZGZkPTAHqqKNj4" />
+    <meta name="theme-color" content="#0d6efd" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
     <style>
         body {
@@ -54,13 +55,49 @@
         footer {
             font-size: 14px;
         }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #0d6efd 0%, #4dabf7 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            color: #fff;
+        }
+        .hero h1 {
+            font-weight: 700;
+        }
+        .hero .sub {
+            opacity: 0.95;
+        }
+
+        /* How it works */
+        .step-card {
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        /* Sticky mobile apply bar */
+        .apply-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ffffff;
+            border-top: 1px solid #dee2e6;
+            padding: .5rem .75rem;
+            display: none;
+            z-index: 1040;
+        }
+        @media (max-width: 576px) {
+            .apply-bar { display: block; }
+        }
     </style>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="#home" onclick="showSection('home')">
                 <img src="logo.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top" /> MWANASHERIA MIKOPO
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -68,11 +105,11 @@
       </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" onclick="showSection('home')">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" onclick="showSection('about')">About</a></li>
-                    <li class="nav-item"><a class="nav-link" onclick="showSection('terms')">Terms</a></li>
-                    <li class="nav-item"><a class="nav-link" onclick="showSection('contact')">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link fw-semibold" href="login.html">Apply</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#home" onclick="showSection('home')">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about" onclick="showSection('about')">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#terms" onclick="showSection('terms')">Terms</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact" onclick="showSection('contact')">Contact</a></li>
+                    <li class="nav-item"><a class="btn btn-primary ms-lg-2" href="login.html">Apply Now</a></li>
                 </ul>
             </div>
         </div>
@@ -81,24 +118,68 @@
     <main class="container mt-4">
         <!-- Home Section -->
         <section id="home" class="active-section">
-            <h2 class="mb-3">Welcome to MWANASHERIA MIKOPO CO.LTD</h2>
-            <p>We are a microfinance company committed to supporting students with timely, affordable, and flexible loans. Our services aim to reduce the financial stress on students, allowing them to focus fully on their studies.</p>
-            <ul>
-                <li>Student allowance loans</li>
-                <li>Emergency financial assistance</li>
-                <li>Simple collateral-based approvals</li>
-                <li>Flexible repayment options</li>
-            </ul>
-            <p><strong>We bring Sunshine!</strong></p>
-            <div class="row row-cols-1 row-cols-md-3 g-3 mt-4">
-                <div class="col">
-                    <img src="poster1.jpg" class="poster-img" alt="Poster 1">
+            <div class="hero mb-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-8">
+                        <h1 class="mb-2">Student Loans, made simple.</h1>
+                        <p class="sub mb-3">Fast, secure and flexible allowance loans so you can focus on studies—not stress.</p>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <a class="btn btn-light text-primary fw-semibold" href="login.html">Apply in minutes</a>
+                            <a class="btn btn-outline-light" href="#how" onclick="showSection('home');document.getElementById('how').scrollIntoView({behavior:'smooth'});">How it works</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center d-none d-md-block">
+                        <img src="logo.jpg" alt="Mwanasheria Mikopo" class="img-fluid" style="max-height:120px;border-radius:12px;">
+                    </div>
                 </div>
-                <div class="col">
-                    <img src="poster2.jpg" class="poster-img" alt="Poster 2">
+            </div>
+
+            <div id="how" class="mb-4">
+                <h2 class="h4 mb-3">How it works</h2>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-3 bg-white step-card h-100">
+                            <h3 class="h6">1) Sign in</h3>
+                            <p class="mb-0">Use your Google account to get started securely.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-white step-card h-100">
+                            <h3 class="h6">2) Apply</h3>
+                            <p class="mb-0">Fill a short form with your details and collateral/guarantor.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-white step-card h-100">
+                            <h3 class="h6">3) Get decision</h3>
+                            <p class="mb-0">Track status in your dashboard. Funds processed after verification.</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="col">
-                    <img src="poster3.jpg" class="poster-img" alt="Poster 3">
+            </div>
+
+            <div id="gallery" class="mt-4">
+                <h2 class="h4 mb-3">In pictures</h2>
+                <div id="posterCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="poster1.jpg" class="d-block w-100 poster-img" alt="Promotion poster 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="poster2.jpg" class="d-block w-100 poster-img" alt="Promotion poster 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="poster3.jpg" class="d-block w-100 poster-img" alt="Promotion poster 3">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#posterCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#posterCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
         </section>
@@ -157,7 +238,7 @@
                 <li>6. Loan approval is subject to credit assessment.</li>
             </ul>
             <a href="loan_contract.pdf" download class="btn btn-outline-primary mt-3">Download Loan Contract PDF</a>
-            <a href="loan_terms.pdf" download class="btn btn-outline-secondary mt-3 ms-2">Download Terms & Conditions PDF</a>
+            <a href="terms_conditions.pdf" download class="btn btn-outline-secondary mt-3 ms-2">Download Terms & Conditions PDF</a>
         </section>
 
         <!-- Contact Section -->
@@ -181,19 +262,55 @@
         </section>
     </main>
 
-    <footer class="bg-dark text-white text-center py-3 mt-4">
-        &copy; <span id="year"></span> MWANASHERIA MIKOPO CO.LTD. All Rights Reserved.
+    <footer class="bg-dark text-white text-center py-4 mt-4">
+        <div class="container small">
+            <div class="mb-2">
+                <a class="text-white-50 me-3" href="#about" onclick="showSection('about')">About</a>
+                <a class="text-white-50 me-3" href="#terms" onclick="showSection('terms')">Terms</a>
+                <a class="text-white-50" href="#contact" onclick="showSection('contact')">Contact</a>
+            </div>
+            <div>&copy; <span id="year"></span> MWANASHERIA MIKOPO CO.LTD. All Rights Reserved.</div>
+        </div>
     </footer>
+
+    <!-- Sticky mobile apply bar -->
+    <div class="apply-bar d-sm-none">
+        <div class="d-flex justify-content-between align-items-center">
+            <span class="small">Ready to apply?</span>
+            <a class="btn btn-primary btn-sm" href="login.html">Apply Now</a>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function showSection(sectionId) {
             const sections = ['home', 'about', 'terms', 'contact'];
             sections.forEach(id => {
-                document.getElementById(id).className = id === sectionId ? 'active-section' : 'inactive-section';
+                const el = document.getElementById(id);
+                if (el) el.className = id === sectionId ? 'active-section' : 'inactive-section';
             });
+            // Update active nav link styling
+            document.querySelectorAll('.navbar .nav-link').forEach(link => {
+                const href = link.getAttribute('href') || '';
+                link.classList.toggle('active', href.replace('#','') === sectionId);
+            });
+            // Update hash for deep-links
+            if (location.hash.replace('#','') !== sectionId) {
+                history.replaceState(null, '', '#' + sectionId);
+            }
         }
-        document.getElementById("year").textContent = new Date().getFullYear();
+
+        function handleHashNavigation() {
+            const hash = (location.hash || '#home').replace('#','');
+            const allowed = ['home','about','terms','contact'];
+            showSection(allowed.includes(hash) ? hash : 'home');
+        }
+
+        window.addEventListener('hashchange', handleHashNavigation);
+        document.addEventListener('DOMContentLoaded', () => {
+            handleHashNavigation();
+            document.getElementById("year").textContent = new Date().getFullYear();
+        });
     </script>
 </body>
 
