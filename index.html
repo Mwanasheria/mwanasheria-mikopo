@@ -20,8 +20,9 @@
         
         .poster-img {
             width: 100%;
-            height: 250px;
-            object-fit: cover;
+            height: auto;
+            max-height: 70vh;
+            object-fit: contain;
             border-radius: 12px;
         }
         
@@ -125,7 +126,7 @@
                         <p class="sub mb-3">Fast, secure and flexible allowance loans so you can focus on studies—not stress.</p>
                         <div class="d-flex gap-2 flex-wrap">
                             <a class="btn btn-light text-primary fw-semibold" href="login.html">Apply in minutes</a>
-                            <a class="btn btn-outline-light" href="#how" onclick="showSection('home');document.getElementById('how').scrollIntoView({behavior:'smooth'});">How it works</a>
+                            <a class="btn btn-outline-light" href="#how" onclick="showSection('home');document.getElementById('how').scrollIntoView({behavior:'smooth'});">How to apply</a>
                         </div>
                     </div>
                     <div class="col-md-4 text-center d-none d-md-block">
@@ -135,7 +136,7 @@
             </div>
 
             <div id="how" class="mb-4">
-                <h2 class="h4 mb-3">How it works</h2>
+                <h2 class="h4 mb-3">How to apply</h2>
                 <div class="row g-3">
                     <div class="col-md-4">
                         <div class="p-3 bg-white step-card h-100">
@@ -159,7 +160,7 @@
             </div>
 
             <div id="gallery" class="mt-4">
-                <h2 class="h4 mb-3">In pictures</h2>
+                <h2 class="h4 mb-3">Our posters</h2>
                 <div id="posterCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -186,7 +187,7 @@
 
         <!-- About Section -->
         <section id="about" class="inactive-section">
-            <h2>About MWANASHERIA MIKOPO CO.LTD</h2>
+            <h2>MWANASHERIA MIKOPO CO.LTD</h2>
             <p><strong>Founded:</strong> December 15, 2022</p>
             <p><strong>Employees:</strong> 8</p>
             <p><strong>Mission:</strong> To provide fast, secure, and affordable financial support for students in need. We believe in education as a right, not a privilege.</p>
@@ -309,7 +310,7 @@
         window.addEventListener('hashchange', handleHashNavigation);
         document.addEventListener('DOMContentLoaded', () => {
             handleHashNavigation();
-            document.getElementById("year").textContent = new Date().getFullYear();
+        document.getElementById("year").textContent = new Date().getFullYear();
         });
     </script>
 </body>
