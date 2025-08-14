@@ -89,6 +89,20 @@
                 display: inline-block;
             }
         }
+        
+        /* Cards and badges */
+        .dashboard-card {
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+        .status-badge {
+            padding: .25rem .5rem;
+            border-radius: .5rem;
+            font-size: .75rem;
+        }
+        .status-pending { background:#fff3cd; color:#8a6d3b; }
+        .status-approved { background:#d1e7dd; color:#0f5132; }
+        .status-declined { background:#f8d7da; color:#842029; }
     </style>
 </head>
 
@@ -117,13 +131,25 @@
                 <li><button class="dropdown-item text-danger" onclick="logout()">Logout</button></li>
             </ul>
         </div>
+        <div class="ms-2">
+            <button id="notifyBtn" class="btn btn-sm btn-outline-light" onclick="enableNotifications()">Enable Notifications</button>
+        </div>
     </div>
 
     <div class="main-content" id="mainContent">
         <div id="dashboardSection">
-            <h4>Welcome to Your Dashboard</h4>
-            <p>Here is your loan status and history:</p>
-            <table class="table table-bordered" id="loanHistoryTable">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-2">
+                <h4 class="mb-0">Welcome to Your Dashboard</h4>
+                <div id="loanSummary" class="text-muted small"></div>
+            </div>
+            <div class="dashboard-card p-3 mb-3">
+                <div class="d-flex gap-2 flex-wrap">
+                    <span class="badge bg-secondary" id="countPending">Pending: 0</span>
+                    <span class="badge bg-success" id="countApproved">Approved: 0</span>
+                    <span class="badge bg-danger" id="countDeclined">Declined: 0</span>
+                </div>
+            </div>
+            <table class="table table-bordered align-middle" id="loanHistoryTable">
                 <thead>
                     <tr>
                         <th>Date</th>
@@ -173,13 +199,15 @@
             apiKey: "AIzaSyB7mJE1bdNsTfGI08YmkhmZHca0xU_3qwU",
             authDomain: "mwanasheria-mikopo-4628c.firebaseapp.com",
             projectId: "mwanasheria-mikopo-4628c",
-            storageBucket: "mwanasheria-mikopo-4628c.firebasestorage.app",
+            storageBucket: "mwanasheria-mikopo-4628c.appspot.com",
             messagingSenderId: "464496542374",
             appId: "1:464496542374:web:04104078d413b9f25c2a67"
         };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        let userLoansUnsubscribe = null;
+        const lastStatuses = new Map();
 
         function toggleSidebar() {
             document.getElementById("sidebar").classList.toggle("active");
@@ -200,22 +228,62 @@
             auth.signOut().then(() => window.location.href = "index.html");
         }
 
-        function loadUserLoans(userId) {
-            db.collection('loans').where('uid', '==', userId).get().then(snapshot => {
-                const tbody = document.querySelector("#loanHistoryTable tbody");
-                tbody.innerHTML = "";
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    tbody.innerHTML += `
-            <tr>
-              <td>${new Date(data.timestamp?.toDate()).toLocaleDateString()}</td>
-              <td>${data.amount}</td>
-              <td>${data.status}</td>
-              <td>${data.message || ''}</td>
-            </tr>
-          `;
-                });
+        function statusBadge(status) {
+            const s = (status || '').toLowerCase();
+            if (s === 'approved') return '<span class="status-badge status-approved">Approved</span>';
+            if (s === 'declined') return '<span class="status-badge status-declined">Declined</span>';
+            return '<span class="status-badge status-pending">Pending</span>';
+        }
+
+        function renderLoans(docs) {
+            const tbody = document.querySelector('#loanHistoryTable tbody');
+            tbody.innerHTML = '';
+            let pending = 0, approved = 0, declined = 0;
+            docs.forEach(doc => {
+                const data = doc.data();
+                const ts = data.timestamp && data.timestamp.toDate ? data.timestamp.toDate() : null;
+                const dateStr = ts ? ts.toLocaleDateString() : '';
+                const rowHtml = `
+                    <tr>
+                      <td>${dateStr}</td>
+                      <td>${data.amount}</td>
+                      <td>${statusBadge(data.status)}</td>
+                      <td>${data.message || ''}</td>
+                    </tr>`;
+                tbody.insertAdjacentHTML('beforeend', rowHtml);
+                const s = (data.status || '').toLowerCase();
+                if (s === 'approved') approved++; else if (s === 'declined') declined++; else pending++;
             });
+            document.getElementById('countPending').textContent = `Pending: ${pending}`;
+            document.getElementById('countApproved').textContent = `Approved: ${approved}`;
+            document.getElementById('countDeclined').textContent = `Declined: ${declined}`;
+            document.getElementById('loanSummary').textContent = `You have ${pending} pending request(s).`;
+        }
+
+        function attachUserLoansListener(userId) {
+            if (userLoansUnsubscribe) { userLoansUnsubscribe(); userLoansUnsubscribe = null; }
+            userLoansUnsubscribe = db.collection('loans')
+                .where('uid', '==', userId)
+                .onSnapshot(snapshot => {
+                    // Notify on changes
+                    snapshot.docChanges().forEach(change => {
+                        if (change.type === 'modified') {
+                            const newStatus = change.doc.data().status;
+                            const oldStatus = lastStatuses.get(change.doc.id);
+                            if (oldStatus && newStatus && oldStatus !== newStatus) {
+                                notifyStatusChange(newStatus, change.doc.data().message);
+                            }
+                        }
+                    });
+                    // Update cache and render sorted
+                    const docs = snapshot.docs.slice().sort((a,b) => {
+                        const ta = a.data().timestamp && a.data().timestamp.toDate ? a.data().timestamp.toDate().getTime() : 0;
+                        const tb = b.data().timestamp && b.data().timestamp.toDate ? b.data().timestamp.toDate().getTime() : 0;
+                        return tb - ta;
+                    });
+                    docs.forEach(d => lastStatuses.set(d.id, d.data().status));
+                    renderLoans(docs);
+                });
         }
 
         function submitLoan(e) {
@@ -237,14 +305,45 @@
                 amount: form.amount.value,
                 status: "Pending",
                 message: "",
-                timestamp: new Date()
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
             db.collection("loans").add(loanData).then(() => {
                 Swal.fire("Success", "Loan application submitted!", "success");
                 form.reset();
                 showDashboard();
-                loadUserLoans(auth.currentUser.uid);
+                // Listener will refresh automatically
             });
+        }
+
+        function enableNotifications() {
+            if (!('Notification' in window)) {
+                Swal.fire('Unsupported', 'Your browser does not support notifications.', 'info');
+                return;
+            }
+            if (Notification.permission === 'granted') {
+                Swal.fire('Enabled', 'Notifications are already enabled.', 'success');
+                return;
+            }
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    const btn = document.getElementById('notifyBtn');
+                    btn.classList.remove('btn-outline-light');
+                    btn.classList.add('btn-success');
+                    btn.textContent = 'Notifications On';
+                    Swal.fire('Enabled', 'You will receive updates when your loan status changes.', 'success');
+                } else {
+                    Swal.fire('Notice', 'Notifications were not enabled.', 'info');
+                }
+            });
+        }
+
+        function notifyStatusChange(status, message) {
+            const title = `Loan ${status}`;
+            const body = (message && message.trim()) ? message : (status === 'Approved' ? 'Your loan has been approved.' : 'Your loan has been declined.');
+            if ('Notification' in window && Notification.permission === 'granted') {
+                try { new Notification(title, { body, icon: 'logo.jpg' }); } catch (e) { /* ignore */ }
+            }
+            Swal.fire(title, body, status === 'Approved' ? 'success' : 'info');
         }
 
         auth.onAuthStateChanged(user => {
@@ -260,7 +359,22 @@
                         document.getElementById("profileName").textContent = user.displayName || "User";
                         document.getElementById("profileEmail").textContent = user.email;
                         Swal.fire("Welcome", "You are logged in!", "success");
-                        loadUserLoans(user.uid);
+                        // Seed cache and initial render, then attach live listener
+                        db.collection('loans').where('uid','==',user.uid).get().then(s => {
+                            s.forEach(d => lastStatuses.set(d.id, d.data().status));
+                            renderLoans(s.docs.slice().sort((a,b) => {
+                                const ta = a.data().timestamp && a.data().timestamp.toDate ? a.data().timestamp.toDate().getTime() : 0;
+                                const tb = b.data().timestamp && b.data().timestamp.toDate ? b.data().timestamp.toDate().getTime() : 0;
+                                return tb - ta;
+                            }));
+                            attachUserLoansListener(user.uid);
+                        });
+                        if ('Notification' in window && Notification.permission === 'granted') {
+                            const btn = document.getElementById('notifyBtn');
+                            btn.classList.remove('btn-outline-light');
+                            btn.classList.add('btn-success');
+                            btn.textContent = 'Notifications On';
+                        }
                     }
                 });
             } else {
