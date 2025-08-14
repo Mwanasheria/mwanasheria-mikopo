@@ -92,19 +92,30 @@
     </div>
 
     <div class="sidebar" id="sidebar">
-        <a href="#" onclick="loadLoans()">📋 All Loan Requests</a>
+        <a href="#" onclick="attachLoansListener()">📋 All Loan Requests</a>
         <a href="#" onclick="exportLoans()">📤 Export to CSV</a>
     </div>
 
     <div class="main" id="mainContent">
-        <h4>Loan Requests</h4>
-        <div class="table-responsive">
-            <table class="table table-bordered table-sm" id="loansTable">
+        <div class="d-flex align-items-center justify-content-between">
+            <h4 class="mb-0">Loan Requests</h4>
+            <div class="d-flex gap-2 small">
+                <span class="badge text-bg-secondary" id="countPending">Pending: 0</span>
+                <span class="badge text-bg-success" id="countApproved">Approved: 0</span>
+                <span class="badge text-bg-danger" id="countDeclined">Declined: 0</span>
+            </div>
+        </div>
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered table-sm align-middle" id="loansTable">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Contact</th>
                         <th>University</th>
+                        <th>Collateral</th>
+                        <th>RAM</th>
+                        <th>Storage</th>
+                        <th>Brand</th>
                         <th>Amount</th>
                         <th>Status</th>
                         <th>Message</th>
@@ -132,6 +143,14 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
+        let loansUnsubscribe = null;
+
+        function statusBadge(status) {
+            const s = (status || '').toLowerCase();
+            if (s === 'approved') return '<span class="badge text-bg-success">Approved</span>';
+            if (s === 'declined') return '<span class="badge text-bg-danger">Declined</span>';
+            return '<span class="badge text-bg-secondary">Pending</span>';
+        }
 
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('open');
@@ -142,26 +161,37 @@
             auth.signOut().then(() => window.location.href = 'index.html');
         }
 
-        function loadLoans() {
-            const tbody = document.querySelector("#loansTable tbody");
-            tbody.innerHTML = "";
-            db.collection("loans").orderBy("timestamp", "desc").get().then(snapshot => {
+        function attachLoansListener() {
+            const tbody = document.querySelector('#loansTable tbody');
+            if (loansUnsubscribe) { loansUnsubscribe(); loansUnsubscribe = null; }
+            loansUnsubscribe = db.collection('loans').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                tbody.innerHTML = '';
+                let pending = 0, approved = 0, declined = 0;
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-            <td>${data.name}</td>
-            <td>${data.contact}</td>
-            <td>${data.university}</td>
-            <td>${data.amount}</td>
-            <td>${data.status}</td>
-            <td>${data.message || ''}</td>
-            <td>
-              <button class="btn btn-success btn-sm" onclick="approveLoan('${doc.id}')">Approve</button>
-              <button class="btn btn-danger btn-sm" onclick="declineLoan('${doc.id}')">Decline</button>
-            </td>`;
-                    tbody.appendChild(row);
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${data.name || ''}</td>
+                        <td>${data.contact || ''}</td>
+                        <td>${data.university || ''}</td>
+                        <td>${data.collateral || ''}</td>
+                        <td>${data.ram || ''}</td>
+                        <td>${data.storage || ''}</td>
+                        <td>${data.brand || ''}</td>
+                        <td>${data.amount || ''}</td>
+                        <td>${statusBadge(data.status)}</td>
+                        <td>${data.message || ''}</td>
+                        <td>
+                            <button class="btn btn-success btn-sm" onclick="approveLoan('${doc.id}')">Approve</button>
+                            <button class="btn btn-danger btn-sm" onclick="declineLoan('${doc.id}')">Decline</button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                    const s = (data.status || '').toLowerCase();
+                    if (s === 'approved') approved++; else if (s === 'declined') declined++; else pending++;
                 });
+                document.getElementById('countPending').textContent = `Pending: ${pending}`;
+                document.getElementById('countApproved').textContent = `Approved: ${approved}`;
+                document.getElementById('countDeclined').textContent = `Declined: ${declined}`;
             });
         }
 
@@ -204,19 +234,24 @@
         }
 
         function exportLoans() {
-            db.collection("loans").get().then(snapshot => {
-                let csv = "Name,Contact,University,Amount,Status,Message\n";
+            const sanitize = (val) => {
+                let v = (val ?? '').toString();
+                if (/^[=+\-@]/.test(v)) v = "'" + v; // prevent CSV injection
+                v = v.replace(/"/g, '""');
+                return `"${v}"`;
+            };
+            db.collection('loans').orderBy('timestamp','desc').get().then(snapshot => {
+                let csv = "Name,Contact,University,Collateral,RAM,Storage,Brand,Amount,Status,Message\n";
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    csv += `${d.name},${d.contact},${d.university},${d.amount},${d.status},${d.message || ''}\n`;
+                    csv += [d.name, d.contact, d.university, d.collateral, d.ram, d.storage, d.brand, d.amount, d.status, d.message]
+                        .map(sanitize).join(',') + "\n";
                 });
-                const blob = new Blob([csv], {
-                    type: "text/csv"
-                });
+                const blob = new Blob([csv], { type: 'text/csv' });
                 const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
+                const link = document.createElement('a');
                 link.href = url;
-                link.download = "loan_requests.csv";
+                link.download = 'loan_requests.csv';
                 link.click();
             });
         }
@@ -228,7 +263,7 @@
                         window.location.href = "user.html";
                     } else {
                         document.getElementById("adminName").innerText = user.displayName || user.email;
-                        loadLoans();
+                        attachLoansListener();
                     }
                 });
             } else {
