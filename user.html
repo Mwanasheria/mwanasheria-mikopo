@@ -296,12 +296,27 @@
             const form = e.target;
             const imageFiles = form.collateralImages.files;
 
+            // Check if user is authenticated
+            if (!auth.currentUser) {
+                Swal.fire("Error", "You must be logged in to submit a loan", "error");
+                return;
+            }
+
             if (imageFiles.length < 2) {
                 Swal.fire("Error", "Please upload at least 2 collateral images", "error");
                 return;
             }
 
             try {
+                // Validate form inputs
+                const requiredFields = ['name', 'university', 'contact', 'place', 'guarantor', 'relation', 'gcontact', 'collateral', 'amount'];
+                for (let field of requiredFields) {
+                    if (!form[field].value) {
+                        Swal.fire("Error", `Please fill in the ${field} field`, "error");
+                        return;
+                    }
+                }
+
                 // Upload images to Firebase Storage
                 const imageUrls = await Promise.all(
                     Array.from(imageFiles).map(async (file, index) => {
@@ -321,9 +336,9 @@
                     relation: form.relation.value,
                     gcontact: form.gcontact.value,
                     collateral: form.collateral.value,
-                    ram: form.ram.value,
-                    storage: form.storage.value,
-                    brand: form.brand.value,
+                    ram: form.ram.value || '',
+                    storage: form.storage.value || '',
+                    brand: form.brand.value || '',
                     amount: form.amount.value,
                     status: "Pending",
                     message: "",
@@ -331,13 +346,17 @@
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 };
 
-                await db.collection("loans").add(loanData);
+                console.log("Submitting loan data:", loanData);
+
+                const docRef = await db.collection("loans").add(loanData);
+                console.log("Loan submitted with ID:", docRef.id);
+
                 Swal.fire("Success", "Loan application submitted!", "success");
                 form.reset();
                 showDashboard();
             } catch (error) {
-                console.error("Error submitting loan:", error);
-                Swal.fire("Error", "Failed to submit loan application", "error");
+                console.error("Full error details:", error);
+                Swal.fire("Error", `Failed to submit loan application: ${error.message}`, "error");
             }
         }
 
@@ -373,8 +392,10 @@
         }
 
         auth.onAuthStateChanged(user => {
+            console.log("Current authentication state:", user ? user.uid : "Not logged in");
             if (user) {
                 db.collection("users").doc(user.uid).get().then(doc => {
+                    console.log("User document:", doc.exists ? doc.data() : "No user document");
                     if (!doc.exists || doc.data().role !== "user") {
                         window.location.href = "admin.html";
                     } else {
