@@ -113,6 +113,7 @@
                         <th>Contact</th>
                         <th>University</th>
                         <th>Collateral</th>
+                        <th>Collateral Images</th>
                         <th>RAM</th>
                         <th>Storage</th>
                         <th>Brand</th>
@@ -170,11 +171,15 @@
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const tr = document.createElement('tr');
+                    const collateralImagesHtml = (data.collateralImages || [])
+                        .map(url => `<a href="${url}" target="_blank"><img src="${url}" style="max-width:100px; max-height:100px; margin:5px;" /></a>`)
+                        .join('');
                     tr.innerHTML = `
                         <td>${data.name || ''}</td>
                         <td>${data.contact || ''}</td>
                         <td>${data.university || ''}</td>
                         <td>${data.collateral || ''}</td>
+                        <td>${collateralImagesHtml || 'No images'}</td>
                         <td>${data.ram || ''}</td>
                         <td>${data.storage || ''}</td>
                         <td>${data.brand || ''}</td>
@@ -241,10 +246,11 @@
                 return `"${v}"`;
             };
             db.collection('loans').orderBy('timestamp','desc').get().then(snapshot => {
-                let csv = "Name,Contact,University,Collateral,RAM,Storage,Brand,Amount,Status,Message\n";
+                let csv = "Name,Contact,University,Collateral,Collateral Images,RAM,Storage,Brand,Amount,Status,Message\n";
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    csv += [d.name, d.contact, d.university, d.collateral, d.ram, d.storage, d.brand, d.amount, d.status, d.message]
+                    const imageUrls = (d.collateralImages || []).join('; ');
+                    csv += [d.name, d.contact, d.university, d.collateral, imageUrls, d.ram, d.storage, d.brand, d.amount, d.status, d.message]
                         .map(sanitize).join(',') + "\n";
                 });
                 const blob = new Blob([csv], { type: 'text/csv' });
