@@ -320,8 +320,9 @@
                 // Upload images to Firebase Storage
                 const imageUrls = await Promise.all(
                     Array.from(imageFiles).map(async (file, index) => {
-                        const storageRef = storage.ref(`collateral_images/${auth.currentUser.uid}_${Date.now()}_${index}`);
-                        const snapshot = await storageRef.put(file);
+                        const safeName = (file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_');
+                        const storageRef = storage.ref(`collateral_images/${auth.currentUser.uid}/${Date.now()}_${index}_${safeName}`);
+                        const snapshot = await storageRef.put(file, { contentType: file.type });
                         return await snapshot.ref.getDownloadURL();
                     })
                 );
