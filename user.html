@@ -185,6 +185,11 @@
                     <div class="col-md-6 mb-2">
                         <label class="form-label">Collateral Images (at least 2)</label>
                         <input class="form-control" type="file" name="collateralImages" accept="image/*" multiple required />
+                        <div id="uploadProgressWrapper" class="mt-2" style="display:none;">
+                            <div class="progress">
+                                <div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <button class="btn btn-primary mt-2" type="submit">Submit Loan</button>
@@ -317,15 +322,46 @@
                     }
                 }
 
+                // Prepare UI for upload progress
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const progressWrapper = document.getElementById('uploadProgressWrapper');
+                const progressBar = document.getElementById('uploadProgressBar');
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                progressWrapper.style.display = 'block';
+                progressBar.style.width = '0%';
+                progressBar.textContent = '0%';
+                submitBtn.textContent = 'Uploading... 0%';
+
                 // Upload images to Firebase Storage
-                const imageUrls = await Promise.all(
-                    Array.from(imageFiles).map(async (file, index) => {
-                        const safeName = (file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_');
-                        const storageRef = storage.ref(`collateral_images/${auth.currentUser.uid}/${Date.now()}_${index}_${safeName}`);
-                        const snapshot = await storageRef.put(file, { contentType: file.type });
-                        return await snapshot.ref.getDownloadURL();
-                    })
-                );
+                const totalBytesAll = Array.from(imageFiles).reduce((sum, f) => sum + f.size, 0);
+                let bytesTransferredAll = 0;
+                const perFileTransferred = new Array(imageFiles.length).fill(0);
+                const nowTs = Date.now();
+                const uploadPromises = Array.from(imageFiles).map((file, index) => new Promise((resolve, reject) => {
+                    const safeName = (file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_');
+                    const storageRef = storage.ref(`collateral_images/${auth.currentUser.uid}/${nowTs}_${index}_${safeName}`);
+                    const uploadTask = storageRef.put(file, { contentType: file.type });
+                    uploadTask.on('state_changed', snapshot => {
+                        const prev = perFileTransferred[index];
+                        perFileTransferred[index] = snapshot.bytesTransferred;
+                        bytesTransferredAll += (snapshot.bytesTransferred - prev);
+                        const percent = Math.max(0, Math.min(100, Math.round((bytesTransferredAll / totalBytesAll) * 100)));
+                        progressBar.style.width = percent + '%';
+                        progressBar.textContent = percent + '%';
+                        submitBtn.textContent = 'Uploading... ' + percent + '%';
+                    }, err => {
+                        reject(err);
+                    }, async () => {
+                        try {
+                            const url = await uploadTask.snapshot.ref.getDownloadURL();
+                            resolve(url);
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+                }));
+                const imageUrls = await Promise.all(uploadPromises);
 
                 const loanData = {
                     uid: auth.currentUser.uid,
@@ -355,9 +391,19 @@
                 Swal.fire("Success", "Loan application submitted!", "success");
                 form.reset();
                 showDashboard();
+                // Reset UI
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalBtnText;
+                progressWrapper.style.display = 'none';
             } catch (error) {
                 console.error("Full error details:", error);
                 Swal.fire("Error", `Failed to submit loan application: ${error.message}`, "error");
+                // Reset UI on error
+                const form = e.target;
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const progressWrapper = document.getElementById('uploadProgressWrapper');
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit Loan'; }
+                if (progressWrapper) { progressWrapper.style.display = 'none'; }
             }
         }
 
