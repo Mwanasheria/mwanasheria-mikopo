@@ -135,38 +135,6 @@
                 </div>
             </div>
 
-            <div id="offers" class="mb-4">
-                <h2 class="h4 mb-3">Available Offers</h2>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="card h-100 shadow-sm">
-                            <img src="poster1.jpg" class="card-img-top" alt="Dar es Salaam Offer" style="height:220px;object-fit:cover;" onclick="openOffer('dar')">
-                            <div class="card-body">
-                                <h5 class="card-title">Allowance Loan — Dar es Salaam</h5>
-                                <p class="card-text mb-2">Interest: <strong>25%</strong> • Term: <strong>30 days</strong> • Processing Fee: <strong>TShs 3,000</strong></p>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-primary" onclick="openOffer('dar')">View Offer</button>
-                                    <a class="btn btn-outline-primary" href="login.html">Apply Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card h-100 shadow-sm">
-                            <img src="poster2.jpg" class="card-img-top" alt="Mbeya Offer" style="height:220px;object-fit:cover;" onclick="openOffer('mbeya')">
-                            <div class="card-body">
-                                <h5 class="card-title">Allowance Loan — Mbeya</h5>
-                                <p class="card-text mb-2">Interest: <strong>20%</strong> • Term: <strong>30 days</strong> • Processing Fee: <strong>TShs 3,000</strong></p>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-primary" onclick="openOffer('mbeya')">View Offer</button>
-                                    <a class="btn btn-outline-primary" href="login.html">Apply Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div id="how" class="mb-4">
                 <h2 class="h4 mb-3">How to apply</h2>
                 <div class="row g-3">
@@ -191,28 +159,36 @@
                 </div>
             </div>
 
-            <div id="gallery" class="mt-4">
-                <h2 class="h4 mb-3">Our posters</h2>
-                <div id="posterCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="poster1.jpg" class="d-block w-100 poster-img" alt="Promotion poster 1">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="poster2.jpg" class="d-block w-100 poster-img" alt="Promotion poster 2">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="poster3.jpg" class="d-block w-100 poster-img" alt="Promotion poster 3">
+            <!-- Offers moved to bottom of Home -->
+            <div id="offers" class="mb-4">
+                <h2 class="h4 mb-3">Available Offers</h2>
+                <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100 shadow-sm">
+                            <img src="poster1.jpg" class="card-img-top" alt="Dar es Salaam Offer" style="height:220px;object-fit:cover;" onclick="openOffer('dar')">
+                            <div class="card-body">
+                                <h5 class="card-title">Allowance Loan — Dar es Salaam</h5>
+                                <p class="card-text mb-2">Interest: <strong>25%</strong> • Term: <strong>30 days</strong> • Processing Fee: <strong>TShs 3,000</strong></p>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary" onclick="openOffer('dar')">View Offer</button>
+                                    <a class="btn btn-outline-primary" href="login.html">Apply Now</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#posterCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#posterCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
+                    <div class="col-12 col-md-6">
+                        <div class="card h-100 shadow-sm">
+                            <img src="poster2.jpg" class="card-img-top" alt="Mbeya Offer" style="height:220px;object-fit:cover;" onclick="openOffer('mbeya')">
+                            <div class="card-body">
+                                <h5 class="card-title">Allowance Loan — Mbeya</h5>
+                                <p class="card-text mb-2">Interest: <strong>20%</strong> • Term: <strong>30 days</strong> • Processing Fee: <strong>TShs 3,000</strong></p>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-primary" onclick="openOffer('mbeya')">View Offer</button>
+                                    <a class="btn btn-outline-primary" href="login.html">Apply Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -397,12 +373,6 @@
             `;
             modal.show();
         }
-
-        // Also allow poster images to open the offer modal
-        const posterDar = document.querySelector('#posterCarousel .carousel-item:nth-child(1) img');
-        const posterMbeya = document.querySelector('#posterCarousel .carousel-item:nth-child(2) img');
-        if (posterDar) posterDar.addEventListener('click', () => openOffer('dar'));
-        if (posterMbeya) posterMbeya.addEventListener('click', () => openOffer('mbeya'));
     </script>
 </body>
 

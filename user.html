@@ -119,13 +119,12 @@
         <div>User Dashboard</div>
         <div class="dropdown">
             <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                <img id="topAvatar" src="logo.jpg" alt="avatar" class="rounded-circle me-2" style="width:34px;height:34px;object-fit:cover;">
-                <span id="profileName" class="text-white small"></span>
+                <img id="topAvatar" src="logo.jpg" alt="avatar" class="rounded-circle" style="width:34px;height:34px;object-fit:cover;">
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><button class="dropdown-item" onclick="openProfileModal()">My Profile</button></li>
-                <li><button class="dropdown-item" onclick="openAvatarModal()">Choose Avatar</button></li>
                 <li><button id="notifyMenuItem" class="dropdown-item" onclick="enableNotifications()">Enable Notifications</button></li>
+                <li><button class="dropdown-item" onclick="openAvatarModal()">Choose Avatar</button></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><button class="dropdown-item text-danger" onclick="logout()">Logout</button></li>
             </ul>
@@ -294,6 +293,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Upload your profile photo (optional)</label>
+                        <input type="file" class="form-control" accept="image/*" onchange="uploadCustomAvatar(event)">
+                        <div class="form-text">If not uploaded, you can select one of the preset avatars below. Default is our logo.</div>
+                    </div>
                     <div class="d-flex gap-3 flex-wrap justify-content-center">
                         <img class="avatar-option rounded-circle" src="poster1.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
                         <img class="avatar-option rounded-circle" src="poster2.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
@@ -639,6 +643,45 @@
             }
         }
 
+        async function uploadCustomAvatar(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const img = new Image();
+            const reader = new FileReader();
+            reader.onload = () => {
+                img.onload = async () => {
+                    const canvas = document.createElement('canvas');
+                    const max = 256;
+                    let { width, height } = img;
+                    const scale = Math.min(1, max / Math.max(width, height));
+                    width = Math.round(width * scale);
+                    height = Math.round(height * scale);
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+                    try {
+                        const uid = auth.currentUser.uid;
+                        await db.collection('users').doc(uid).set({ avatar: dataUrl }, { merge: true });
+                        document.getElementById('topAvatar').src = dataUrl;
+                        Swal.fire('Updated', 'Avatar uploaded', 'success');
+                        bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
+                    } catch (err) {
+                        Swal.fire('Error', 'Failed to save avatar', 'error');
+                    }
+                };
+                img.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Ensure default logo if no avatar
+        function applyDefaultAvatarIfMissing(src) {
+            const img = document.getElementById('topAvatar');
+            img.src = src || 'logo.jpg';
+        }
+
         // Initialize location forms and totals calculation
         (function initLocationForms() {
             const darBtn = document.getElementById('darBtn');
@@ -714,7 +757,7 @@
                         // Load avatar
                         db.collection('users').doc(user.uid).get().then(uDoc => {
                             const a = uDoc.exists ? uDoc.data().avatar : null;
-                            if (a) document.getElementById('topAvatar').src = a;
+                            applyDefaultAvatarIfMissing(a);
                         });
                         Swal.fire("Welcome", "You are logged in!", "success");
                         // Seed cache and initial render, then attach live listener
