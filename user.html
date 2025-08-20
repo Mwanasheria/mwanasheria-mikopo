@@ -172,109 +172,121 @@
                 <!-- Dar es Salaam form -->
                 <div id="darForm" class="border rounded p-3 mb-3" style="display:block;">
                     <div class="row">
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-borrower-name" placeholder="Jina Kamili" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-university" placeholder="Chuo / Kozi" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-reg-number" placeholder="Reg No." required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-nida" placeholder="NIDA" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-contact" placeholder="Mawasiliano (simu)" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-address" placeholder="Mahali anapoishi" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-borrower-name" name="dar-borrower-name" placeholder="Jina Kamili" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-university" name="dar-university" placeholder="Chuo / Kozi" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-reg-number" name="dar-reg-number" placeholder="Reg No." required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-nida" name="dar-nida" placeholder="NIDA" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-contact" name="dar-contact" placeholder="Mawasiliano (simu)" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-address" name="dar-address" placeholder="Mahali anapoishi" required /></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-name" placeholder="Jina la Mdhamini" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-relationship" placeholder="Uhusiano na Mkopaji" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-address" placeholder="Anapoishi Mdhamini" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-contact" placeholder="Mawasiliano ya Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-name" name="dar-guarantor-name" placeholder="Jina la Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-relationship" name="dar-relationship" placeholder="Uhusiano na Mkopaji" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-address" name="dar-guarantor-address" placeholder="Anapoishi Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-contact" name="dar-guarantor-contact" placeholder="Mawasiliano ya Mdhamini" required /></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-collateral1" placeholder="Dhamana ya kwanza" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-collateral2" placeholder="Dhamana ya pili (hiari)" /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-collateral1" name="dar-collateral1" placeholder="Dhamana ya kwanza" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-collateral2" name="dar-collateral2" placeholder="Dhamana ya pili (hiari)" /></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-start-date" type="date" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-end-date" type="date" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-interest-rate" value="25" readonly /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-processing-fee" value="3000" readonly /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-total-amount" placeholder="Jumla ya kurejeshwa" readonly /></div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Start Date</label>
+                            <input class="form-control" id="dar-start-date" name="dar-start-date" type="date" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">End Date</label>
+                            <input class="form-control" id="dar-end-date" name="dar-end-date" type="date" required />
+                        </div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-loan-amount" name="dar-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-interest-rate" name="dar-interest-rate" value="25" readonly /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-processing-fee" name="dar-processing-fee" value="3000" readonly /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-total-amount" name="dar-total-amount" placeholder="Jumla ya kurejeshwa" readonly /></div>
                     </div>
                     <!-- Optional device details as before -->
                     <div class="row">
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-ram" placeholder="RAM" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-storage" placeholder="Storage" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-brand" placeholder="Brand" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-ram" name="dar-ram" placeholder="RAM" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-storage" name="dar-storage" placeholder="Storage" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-brand" name="dar-brand" placeholder="Brand" required /></div>
                     </div>
                 </div>
 
                 <!-- Mbeya form -->
                 <div id="mbeyaForm" class="border rounded p-3 mb-3" style="display:none;">
                     <div class="row">
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-borrower-name" placeholder="Jina Kamili" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-university" placeholder="Chuo / Kozi" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-reg-number" placeholder="Reg No." required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-nida" placeholder="NIDA" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-contact" placeholder="Mawasiliano (simu)" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-address" placeholder="Mahali anapoishi" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-borrower-name" name="mbeya-borrower-name" placeholder="Jina Kamili" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-university" name="mbeya-university" placeholder="Chuo / Kozi" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-reg-number" name="mbeya-reg-number" placeholder="Reg No." required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-nida" name="mbeya-nida" placeholder="NIDA" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-contact" name="mbeya-contact" placeholder="Mawasiliano (simu)" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-address" name="mbeya-address" placeholder="Mahali anapoishi" required /></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-name" placeholder="Jina la Mdhamini" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-relationship" placeholder="Uhusiano na Mkopaji" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-address" placeholder="Anapoishi Mdhamini" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-contact" placeholder="Mawasiliano ya Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-name" name="mbeya-guarantor-name" placeholder="Jina la Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-relationship" name="mbeya-relationship" placeholder="Uhusiano na Mkopaji" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-address" name="mbeya-guarantor-address" placeholder="Anapoishi Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-contact" name="mbeya-guarantor-contact" placeholder="Mawasiliano ya Mdhamini" required /></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-collateral1" placeholder="Dhamana ya kwanza" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-collateral2" placeholder="Dhamana ya pili (hiari)" /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-collateral1" name="mbeya-collateral1" placeholder="Dhamana ya kwanza" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-collateral2" name="mbeya-collateral2" placeholder="Dhamana ya pili (hiari)" /></div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-start-date" type="date" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-end-date" type="date" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-interest-rate" value="20" readonly /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-processing-fee" value="3000" readonly /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-total-amount" placeholder="Jumla ya kurejeshwa" readonly /></div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Start Date</label>
+                            <input class="form-control" id="mbeya-start-date" name="mbeya-start-date" type="date" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">End Date</label>
+                            <input class="form-control" id="mbeya-end-date" name="mbeya-end-date" type="date" required />
+                        </div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-loan-amount" name="mbeya-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-interest-rate" name="mbeya-interest-rate" value="20" readonly /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-processing-fee" name="mbeya-processing-fee" value="3000" readonly /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-total-amount" name="mbeya-total-amount" placeholder="Jumla ya kurejeshwa" readonly /></div>
                     </div>
                     <!-- Optional device details as before -->
                     <div class="row">
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-ram" placeholder="RAM" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-storage" placeholder="Storage" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-brand" placeholder="Brand" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-ram" name="mbeya-ram" placeholder="RAM" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-storage" name="mbeya-storage" placeholder="Storage" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-brand" name="mbeya-brand" placeholder="Brand" required /></div>
                     </div>
                 </div>
 
-                <!-- Collateral images common to both locations -->
+                <!-- Collateral Quality Section -->
                 <div class="border rounded p-3 mb-2">
-                    <label class="form-label fw-semibold">Collateral Quality</label>
+                    <label class="form-label fw-semibold">Collateral Quality Details</label>
                     <div class="row">
                         <div class="col-md-4 mb-2">
                             <label class="form-label">Purchase Date</label>
-                            <input class="form-control" id="purchase-date" type="date" required />
+                            <input class="form-control" id="purchase-date" name="purchase-date" type="date" required />
                         </div>
                         <div class="col-md-4 mb-2">
                             <label class="form-label">Condition</label>
-                            <select class="form-control" id="condition" required>
+                            <select class="form-control" id="condition" name="condition" required>
                                 <option value="">Select condition</option>
-                                <option>New</option>
-                                <option>Very Good</option>
-                                <option>Good</option>
-                                <option>Fair</option>
-                                <option>Poor</option>
+                                <option value="New">New</option>
+                                <option value="Very Good">Very Good</option>
+                                <option value="Good">Good</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Poor">Poor</option>
                             </select>
                         </div>
                         <div class="col-md-4 mb-2">
                             <label class="form-label">Receipt Available</label>
-                            <select class="form-control" id="has-receipt" required>
+                            <select class="form-control" id="has-receipt" name="has-receipt" required>
                                 <option value="">Select</option>
-                                <option>Yes</option>
-                                <option>No</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="form-label">Serial/IMEI Number</label>
-                            <input class="form-control" id="serial-number" placeholder="Serial or IMEI" required />
+                            <input class="form-control" id="serial-number" name="serial-number" placeholder="Serial or IMEI" required />
                         </div>
                         <div class="col-md-6 mb-2">
                             <label class="form-label">Estimated Current Value (TShs)</label>
-                            <input class="form-control" id="estimated-value" type="number" required />
+                            <input class="form-control" id="estimated-value" name="estimated-value" type="number" placeholder="Enter value" required />
                         </div>
                     </div>
                 </div>
@@ -435,16 +447,10 @@
         async function submitLoan(e) {
             e.preventDefault();
             const form = e.target;
-            const imageFiles = form.collateralImages.files;
 
             // Check if user is authenticated
             if (!auth.currentUser) {
                 Swal.fire("Error", "You must be logged in to submit a loan", "error");
-                return;
-            }
-
-            if (imageFiles.length < 2) {
-                Swal.fire("Error", "Please upload at least 2 collateral images", "error");
                 return;
             }
 
@@ -542,12 +548,13 @@
                 submitBtn.disabled = true;
                 submitBtn.textContent = 'Submitting...';
 
-                // Collateral quality
-                const purchaseDate = (document.getElementById('purchase-date') || {}).value;
-                const condition = (document.getElementById('condition') || {}).value;
-                const hasReceipt = (document.getElementById('has-receipt') || {}).value;
-                const serialNumber = (document.getElementById('serial-number') || {}).value;
-                const estimatedValue = parseFloat((document.getElementById('estimated-value') || {}).value || '0');
+                // Collateral quality validation
+                const purchaseDate = document.getElementById('purchase-date').value;
+                const condition = document.getElementById('condition').value;
+                const hasReceipt = document.getElementById('has-receipt').value;
+                const serialNumber = document.getElementById('serial-number').value;
+                const estimatedValue = parseFloat(document.getElementById('estimated-value').value || '0');
+                
                 if (!purchaseDate || !condition || !hasReceipt || !serialNumber || !estimatedValue) {
                     Swal.fire('Error', 'Please complete the collateral quality section', 'error');
                     submitBtn.disabled = false;
@@ -626,10 +633,15 @@
             modal.show();
         }
         function openProfileModal() {
-            document.getElementById('pfName').textContent = document.getElementById('profileName').textContent;
-            document.getElementById('pfEmail').textContent = document.getElementById('profileEmail').textContent;
-            const modal = new bootstrap.Modal(document.getElementById('profileModal'));
-            modal.show();
+            const user = auth.currentUser;
+            if (user) {
+                document.getElementById('pfName').textContent = user.displayName || user.email || 'User';
+                document.getElementById('pfEmail').textContent = user.email || 'No email';
+                const modal = new bootstrap.Modal(document.getElementById('profileModal'));
+                modal.show();
+            } else {
+                Swal.fire('Error', 'User not found', 'error');
+            }
         }
         async function selectAvatar(src) {
             try {
@@ -752,8 +764,6 @@
               <div><strong>${user.displayName || 'User'}</strong></div>
               <div>${user.email}</div>
             `;
-                        document.getElementById("profileName").textContent = user.displayName || "User";
-                        document.getElementById("profileEmail").textContent = user.email;
                         // Load avatar
                         db.collection('users').doc(user.uid).get().then(uDoc => {
                             const a = uDoc.exists ? uDoc.data().avatar : null;
