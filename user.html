@@ -118,20 +118,17 @@
         <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
         <div>User Dashboard</div>
         <div class="dropdown">
-            <button class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Profile
-      </button>
+            <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                <img id="topAvatar" src="logo.jpg" alt="avatar" class="rounded-circle me-2" style="width:34px;height:34px;object-fit:cover;">
+                <span id="profileName" class="text-white small"></span>
+            </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><span class="dropdown-item-text" id="profileName"></span></li>
-                <li><span class="dropdown-item-text" id="profileEmail"></span></li>
-                <li>
-                    <hr class="dropdown-divider">
-                </li>
+                <li><button class="dropdown-item" onclick="openProfileModal()">My Profile</button></li>
+                <li><button class="dropdown-item" onclick="openAvatarModal()">Choose Avatar</button></li>
+                <li><button id="notifyMenuItem" class="dropdown-item" onclick="enableNotifications()">Enable Notifications</button></li>
+                <li><hr class="dropdown-divider"></li>
                 <li><button class="dropdown-item text-danger" onclick="logout()">Logout</button></li>
             </ul>
-        </div>
-        <div class="ms-2">
-            <button id="notifyBtn" class="btn btn-sm btn-outline-light" onclick="enableNotifications()">Enable Notifications</button>
         </div>
     </div>
 
@@ -203,9 +200,9 @@
                     </div>
                     <!-- Optional device details as before -->
                     <div class="row">
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-ram" placeholder="RAM (hiari)" /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-storage" placeholder="Storage (hiari)" /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-brand" placeholder="Brand (hiari)" /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-ram" placeholder="RAM" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-storage" placeholder="Storage" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-brand" placeholder="Brand" required /></div>
                     </div>
                 </div>
 
@@ -239,25 +236,95 @@
                     </div>
                     <!-- Optional device details as before -->
                     <div class="row">
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-ram" placeholder="RAM (hiari)" /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-storage" placeholder="Storage (hiari)" /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-brand" placeholder="Brand (hiari)" /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-ram" placeholder="RAM" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-storage" placeholder="Storage" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-brand" placeholder="Brand" required /></div>
                     </div>
                 </div>
 
                 <!-- Collateral images common to both locations -->
-                <div class="mb-2">
-                    <label class="form-label">Collateral Images (at least 2)</label>
-                    <input class="form-control" type="file" name="collateralImages" accept="image/*" multiple required />
-                    <div id="uploadProgressWrapper" class="mt-2" style="display:none;">
-                        <div class="progress">
-                            <div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
+                <div class="border rounded p-3 mb-2">
+                    <label class="form-label fw-semibold">Collateral Quality</label>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Purchase Date</label>
+                            <input class="form-control" id="purchase-date" type="date" required />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Condition</label>
+                            <select class="form-control" id="condition" required>
+                                <option value="">Select condition</option>
+                                <option>New</option>
+                                <option>Very Good</option>
+                                <option>Good</option>
+                                <option>Fair</option>
+                                <option>Poor</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Receipt Available</label>
+                            <select class="form-control" id="has-receipt" required>
+                                <option value="">Select</option>
+                                <option>Yes</option>
+                                <option>No</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Serial/IMEI Number</label>
+                            <input class="form-control" id="serial-number" placeholder="Serial or IMEI" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Estimated Current Value (TShs)</label>
+                            <input class="form-control" id="estimated-value" type="number" required />
                         </div>
                     </div>
                 </div>
 
                 <button class="btn btn-primary mt-2" type="submit">Submit Loan</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Avatar Modal -->
+    <div class="modal fade" id="avatarModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose Avatar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex gap-3 flex-wrap justify-content-center">
+                        <img class="avatar-option rounded-circle" src="poster1.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="poster2.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="poster3.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="ceo.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="gm.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">My Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2"><strong>Name:</strong> <span id="pfName"></span></div>
+                    <div class="mb-2"><strong>Email:</strong> <span id="pfEmail"></span></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -381,13 +448,19 @@
                 // Validate and map per city
                 let cityPayload = {};
                 if (currentCity === 'dar') {
-                    const requiredIds = ['dar-borrower-name','dar-university','dar-reg-number','dar-nida','dar-contact','dar-address','dar-guarantor-name','dar-relationship','dar-guarantor-address','dar-guarantor-contact','dar-collateral1','dar-start-date','dar-end-date','dar-loan-amount'];
+                    const requiredIds = ['dar-borrower-name','dar-university','dar-reg-number','dar-nida','dar-contact','dar-address','dar-guarantor-name','dar-relationship','dar-guarantor-address','dar-guarantor-contact','dar-collateral1','dar-start-date','dar-end-date','dar-loan-amount','dar-ram','dar-storage','dar-brand'];
                     for (const id of requiredIds) {
                         const el = document.getElementById(id);
                         if (!el || !el.value) {
                             Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
                             return;
                         }
+                    }
+                    const start = new Date(document.getElementById('dar-start-date').value);
+                    const end = new Date(document.getElementById('dar-end-date').value);
+                    if (!(end > start)) {
+                        Swal.fire('Error', 'End date must be after start date', 'error');
+                        return;
                     }
                     const amountNum = parseFloat(document.getElementById('dar-loan-amount').value) || 0;
                     const interestRateNum = parseFloat(document.getElementById('dar-interest-rate').value) || 0;
@@ -412,18 +485,24 @@
                         interestRate: interestRateNum,
                         processingFee: feeNum,
                         totalAmount: totalNum,
-                        ram: (document.getElementById('dar-ram') && document.getElementById('dar-ram').value) || '',
-                        storage: (document.getElementById('dar-storage') && document.getElementById('dar-storage').value) || '',
-                        brand: (document.getElementById('dar-brand') && document.getElementById('dar-brand').value) || ''
+                        ram: document.getElementById('dar-ram').value,
+                        storage: document.getElementById('dar-storage').value,
+                        brand: document.getElementById('dar-brand').value
                     };
                 } else {
-                    const requiredIds = ['mbeya-borrower-name','mbeya-university','mbeya-reg-number','mbeya-nida','mbeya-contact','mbeya-address','mbeya-guarantor-name','mbeya-relationship','mbeya-guarantor-address','mbeya-guarantor-contact','mbeya-collateral1','mbeya-start-date','mbeya-end-date','mbeya-loan-amount'];
+                    const requiredIds = ['mbeya-borrower-name','mbeya-university','mbeya-reg-number','mbeya-nida','mbeya-contact','mbeya-address','mbeya-guarantor-name','mbeya-relationship','mbeya-guarantor-address','mbeya-guarantor-contact','mbeya-collateral1','mbeya-start-date','mbeya-end-date','mbeya-loan-amount','mbeya-ram','mbeya-storage','mbeya-brand'];
                     for (const id of requiredIds) {
                         const el = document.getElementById(id);
                         if (!el || !el.value) {
                             Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
                             return;
                         }
+                    }
+                    const start = new Date(document.getElementById('mbeya-start-date').value);
+                    const end = new Date(document.getElementById('mbeya-end-date').value);
+                    if (!(end > start)) {
+                        Swal.fire('Error', 'End date must be after start date', 'error');
+                        return;
                     }
                     const amountNum = parseFloat(document.getElementById('mbeya-loan-amount').value) || 0;
                     const interestRateNum = parseFloat(document.getElementById('mbeya-interest-rate').value) || 0;
@@ -448,58 +527,41 @@
                         interestRate: interestRateNum,
                         processingFee: feeNum,
                         totalAmount: totalNum,
-                        ram: (document.getElementById('mbeya-ram') && document.getElementById('mbeya-ram').value) || '',
-                        storage: (document.getElementById('mbeya-storage') && document.getElementById('mbeya-storage').value) || '',
-                        brand: (document.getElementById('mbeya-brand') && document.getElementById('mbeya-brand').value) || ''
+                        ram: document.getElementById('mbeya-ram').value,
+                        storage: document.getElementById('mbeya-storage').value,
+                        brand: document.getElementById('mbeya-brand').value
                     };
                 }
 
-                // Prepare UI for upload progress
                 const submitBtn = form.querySelector('button[type="submit"]');
-                const progressWrapper = document.getElementById('uploadProgressWrapper');
-                const progressBar = document.getElementById('uploadProgressBar');
                 const originalBtnText = submitBtn.textContent;
                 submitBtn.disabled = true;
-                progressWrapper.style.display = 'block';
-                progressBar.style.width = '0%';
-                progressBar.textContent = '0%';
-                submitBtn.textContent = 'Uploading... 0%';
+                submitBtn.textContent = 'Submitting...';
 
-                // Upload images to Firebase Storage
-                const totalBytesAll = Array.from(imageFiles).reduce((sum, f) => sum + f.size, 0);
-                let bytesTransferredAll = 0;
-                const perFileTransferred = new Array(imageFiles.length).fill(0);
-                const nowTs = Date.now();
-                const uploadPromises = Array.from(imageFiles).map((file, index) => new Promise((resolve, reject) => {
-                    const safeName = (file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_');
-                    const storageRef = storage.ref(`collateral_images/${auth.currentUser.uid}/${nowTs}_${index}_${safeName}`);
-                    const uploadTask = storageRef.put(file, { contentType: file.type });
-                    uploadTask.on('state_changed', snapshot => {
-                        const prev = perFileTransferred[index];
-                        perFileTransferred[index] = snapshot.bytesTransferred;
-                        bytesTransferredAll += (snapshot.bytesTransferred - prev);
-                        const percent = Math.max(0, Math.min(100, Math.round((bytesTransferredAll / totalBytesAll) * 100)));
-                        progressBar.style.width = percent + '%';
-                        progressBar.textContent = percent + '%';
-                        submitBtn.textContent = 'Uploading... ' + percent + '%';
-                    }, err => {
-                        reject(err);
-                    }, async () => {
-                        try {
-                            const url = await uploadTask.snapshot.ref.getDownloadURL();
-                            resolve(url);
-                        } catch (e) {
-                            reject(e);
-                        }
-                    });
-                }));
-                const imageUrls = await Promise.all(uploadPromises);
+                // Collateral quality
+                const purchaseDate = (document.getElementById('purchase-date') || {}).value;
+                const condition = (document.getElementById('condition') || {}).value;
+                const hasReceipt = (document.getElementById('has-receipt') || {}).value;
+                const serialNumber = (document.getElementById('serial-number') || {}).value;
+                const estimatedValue = parseFloat((document.getElementById('estimated-value') || {}).value || '0');
+                if (!purchaseDate || !condition || !hasReceipt || !serialNumber || !estimatedValue) {
+                    Swal.fire('Error', 'Please complete the collateral quality section', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    return;
+                }
 
                 const loanData = Object.assign({
                     uid: auth.currentUser.uid,
                     status: "Pending",
                     message: "",
-                    collateralImages: imageUrls,
+                    collateralQuality: {
+                        purchaseDate,
+                        condition,
+                        hasReceipt,
+                        serialNumber,
+                        estimatedValue
+                    },
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }, cityPayload);
 
@@ -514,16 +576,13 @@
                 // Reset UI
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalBtnText;
-                progressWrapper.style.display = 'none';
             } catch (error) {
                 console.error("Full error details:", error);
                 Swal.fire("Error", `Failed to submit loan application: ${error.message}`, "error");
                 // Reset UI on error
                 const form = e.target;
                 const submitBtn = form.querySelector('button[type="submit"]');
-                const progressWrapper = document.getElementById('uploadProgressWrapper');
                 if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit Loan'; }
-                if (progressWrapper) { progressWrapper.style.display = 'none'; }
             }
         }
 
@@ -534,14 +593,14 @@
             }
             if (Notification.permission === 'granted') {
                 Swal.fire('Enabled', 'Notifications are already enabled.', 'success');
+                const item = document.getElementById('notifyMenuItem');
+                if (item) item.textContent = 'Notifications On';
                 return;
             }
             Notification.requestPermission().then(permission => {
                 if (permission === 'granted') {
-                    const btn = document.getElementById('notifyBtn');
-                    btn.classList.remove('btn-outline-light');
-                    btn.classList.add('btn-success');
-                    btn.textContent = 'Notifications On';
+                    const item = document.getElementById('notifyMenuItem');
+                    if (item) item.textContent = 'Notifications On';
                     Swal.fire('Enabled', 'You will receive updates when your loan status changes.', 'success');
                 } else {
                     Swal.fire('Notice', 'Notifications were not enabled.', 'info');
@@ -556,6 +615,28 @@
                 try { new Notification(title, { body, icon: 'logo.jpg' }); } catch (e) { /* ignore */ }
             }
             Swal.fire(title, body, status === 'Approved' ? 'success' : 'info');
+        }
+
+        function openAvatarModal() {
+            const modal = new bootstrap.Modal(document.getElementById('avatarModal'));
+            modal.show();
+        }
+        function openProfileModal() {
+            document.getElementById('pfName').textContent = document.getElementById('profileName').textContent;
+            document.getElementById('pfEmail').textContent = document.getElementById('profileEmail').textContent;
+            const modal = new bootstrap.Modal(document.getElementById('profileModal'));
+            modal.show();
+        }
+        async function selectAvatar(src) {
+            try {
+                const uid = auth.currentUser.uid;
+                await db.collection('users').doc(uid).set({ avatar: src }, { merge: true });
+                document.getElementById('topAvatar').src = src;
+                Swal.fire('Updated', 'Avatar changed', 'success');
+                bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
+            } catch (e) {
+                Swal.fire('Error', 'Failed to save avatar', 'error');
+            }
         }
 
         // Initialize location forms and totals calculation
@@ -630,6 +711,11 @@
             `;
                         document.getElementById("profileName").textContent = user.displayName || "User";
                         document.getElementById("profileEmail").textContent = user.email;
+                        // Load avatar
+                        db.collection('users').doc(user.uid).get().then(uDoc => {
+                            const a = uDoc.exists ? uDoc.data().avatar : null;
+                            if (a) document.getElementById('topAvatar').src = a;
+                        });
                         Swal.fire("Welcome", "You are logged in!", "success");
                         // Seed cache and initial render, then attach live listener
                         db.collection('loans').where('uid','==',user.uid).get().then(s => {
@@ -642,10 +728,8 @@
                             attachUserLoansListener(user.uid);
                         });
                         if ('Notification' in window && Notification.permission === 'granted') {
-                            const btn = document.getElementById('notifyBtn');
-                            btn.classList.remove('btn-outline-light');
-                            btn.classList.add('btn-success');
-                            btn.textContent = 'Notifications On';
+                            const item = document.getElementById('notifyMenuItem');
+                            if (item) item.textContent = 'Notifications On';
                         }
                     }
                 });

@@ -85,9 +85,18 @@
         <div>
             <button class="btn btn-sm btn-light" onclick="toggleSidebar()">☰</button> Admin Dashboard
         </div>
-        <div>
-            <span id="adminName" class="me-2"></span>
-            <button class="btn btn-sm btn-danger" onclick="logout()">Logout</button>
+        <div class="dropdown">
+            <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                <img id="topAvatar" src="logo.jpg" alt="avatar" class="rounded-circle me-2" style="width:34px;height:34px;object-fit:cover;">
+                <span id="adminName" class="me-2"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><button class="dropdown-item" onclick="openProfileModal()">My Profile</button></li>
+                <li><button class="dropdown-item" onclick="openAvatarModal()">Choose Avatar</button></li>
+                <li><button id="notifyMenuItem" class="dropdown-item" onclick="enableNotifications()">Enable Notifications</button></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><button class="dropdown-item text-danger" onclick="logout()">Logout</button></li>
+            </ul>
         </div>
     </div>
 
@@ -109,22 +118,81 @@
             <table class="table table-bordered table-sm align-middle" id="loansTable">
                 <thead>
                     <tr>
+                        <th>City</th>
                         <th>Name</th>
                         <th>Contact</th>
                         <th>University</th>
                         <th>Collateral</th>
-                        <th>Collateral Images</th>
-                        <th>RAM</th>
-                        <th>Storage</th>
-                        <th>Brand</th>
+                        <th>Quality</th>
                         <th>Amount</th>
                         <th>Status</th>
-                        <th>Message</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
+        </div>
+
+        <!-- Details Modal -->
+        <div class="modal fade" id="loanDetailsModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Loan Application Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="loanDetailsContent"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="downloadPdfBtn" class="btn btn-secondary">Download PDF</button>
+                        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Avatar Modal -->
+    <div class="modal fade" id="avatarModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose Avatar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex gap-3 flex-wrap justify-content-center">
+                        <img class="avatar-option rounded-circle" src="poster1.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="poster2.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="poster3.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="ceo.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="gm.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">My Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2"><strong>Name:</strong> <span id="pfName"></span></div>
+                    <div class="mb-2"><strong>Email:</strong> <span id="pfEmail"></span></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -132,6 +200,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyB7mJE1bdNsTfGI08YmkhmZHca0xU_3qwU",
@@ -171,24 +241,22 @@
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const tr = document.createElement('tr');
-                    const collateralImagesHtml = (data.collateralImages || [])
-                        .map(url => `<a href="${url}" target="_blank"><img src="${url}" style="max-width:100px; max-height:100px; margin:5px;" /></a>`)
-                        .join('');
+                    const q = data.collateralQuality || {};
+                    const quality = q.condition ? `${q.condition}${q.hasReceipt ? ', Receipt: '+q.hasReceipt : ''}` : '';
                     tr.innerHTML = `
+                        <td>${data.city || ''}</td>
                         <td>${data.name || ''}</td>
                         <td>${data.contact || ''}</td>
                         <td>${data.university || ''}</td>
                         <td>${data.collateral || ''}</td>
-                        <td>${collateralImagesHtml || 'No images'}</td>
-                        <td>${data.ram || ''}</td>
-                        <td>${data.storage || ''}</td>
-                        <td>${data.brand || ''}</td>
+                        <td>${quality}</td>
                         <td>${data.amount || ''}</td>
                         <td>${statusBadge(data.status)}</td>
-                        <td>${data.message || ''}</td>
-                        <td>
+                        <td class="d-flex gap-1 flex-wrap">
+                            <button class="btn btn-info btn-sm" onclick="viewLoan('${doc.id}')">View</button>
                             <button class="btn btn-success btn-sm" onclick="approveLoan('${doc.id}')">Approve</button>
                             <button class="btn btn-danger btn-sm" onclick="declineLoan('${doc.id}')">Decline</button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="deleteLoan('${doc.id}')">Delete</button>
                         </td>`;
                     tbody.appendChild(tr);
                     const s = (data.status || '').toLowerCase();
@@ -246,12 +314,27 @@
                 return `"${v}"`;
             };
             db.collection('loans').orderBy('timestamp','desc').get().then(snapshot => {
-                let csv = "Name,Contact,University,Collateral,Collateral Images,RAM,Storage,Brand,Amount,Status,Message\n";
+                let csv = "City,Name,Contact,University,Collateral,Condition,Has Receipt,Serial/IMEI,Estimated Value,Amount,Interest %,Processing Fee,Total,Status,Message\n";
                 snapshot.forEach(doc => {
                     const d = doc.data();
-                    const imageUrls = (d.collateralImages || []).join('; ');
-                    csv += [d.name, d.contact, d.university, d.collateral, imageUrls, d.ram, d.storage, d.brand, d.amount, d.status, d.message]
-                        .map(sanitize).join(',') + "\n";
+                    const q = d.collateralQuality || {};
+                    csv += [
+                        d.city,
+                        d.name,
+                        d.contact,
+                        d.university,
+                        d.collateral,
+                        q.condition,
+                        q.hasReceipt,
+                        q.serialNumber,
+                        q.estimatedValue,
+                        d.amount,
+                        d.interestRate,
+                        d.processingFee,
+                        d.totalAmount,
+                        d.status,
+                        d.message
+                    ].map(sanitize).join(',') + "\n";
                 });
                 const blob = new Blob([csv], { type: 'text/csv' });
                 const url = URL.createObjectURL(blob);
@@ -262,6 +345,141 @@
             });
         }
 
+        function viewLoan(id) {
+            db.collection('loans').doc(id).get().then(doc => {
+                if (!doc.exists) return;
+                const d = doc.data();
+                const q = d.collateralQuality || {};
+                const html = `
+                    <div id="loanDetailsPrintable">
+                        <h5 class="mb-2">Applicant</h5>
+                        <div class="row g-2">
+                            <div class="col-md-4"><strong>City:</strong> ${d.city || ''}</div>
+                            <div class="col-md-4"><strong>Name:</strong> ${d.name || ''}</div>
+                            <div class="col-md-4"><strong>Contact:</strong> ${d.contact || ''}</div>
+                            <div class="col-md-4"><strong>University:</strong> ${d.university || ''}</div>
+                            <div class="col-md-4"><strong>Reg No:</strong> ${d.regNumber || ''}</div>
+                            <div class="col-md-4"><strong>NIDA:</strong> ${d.nida || ''}</div>
+                            <div class="col-md-4"><strong>Address:</strong> ${d.place || ''}</div>
+                        </div>
+                        <hr/>
+                        <h5 class="mb-2">Guarantor</h5>
+                        <div class="row g-2">
+                            <div class="col-md-4"><strong>Name:</strong> ${d.guarantor || ''}</div>
+                            <div class="col-md-4"><strong>Relation:</strong> ${d.relation || ''}</div>
+                            <div class="col-md-4"><strong>Contact:</strong> ${d.gcontact || ''}</div>
+                            <div class="col-md-4"><strong>Address:</strong> ${d.guarantorAddress || ''}</div>
+                        </div>
+                        <hr/>
+                        <h5 class="mb-2">Loan</h5>
+                        <div class="row g-2">
+                            <div class="col-md-3"><strong>Amount:</strong> ${d.amount ?? ''}</div>
+                            <div class="col-md-3"><strong>Interest %:</strong> ${d.interestRate ?? ''}</div>
+                            <div class="col-md-3"><strong>Processing Fee:</strong> ${d.processingFee ?? ''}</div>
+                            <div class="col-md-3"><strong>Total:</strong> ${d.totalAmount ?? ''}</div>
+                            <div class="col-md-3"><strong>Start:</strong> ${d.startDate || ''}</div>
+                            <div class="col-md-3"><strong>End:</strong> ${d.endDate || ''}</div>
+                            <div class="col-md-6"><strong>Collateral:</strong> ${d.collateral || ''}</div>
+                        </div>
+                        <hr/>
+                        <h5 class="mb-2">Collateral Quality</h5>
+                        <div class="row g-2">
+                            <div class="col-md-4"><strong>Purchase Date:</strong> ${q.purchaseDate || ''}</div>
+                            <div class="col-md-4"><strong>Condition:</strong> ${q.condition || ''}</div>
+                            <div class="col-md-4"><strong>Receipt:</strong> ${q.hasReceipt || ''}</div>
+                            <div class="col-md-6"><strong>Serial/IMEI:</strong> ${q.serialNumber || ''}</div>
+                            <div class="col-md-6"><strong>Estimated Value:</strong> ${q.estimatedValue ?? ''}</div>
+                        </div>
+                        <hr/>
+                        <div><strong>Status:</strong> ${d.status || ''}</div>
+                        <div><strong>Message:</strong> ${d.message || ''}</div>
+                        <div class="small text-muted mt-2">ID: ${id}</div>
+                    </div>
+                `;
+                const container = document.getElementById('loanDetailsContent');
+                container.innerHTML = html;
+                const modal = new bootstrap.Modal(document.getElementById('loanDetailsModal'));
+                modal.show();
+
+                const btn = document.getElementById('downloadPdfBtn');
+                btn.onclick = () => {
+                    const element = document.getElementById('loanDetailsPrintable');
+                    const opt = {
+                        margin:       10,
+                        filename:     `loan_${id}.pdf`,
+                        image:        { type: 'jpeg', quality: 0.98 },
+                        html2canvas:  { scale: 2 },
+                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    };
+                    html2pdf().set(opt).from(element).save();
+                };
+            });
+        }
+
+        async function deleteLoan(id) {
+            const confirm = await Swal.fire({
+                title: 'Delete application?',
+                text: 'This will remove the document and its images.',
+                icon: 'warning',
+                showCancelButton: true
+            });
+            if (!confirm.isConfirmed) return;
+
+            try {
+                const docRef = db.collection('loans').doc(id);
+                await docRef.delete();
+                Swal.fire('Deleted', 'Application removed', 'success');
+            } catch (e) {
+                console.error(e);
+                Swal.fire('Error', 'Failed to delete application', 'error');
+            }
+        }
+
+        function openAvatarModal() {
+            const modal = new bootstrap.Modal(document.getElementById('avatarModal'));
+            modal.show();
+        }
+        function openProfileModal() {
+            const nameEl = document.getElementById('adminName');
+            document.getElementById('pfName').textContent = nameEl ? nameEl.textContent : '';
+            const user = auth.currentUser;
+            document.getElementById('pfEmail').textContent = user ? (user.email || '') : '';
+            const modal = new bootstrap.Modal(document.getElementById('profileModal'));
+            modal.show();
+        }
+        async function selectAvatar(src) {
+            try {
+                const uid = auth.currentUser.uid;
+                await db.collection('users').doc(uid).set({ avatar: src }, { merge: true });
+                document.getElementById('topAvatar').src = src;
+                Swal.fire('Updated', 'Avatar changed', 'success');
+                bootstrap.Modal.getInstance(document.getElementById('avatarModal')).hide();
+            } catch (e) {
+                Swal.fire('Error', 'Failed to save avatar', 'error');
+            }
+        }
+        function enableNotifications() {
+            if (!('Notification' in window)) {
+                Swal.fire('Unsupported', 'Your browser does not support notifications.', 'info');
+                return;
+            }
+            if (Notification.permission === 'granted') {
+                Swal.fire('Enabled', 'Notifications are already enabled.', 'success');
+                const item = document.getElementById('notifyMenuItem');
+                if (item) item.textContent = 'Notifications On';
+                return;
+            }
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    const item = document.getElementById('notifyMenuItem');
+                    if (item) item.textContent = 'Notifications On';
+                    Swal.fire('Enabled', 'You will receive updates.', 'success');
+                } else {
+                    Swal.fire('Notice', 'Notifications were not enabled.', 'info');
+                }
+            });
+        }
+
         auth.onAuthStateChanged(user => {
             if (user) {
                 db.collection("users").doc(user.uid).get().then(doc => {
@@ -269,6 +487,9 @@
                         window.location.href = "user.html";
                     } else {
                         document.getElementById("adminName").innerText = user.displayName || user.email;
+                        // Load avatar
+                        const a = doc.data().avatar;
+                        if (a) { const img = document.getElementById('topAvatar'); if (img) img.src = a; }
                         attachLoansListener();
                     }
                 });
