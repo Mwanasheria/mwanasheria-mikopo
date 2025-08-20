@@ -163,35 +163,99 @@
 
         <div id="loanFormSection" style="display:none;">
             <h4>Loan Application Form</h4>
-            <form onsubmit="submitLoan(event)">
-                <div class="row">
-                    <div class="col-md-6 mb-2"><input class="form-control" name="name" placeholder="Full Name" required /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="university" placeholder="University & Course" required /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="contact" placeholder="Your Contacts" required /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="place" placeholder="Living Place" required /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="guarantor" placeholder="Guarantor Name" required /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="relation" placeholder="Guarantor Relation" required /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="gcontact" placeholder="Guarantor Contacts" required /></div>
-                    <div class="col-md-6 mb-2">
-                        <select class="form-control" name="collateral" required>
-              <option value="">Collateral Type</option>
-              <option>TV</option><option>PC</option><option>Phone</option><option>Other</option>
-            </select>
+            <div class="mb-3 p-3 border rounded bg-light">
+                <div class="d-flex align-items-center justify-content-between">
+                    <strong>Chagua Eneo Lako</strong>
+                    <div class="btn-group" role="group" aria-label="Location selector">
+                        <button type="button" id="darBtn" class="btn btn-outline-primary active">Dar es Salaam (25%)</button>
+                        <button type="button" id="mbeyaBtn" class="btn btn-outline-primary">Mbeya (20%)</button>
                     </div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="ram" placeholder="RAM" /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="storage" placeholder="Storage" /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="brand" placeholder="Brand Name" /></div>
-                    <div class="col-md-6 mb-2"><input class="form-control" name="amount" placeholder="Loan Amount Needed" type="number" required /></div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label">Collateral Images (at least 2)</label>
-                        <input class="form-control" type="file" name="collateralImages" accept="image/*" multiple required />
-                        <div id="uploadProgressWrapper" class="mt-2" style="display:none;">
-                            <div class="progress">
-                                <div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
-                            </div>
+                </div>
+            </div>
+            <form onsubmit="submitLoan(event)">
+                <!-- Dar es Salaam form -->
+                <div id="darForm" class="border rounded p-3 mb-3" style="display:block;">
+                    <div class="row">
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-borrower-name" placeholder="Jina Kamili" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-university" placeholder="Chuo / Kozi" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-reg-number" placeholder="Reg No." required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-nida" placeholder="NIDA" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-contact" placeholder="Mawasiliano (simu)" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-address" placeholder="Mahali anapoishi" required /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-name" placeholder="Jina la Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-relationship" placeholder="Uhusiano na Mkopaji" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-address" placeholder="Anapoishi Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-contact" placeholder="Mawasiliano ya Mdhamini" required /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-collateral1" placeholder="Dhamana ya kwanza" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-collateral2" placeholder="Dhamana ya pili (hiari)" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-start-date" type="date" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-end-date" type="date" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-interest-rate" value="25" readonly /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-processing-fee" value="3000" readonly /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-total-amount" placeholder="Jumla ya kurejeshwa" readonly /></div>
+                    </div>
+                    <!-- Optional device details as before -->
+                    <div class="row">
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-ram" placeholder="RAM (hiari)" /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-storage" placeholder="Storage (hiari)" /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-brand" placeholder="Brand (hiari)" /></div>
+                    </div>
+                </div>
+
+                <!-- Mbeya form -->
+                <div id="mbeyaForm" class="border rounded p-3 mb-3" style="display:none;">
+                    <div class="row">
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-borrower-name" placeholder="Jina Kamili" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-university" placeholder="Chuo / Kozi" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-reg-number" placeholder="Reg No." required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-nida" placeholder="NIDA" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-contact" placeholder="Mawasiliano (simu)" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-address" placeholder="Mahali anapoishi" required /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-name" placeholder="Jina la Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-relationship" placeholder="Uhusiano na Mkopaji" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-address" placeholder="Anapoishi Mdhamini" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-contact" placeholder="Mawasiliano ya Mdhamini" required /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-collateral1" placeholder="Dhamana ya kwanza" required /></div>
+                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-collateral2" placeholder="Dhamana ya pili (hiari)" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-start-date" type="date" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-end-date" type="date" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-interest-rate" value="20" readonly /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-processing-fee" value="3000" readonly /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-total-amount" placeholder="Jumla ya kurejeshwa" readonly /></div>
+                    </div>
+                    <!-- Optional device details as before -->
+                    <div class="row">
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-ram" placeholder="RAM (hiari)" /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-storage" placeholder="Storage (hiari)" /></div>
+                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-brand" placeholder="Brand (hiari)" /></div>
+                    </div>
+                </div>
+
+                <!-- Collateral images common to both locations -->
+                <div class="mb-2">
+                    <label class="form-label">Collateral Images (at least 2)</label>
+                    <input class="form-control" type="file" name="collateralImages" accept="image/*" multiple required />
+                    <div id="uploadProgressWrapper" class="mt-2" style="display:none;">
+                        <div class="progress">
+                            <div id="uploadProgressBar" class="progress-bar" role="progressbar" style="width: 0%;">0%</div>
                         </div>
                     </div>
                 </div>
+
                 <button class="btn btn-primary mt-2" type="submit">Submit Loan</button>
             </form>
         </div>
@@ -218,6 +282,7 @@
         const storage = firebase.storage();
         let userLoansUnsubscribe = null;
         const lastStatuses = new Map();
+        let currentCity = 'dar';
 
         function toggleSidebar() {
             document.getElementById("sidebar").classList.toggle("active");
@@ -313,13 +378,80 @@
             }
 
             try {
-                // Validate form inputs
-                const requiredFields = ['name', 'university', 'contact', 'place', 'guarantor', 'relation', 'gcontact', 'collateral', 'amount'];
-                for (let field of requiredFields) {
-                    if (!form[field].value) {
-                        Swal.fire("Error", `Please fill in the ${field} field`, "error");
-                        return;
+                // Validate and map per city
+                let cityPayload = {};
+                if (currentCity === 'dar') {
+                    const requiredIds = ['dar-borrower-name','dar-university','dar-reg-number','dar-nida','dar-contact','dar-address','dar-guarantor-name','dar-relationship','dar-guarantor-address','dar-guarantor-contact','dar-collateral1','dar-start-date','dar-end-date','dar-loan-amount'];
+                    for (const id of requiredIds) {
+                        const el = document.getElementById(id);
+                        if (!el || !el.value) {
+                            Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
+                            return;
+                        }
                     }
+                    const amountNum = parseFloat(document.getElementById('dar-loan-amount').value) || 0;
+                    const interestRateNum = parseFloat(document.getElementById('dar-interest-rate').value) || 0;
+                    const feeNum = parseFloat(document.getElementById('dar-processing-fee').value) || 0;
+                    const totalNum = amountNum + (amountNum * interestRateNum/100) + feeNum;
+                    cityPayload = {
+                        city: 'Dar es Salaam',
+                        name: document.getElementById('dar-borrower-name').value,
+                        university: document.getElementById('dar-university').value,
+                        regNumber: document.getElementById('dar-reg-number').value,
+                        nida: document.getElementById('dar-nida').value,
+                        contact: document.getElementById('dar-contact').value,
+                        place: document.getElementById('dar-address').value,
+                        guarantor: document.getElementById('dar-guarantor-name').value,
+                        relation: document.getElementById('dar-relationship').value,
+                        guarantorAddress: document.getElementById('dar-guarantor-address').value,
+                        gcontact: document.getElementById('dar-guarantor-contact').value,
+                        collateral: [document.getElementById('dar-collateral1').value, document.getElementById('dar-collateral2').value].filter(Boolean).join(' ; '),
+                        startDate: document.getElementById('dar-start-date').value,
+                        endDate: document.getElementById('dar-end-date').value,
+                        amount: amountNum,
+                        interestRate: interestRateNum,
+                        processingFee: feeNum,
+                        totalAmount: totalNum,
+                        ram: (document.getElementById('dar-ram') && document.getElementById('dar-ram').value) || '',
+                        storage: (document.getElementById('dar-storage') && document.getElementById('dar-storage').value) || '',
+                        brand: (document.getElementById('dar-brand') && document.getElementById('dar-brand').value) || ''
+                    };
+                } else {
+                    const requiredIds = ['mbeya-borrower-name','mbeya-university','mbeya-reg-number','mbeya-nida','mbeya-contact','mbeya-address','mbeya-guarantor-name','mbeya-relationship','mbeya-guarantor-address','mbeya-guarantor-contact','mbeya-collateral1','mbeya-start-date','mbeya-end-date','mbeya-loan-amount'];
+                    for (const id of requiredIds) {
+                        const el = document.getElementById(id);
+                        if (!el || !el.value) {
+                            Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
+                            return;
+                        }
+                    }
+                    const amountNum = parseFloat(document.getElementById('mbeya-loan-amount').value) || 0;
+                    const interestRateNum = parseFloat(document.getElementById('mbeya-interest-rate').value) || 0;
+                    const feeNum = parseFloat(document.getElementById('mbeya-processing-fee').value) || 0;
+                    const totalNum = amountNum + (amountNum * interestRateNum/100) + feeNum;
+                    cityPayload = {
+                        city: 'Mbeya',
+                        name: document.getElementById('mbeya-borrower-name').value,
+                        university: document.getElementById('mbeya-university').value,
+                        regNumber: document.getElementById('mbeya-reg-number').value,
+                        nida: document.getElementById('mbeya-nida').value,
+                        contact: document.getElementById('mbeya-contact').value,
+                        place: document.getElementById('mbeya-address').value,
+                        guarantor: document.getElementById('mbeya-guarantor-name').value,
+                        relation: document.getElementById('mbeya-relationship').value,
+                        guarantorAddress: document.getElementById('mbeya-guarantor-address').value,
+                        gcontact: document.getElementById('mbeya-guarantor-contact').value,
+                        collateral: [document.getElementById('mbeya-collateral1').value, document.getElementById('mbeya-collateral2').value].filter(Boolean).join(' ; '),
+                        startDate: document.getElementById('mbeya-start-date').value,
+                        endDate: document.getElementById('mbeya-end-date').value,
+                        amount: amountNum,
+                        interestRate: interestRateNum,
+                        processingFee: feeNum,
+                        totalAmount: totalNum,
+                        ram: (document.getElementById('mbeya-ram') && document.getElementById('mbeya-ram').value) || '',
+                        storage: (document.getElementById('mbeya-storage') && document.getElementById('mbeya-storage').value) || '',
+                        brand: (document.getElementById('mbeya-brand') && document.getElementById('mbeya-brand').value) || ''
+                    };
                 }
 
                 // Prepare UI for upload progress
@@ -363,25 +495,13 @@
                 }));
                 const imageUrls = await Promise.all(uploadPromises);
 
-                const loanData = {
+                const loanData = Object.assign({
                     uid: auth.currentUser.uid,
-                    name: form.name.value,
-                    university: form.university.value,
-                    contact: form.contact.value,
-                    place: form.place.value,
-                    guarantor: form.guarantor.value,
-                    relation: form.relation.value,
-                    gcontact: form.gcontact.value,
-                    collateral: form.collateral.value,
-                    ram: form.ram.value || '',
-                    storage: form.storage.value || '',
-                    brand: form.brand.value || '',
-                    amount: form.amount.value,
                     status: "Pending",
                     message: "",
                     collateralImages: imageUrls,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                };
+                }, cityPayload);
 
                 console.log("Submitting loan data:", loanData);
 
@@ -437,6 +557,64 @@
             }
             Swal.fire(title, body, status === 'Approved' ? 'success' : 'info');
         }
+
+        // Initialize location forms and totals calculation
+        (function initLocationForms() {
+            const darBtn = document.getElementById('darBtn');
+            const mbeyaBtn = document.getElementById('mbeyaBtn');
+            const darForm = document.getElementById('darForm');
+            const mbeyaForm = document.getElementById('mbeyaForm');
+            if (darBtn && mbeyaBtn && darForm && mbeyaForm) {
+                darBtn.addEventListener('click', () => {
+                    currentCity = 'dar';
+                    darBtn.classList.add('active');
+                    mbeyaBtn.classList.remove('active');
+                    darForm.style.display = 'block';
+                    mbeyaForm.style.display = 'none';
+                });
+                mbeyaBtn.addEventListener('click', () => {
+                    currentCity = 'mbeya';
+                    mbeyaBtn.classList.add('active');
+                    darBtn.classList.remove('active');
+                    mbeyaForm.style.display = 'block';
+                    darForm.style.display = 'none';
+                });
+            }
+
+            // Dar totals
+            const darLoanAmount = document.getElementById('dar-loan-amount');
+            const darInterestRate = document.getElementById('dar-interest-rate');
+            const darProcessingFee = document.getElementById('dar-processing-fee');
+            const darTotalAmount = document.getElementById('dar-total-amount');
+            if (darLoanAmount && darInterestRate && darProcessingFee && darTotalAmount) {
+                const calcDar = () => {
+                    const loan = parseFloat(darLoanAmount.value) || 0;
+                    const rate = parseFloat(darInterestRate.value) || 0;
+                    const fee = parseFloat(darProcessingFee.value) || 0;
+                    const total = loan + (loan * rate / 100) + fee;
+                    darTotalAmount.value = total.toFixed(2);
+                };
+                darLoanAmount.addEventListener('input', calcDar);
+                calcDar();
+            }
+
+            // Mbeya totals
+            const mbeyaLoanAmount = document.getElementById('mbeya-loan-amount');
+            const mbeyaInterestRate = document.getElementById('mbeya-interest-rate');
+            const mbeyaProcessingFee = document.getElementById('mbeya-processing-fee');
+            const mbeyaTotalAmount = document.getElementById('mbeya-total-amount');
+            if (mbeyaLoanAmount && mbeyaInterestRate && mbeyaProcessingFee && mbeyaTotalAmount) {
+                const calcMbeya = () => {
+                    const loan = parseFloat(mbeyaLoanAmount.value) || 0;
+                    const rate = parseFloat(mbeyaInterestRate.value) || 0;
+                    const fee = parseFloat(mbeyaProcessingFee.value) || 0;
+                    const total = loan + (loan * rate / 100) + fee;
+                    mbeyaTotalAmount.value = total.toFixed(2);
+                };
+                mbeyaLoanAmount.addEventListener('input', calcMbeya);
+                calcMbeya();
+            }
+        })();
 
         auth.onAuthStateChanged(user => {
             console.log("Current authentication state:", user ? user.uid : "Not logged in");
