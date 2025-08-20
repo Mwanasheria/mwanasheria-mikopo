@@ -529,7 +529,6 @@
                     if (!doc.exists || doc.data().role !== "admin") {
                         window.location.href = "user.html";
                     } else {
-                        document.getElementById("adminName").innerText = user.displayName || user.email;
                         // Load avatar
                         const a = doc.data().avatar;
                         applyDefaultAvatarIfMissing(a);

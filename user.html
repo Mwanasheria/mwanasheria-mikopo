@@ -446,23 +446,34 @@
 
         async function submitLoan(e) {
             e.preventDefault();
+            console.log("Form submission started");
             const form = e.target;
 
             // Check if user is authenticated
             if (!auth.currentUser) {
+                console.log("User not authenticated");
                 Swal.fire("Error", "You must be logged in to submit a loan", "error");
                 return;
             }
+            console.log("User authenticated:", auth.currentUser.uid);
 
             try {
                 // Validate and map per city
                 let cityPayload = {};
+                console.log("Current city:", currentCity);
                 if (currentCity === 'dar') {
                     const requiredIds = ['dar-borrower-name','dar-university','dar-reg-number','dar-nida','dar-contact','dar-address','dar-guarantor-name','dar-relationship','dar-guarantor-address','dar-guarantor-contact','dar-collateral1','dar-start-date','dar-end-date','dar-loan-amount','dar-ram','dar-storage','dar-brand'];
                     for (const id of requiredIds) {
                         const el = document.getElementById(id);
-                        if (!el || !el.value) {
+                        if (!el) {
+                            console.error(`Element with id '${id}' not found`);
+                            Swal.fire('Error', `Form field '${id}' not found`, 'error');
+                            return;
+                        }
+                        if (!el.value.trim()) {
+                            console.error(`Field '${id}' is empty`);
                             Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
+                            el.focus();
                             return;
                         }
                     }
@@ -503,8 +514,15 @@
                     const requiredIds = ['mbeya-borrower-name','mbeya-university','mbeya-reg-number','mbeya-nida','mbeya-contact','mbeya-address','mbeya-guarantor-name','mbeya-relationship','mbeya-guarantor-address','mbeya-guarantor-contact','mbeya-collateral1','mbeya-start-date','mbeya-end-date','mbeya-loan-amount','mbeya-ram','mbeya-storage','mbeya-brand'];
                     for (const id of requiredIds) {
                         const el = document.getElementById(id);
-                        if (!el || !el.value) {
+                        if (!el) {
+                            console.error(`Element with id '${id}' not found`);
+                            Swal.fire('Error', `Form field '${id}' not found`, 'error');
+                            return;
+                        }
+                        if (!el.value.trim()) {
+                            console.error(`Field '${id}' is empty`);
                             Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
+                            el.focus();
                             return;
                         }
                     }
@@ -555,8 +573,37 @@
                 const serialNumber = document.getElementById('serial-number').value;
                 const estimatedValue = parseFloat(document.getElementById('estimated-value').value || '0');
                 
-                if (!purchaseDate || !condition || !hasReceipt || !serialNumber || !estimatedValue) {
-                    Swal.fire('Error', 'Please complete the collateral quality section', 'error');
+                if (!purchaseDate) {
+                    Swal.fire('Error', 'Please select purchase date', 'error');
+                    document.getElementById('purchase-date').focus();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    return;
+                }
+                if (!condition) {
+                    Swal.fire('Error', 'Please select collateral condition', 'error');
+                    document.getElementById('condition').focus();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    return;
+                }
+                if (!hasReceipt) {
+                    Swal.fire('Error', 'Please select receipt availability', 'error');
+                    document.getElementById('has-receipt').focus();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    return;
+                }
+                if (!serialNumber.trim()) {
+                    Swal.fire('Error', 'Please enter serial/IMEI number', 'error');
+                    document.getElementById('serial-number').focus();
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                    return;
+                }
+                if (!estimatedValue || estimatedValue <= 0) {
+                    Swal.fire('Error', 'Please enter valid estimated value', 'error');
+                    document.getElementById('estimated-value').focus();
                     submitBtn.disabled = false;
                     submitBtn.textContent = originalBtnText;
                     return;
