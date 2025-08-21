@@ -260,77 +260,106 @@
                 const d = doc.data();
                 const q = d.collateralQuality || {};
                 
-                // Prepare HTML for modal with all details and status
+                // Prepare comprehensive HTML for modal
                 const html = `
-                    <div id="loanDetailsPrintable">
-                        <div class="container">
-                            <div class="row mb-3">
-                                <div class="col-12">
-                                    <h2 class="text-center mb-4">Loan Application Details</h2>
-                                    <div class="alert ${
-                                        d.status === 'Approved' ? 'alert-success' : 
-                                        d.status === 'Declined' ? 'alert-danger' : 
-                                        'alert-warning'
-                                    }">
-                                        <strong>Current Status:</strong> ${d.status || 'Pending'}
-                                        ${d.message ? `<p class="mt-2"><strong>Admin Message:</strong> ${d.message}</p>` : ''}
+                    <div id="loanDetailsPrintable" class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <h2 class="text-center mb-4">Detailed Loan Application</h2>
+                                
+                                <div class="alert ${
+                                    d.status === 'Approved' ? 'alert-success' : 
+                                    d.status === 'Declined' ? 'alert-danger' : 
+                                    'alert-warning'
+                                }">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <strong>Status:</strong> ${d.status || 'Pending'}
+                                        <span class="badge ${
+                                            d.status === 'Approved' ? 'bg-success' : 
+                                            d.status === 'Declined' ? 'bg-danger' : 
+                                            'bg-warning'
+                                        }">${d.status || 'Pending'}</span>
+                                    </div>
+                                    ${d.message ? `<p class="mt-2"><strong>Admin Message:</strong> ${d.message}</p>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-primary text-white">Applicant Information</div>
+                                    <div class="card-body">
+                                        <p><strong>Name:</strong> ${d.name || 'N/A'}</p>
+                                        <p><strong>University:</strong> ${d.university || 'N/A'}</p>
+                                        <p><strong>Registration Number:</strong> ${d.regNumber || 'N/A'}</p>
+                                        <p><strong>NIDA:</strong> ${d.nida || 'N/A'}</p>
+                                        <p><strong>Contact:</strong> ${d.contact || 'N/A'}</p>
+                                        <p><strong>Address:</strong> ${d.place || 'N/A'}</p>
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="row">
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Applicant Information</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>City:</strong> ${d.city || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Name:</strong> ${d.name || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>University:</strong> ${d.university || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Reg No:</strong> ${d.regNumber || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>NIDA:</strong> ${d.nida || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Contact:</strong> ${d.contact || 'N/A'}</div>
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-primary text-white">Guarantor Details</div>
+                                    <div class="card-body">
+                                        <p><strong>Name:</strong> ${d.guarantor || 'N/A'}</p>
+                                        <p><strong>Relation:</strong> ${d.relation || 'N/A'}</p>
+                                        <p><strong>Contact:</strong> ${d.gcontact || 'N/A'}</p>
+                                        <p><strong>Address:</strong> ${d.guarantorAddress || 'N/A'}</p>
                                     </div>
                                 </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Guarantor Details</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Name:</strong> ${d.guarantor || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Relation:</strong> ${d.relation || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Contact:</strong> ${d.gcontact || 'N/A'}</div>
-                                        <div class="col-md-12"><strong>Address:</strong> ${d.guarantorAddress || 'N/A'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-primary text-white">Loan Details</div>
+                                    <div class="card-body">
+                                        <p><strong>City:</strong> ${d.city || 'N/A'}</p>
+                                        <p><strong>Amount:</strong> TShs ${d.amount ? d.amount.toLocaleString() : 'N/A'}</p>
+                                        <p><strong>Interest Rate:</strong> ${d.interestRate || 'N/A'}%</p>
+                                        <p><strong>Processing Fee:</strong> TShs ${d.processingFee ? d.processingFee.toLocaleString() : 'N/A'}</p>
+                                        <p><strong>Total Amount:</strong> TShs ${d.totalAmount ? d.totalAmount.toLocaleString() : 'N/A'}</p>
+                                        <p><strong>Start Date:</strong> ${d.startDate || 'N/A'}</p>
+                                        <p><strong>End Date:</strong> ${d.endDate || 'N/A'}</p>
                                     </div>
                                 </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Loan Details</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Amount:</strong> TShs ${d.amount ? d.amount.toLocaleString() : 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Interest Rate:</strong> ${d.interestRate || 'N/A'}%</div>
-                                        <div class="col-md-4"><strong>Processing Fee:</strong> TShs ${d.processingFee ? d.processingFee.toLocaleString() : 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Total Amount:</strong> TShs ${d.totalAmount ? d.totalAmount.toLocaleString() : 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Start Date:</strong> ${d.startDate || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>End Date:</strong> ${d.endDate || 'N/A'}</div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="card mb-3">
+                                    <div class="card-header bg-primary text-white">Collateral Details</div>
+                                    <div class="card-body">
+                                        <p><strong>Collateral:</strong> ${d.collateral || 'N/A'}</p>
+                                        <p><strong>Device RAM:</strong> ${d.ram || 'N/A'}</p>
+                                        <p><strong>Device Storage:</strong> ${d.storage || 'N/A'}</p>
+                                        <p><strong>Device Brand:</strong> ${d.brand || 'N/A'}</p>
                                     </div>
                                 </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Collateral Details</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Collateral:</strong> ${d.collateral || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Device RAM:</strong> ${d.ram || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Device Storage:</strong> ${d.storage || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Device Brand:</strong> ${d.brand || 'N/A'}</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Collateral Quality</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Purchase Date:</strong> ${q.purchaseDate || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Condition:</strong> ${q.condition || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Receipt Available:</strong> ${q.hasReceipt || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Serial/IMEI:</strong> ${q.serialNumber || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Estimated Value:</strong> TShs ${q.estimatedValue ? q.estimatedValue.toLocaleString() : 'N/A'}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">Collateral Quality</div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <p><strong>Purchase Date:</strong> ${q.purchaseDate || 'N/A'}</p>
+                                                <p><strong>Condition:</strong> ${q.condition || 'N/A'}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p><strong>Receipt Available:</strong> ${q.hasReceipt || 'N/A'}</p>
+                                                <p><strong>Serial/IMEI:</strong> ${q.serialNumber || 'N/A'}</p>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <p><strong>Estimated Value:</strong> TShs ${q.estimatedValue ? q.estimatedValue.toLocaleString() : 'N/A'}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -500,52 +529,46 @@
                         const d = doc.data();
                         const row = document.createElement('tr');
                         
-                        // Determine status badge color
-                        let statusBadgeClass = 'bg-warning';
-                        if (d.status === 'Approved') statusBadgeClass = 'bg-success';
-                        else if (d.status === 'Declined') statusBadgeClass = 'bg-danger';
-
-                        // Truncate name if too long
-                        const truncateName = (name, maxLength = 20) => 
-                            name && name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+                        // Truncate and format functions
+                        const truncate = (text, maxLength = 20) => 
+                            text && text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+                        
+                        const formatAmount = (amount) => 
+                            amount ? `TShs ${amount.toLocaleString()}` : 'N/A';
+                        
+                        // Determine status badge
+                        const getStatusBadge = (status) => {
+                            switch(status) {
+                                case 'Approved': 
+                                    return '<span class="badge bg-success">Approved</span>';
+                                case 'Declined': 
+                                    return '<span class="badge bg-danger">Declined</span>';
+                                default: 
+                                    return '<span class="badge bg-warning">Pending</span>';
+                            }
+                        };
 
                         row.innerHTML = `
-                            <td>${truncateName(d.name) || 'N/A'}</td>
-                            <td>${truncateName(d.university) || 'N/A'}</td>
+                            <td>${truncate(d.name)}</td>
+                            <td>${truncate(d.university)}</td>
                             <td>${d.city || 'N/A'}</td>
-                            <td>${d.amount ? 'TShs ' + d.amount.toLocaleString() : 'N/A'}</td>
+                            <td>${formatAmount(d.amount)}</td>
+                            <td>${getStatusBadge(d.status)}</td>
                             <td>
-                                <span class="badge ${statusBadgeClass}">
-                                    ${d.status || 'Pending'}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <button onclick="viewLoan('${doc.id}')" class="btn btn-sm btn-secondary">
-                                        <i class="fas fa-eye"></i> View
+                                <div class="d-flex justify-content-start align-items-center">
+                                    <button onclick="viewLoan('${doc.id}')" class="btn btn-sm btn-secondary me-2" title="View Details">
+                                        <i class="fas fa-eye"></i>
                                     </button>
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                            Actions
+                                        <button onclick="changeLoanStatus('${doc.id}', 'Approved')" class="btn btn-sm btn-success me-2" title="Approve">
+                                            <i class="fas fa-check"></i>
                                         </button>
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a class="dropdown-item text-success" href="#" onclick="changeLoanStatus('${doc.id}', 'Approved')">
-                                                    <i class="fas fa-check me-2"></i>Approve
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item text-warning" href="#" onclick="changeLoanStatus('${doc.id}', 'Declined')">
-                                                    <i class="fas fa-times me-2"></i>Decline
-                                                </a>
-                                            </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item text-danger" href="#" onclick="deleteLoan('${doc.id}')">
-                                                    <i class="fas fa-trash me-2"></i>Delete
-                                                </a>
-                                            </li>
-                                        </ul>
+                                        <button onclick="changeLoanStatus('${doc.id}', 'Declined')" class="btn btn-sm btn-warning me-2" title="Decline">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <button onclick="deleteLoan('${doc.id}')" class="btn btn-sm btn-danger" title="Delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </td>
