@@ -138,72 +138,155 @@
     <main class="container mt-4">
         <!-- Home Section -->
         <section id="home" class="active-section">
-            <div class="hero mb-4">
-                <div class="row align-items-center g-3">
-                    <div class="col-md-8">
-                        <h1 class="mb-2">Student Loans, made simple.</h1>
-                        <p class="sub mb-3">Fast, secure and flexible allowance loans so you can focus on studies—not stress.</p>
-                        <div class="d-flex gap-2 flex-wrap">
-                            <a class="btn btn-light text-primary fw-semibold" href="login.html">Apply in minutes</a>
-                            <a class="btn btn-outline-light" href="#how" onclick="showSection('home');document.getElementById('how').scrollIntoView({behavior:'smooth'});">How to apply</a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 text-center d-none d-md-block">
-                        <img src="logo.jpg" alt="Mwanasheria Mikopo" class="img-fluid" style="max-height:120px;border-radius:12px;">
-                    </div>
-                </div>
-            </div>
-
-            <div id="how" class="mb-4">
-                <h2 class="h4 mb-3">How to apply</h2>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="p-3 bg-white step-card h-100">
-                            <h3 class="h6">1) Sign in</h3>
-                            <p class="mb-0">Use your Google account to get started securely.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-3 bg-white step-card h-100">
-                            <h3 class="h6">2) Apply</h3>
-                            <p class="mb-0">Fill a short form with your details and collateral/guarantor.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-3 bg-white step-card h-100">
-                            <h3 class="h6">3) Get decision</h3>
-                            <p class="mb-0">Track status in your dashboard. Funds processed after verification.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Offers moved to bottom of Home -->
-            <div id="offers" class="mb-4">
-                <h2 class="h4 mb-3">Available Offers</h2>
-                <div class="row g-3">
-                    <div class="col-12 col-md-6">
-                        <div class="card h-100 shadow-sm">
-                            <img src="poster1.jpg" class="card-img-top" alt="Dar es Salaam Offer" style="height:220px;object-fit:cover;" onclick="openOffer('dar')">
-                            <div class="card-body">
-                                <h5 class="card-title">Allowance Loan — Dar es Salaam</h5>
-                                <p class="card-text mb-2">Interest: <strong>25%</strong> • Term: <strong>30 days</strong> • Processing Fee: <strong>TShs 3,000</strong></p>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-primary" onclick="openOffer('dar')">View Offer</button>
-                                    <a class="btn btn-outline-primary" href="login.html">Apply Now</a>
+            <div class="hero-section position-relative overflow-hidden text-white">
+                <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
+                <div class="container position-relative">
+                    <div class="row align-items-center vh-100">
+                        <div class="col-lg-7">
+                            <div class="hero-content">
+                                <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">
+                                    Student Loans Made Simple
+                                </h1>
+                                <p class="lead mb-5 animate__animated animate__fadeInUp">
+                                    Fast, secure, and flexible financial solutions 
+                                    designed to help you focus on your education, 
+                                    not your financial stress.
+                                </p>
+                                <div class="d-flex gap-3 animate__animated animate__fadeInUp animate__delay-1s">
+                                    <a href="login.html" class="btn btn-primary btn-lg px-4 py-3 shadow">
+                                        Apply Now
+                                    </a>
+                                    <a href="#how-to-apply" class="btn btn-outline-light btn-lg px-4 py-3 scrollLink">
+                                        Learn How
+                                    </a>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-5 d-none d-lg-block">
+                            <div class="hero-image text-center">
+                                <img src="logo.jpg" alt="Mwanasheria Mikopo" 
+                                     class="img-fluid rounded-circle shadow-lg animate__animated animate__zoomIn" 
+                                     style="max-width: 400px; border: 6px solid rgba(255,255,255,0.2);">
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <div class="card h-100 shadow-sm">
-                            <img src="poster2.jpg" class="card-img-top" alt="Mbeya Offer" style="height:220px;object-fit:cover;" onclick="openOffer('mbeya')">
-                            <div class="card-body">
-                                <h5 class="card-title">Allowance Loan — Mbeya</h5>
-                                <p class="card-text mb-2">Interest: <strong>20%</strong> • Term: <strong>30 days</strong> • Processing Fee: <strong>TShs 3,000</strong></p>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-primary" onclick="openOffer('mbeya')">View Offer</button>
-                                    <a class="btn btn-outline-primary" href="login.html">Apply Now</a>
+                </div>
+            </div>
+
+            <div id="how" class="py-5 bg-light">
+                <div class="container">
+                    <h2 class="text-center mb-5">How to Apply in 3 Simple Steps</h2>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 shadow-sm border-0 text-center p-4 step-card">
+                                <div class="step-icon mb-3">
+                                    <i class="fas fa-user-plus fa-3x text-primary"></i>
+                                </div>
+                                <h3 class="h4 mb-3">Sign In</h3>
+                                <p class="text-muted">
+                                    Create your account securely using your 
+                                    university credentials or email.
+                                </p>
+                                <div class="step-number">1</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 shadow-sm border-0 text-center p-4 step-card">
+                                <div class="step-icon mb-3">
+                                    <i class="fas fa-file-alt fa-3x text-primary"></i>
+                                </div>
+                                <h3 class="h4 mb-3">Apply</h3>
+                                <p class="text-muted">
+                                    Fill out a short form with your details, 
+                                    guarantor information, and collateral.
+                                </p>
+                                <div class="step-number">2</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 shadow-sm border-0 text-center p-4 step-card">
+                                <div class="step-icon mb-3">
+                                    <i class="fas fa-check-circle fa-3x text-primary"></i>
+                                </div>
+                                <h3 class="h4 mb-3">Get Decision</h3>
+                                <p class="text-muted">
+                                    Track your application status in your dashboard. 
+                                    Funds processed after verification.
+                                </p>
+                                <div class="step-number">3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="offers" class="py-5">
+                <div class="container">
+                    <h2 class="text-center mb-5">Available Loan Offers</h2>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card offer-card h-100 shadow-sm border-0">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3 class="card-title mb-0">Dar es Salaam Offer</h3>
+                                        <span class="badge bg-primary">25% Interest</span>
+                                    </div>
+                                    <p class="card-text text-muted mb-4">
+                                        Tailored financial support for students in Dar es Salaam
+                                    </p>
+                                    <ul class="list-unstyled mb-4">
+                                        <li class="mb-2">
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            Loan Amount: TShs 50,000 - 500,000
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            30-Day Repayment Term
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            Processing Fee: TShs 3,000
+                                        </li>
+                                    </ul>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#darOfferModal">
+                                            View Details
+                                        </button>
+                                        <a href="login.html" class="btn btn-outline-primary">Apply Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card offer-card h-100 shadow-sm border-0">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h3 class="card-title mb-0">Mbeya Offer</h3>
+                                        <span class="badge bg-primary">20% Interest</span>
+                                    </div>
+                                    <p class="card-text text-muted mb-4">
+                                        Specialized financing for students in Mbeya region
+                                    </p>
+                                    <ul class="list-unstyled mb-4">
+                                        <li class="mb-2">
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            Loan Amount: TShs 50,000 - 500,000
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            30-Day Repayment Term
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            Processing Fee: TShs 3,000
+                                        </li>
+                                    </ul>
+                                    <div class="d-flex gap-2">
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mbeyaOfferModal">
+                                            View Details
+                                        </button>
+                                        <a href="login.html" class="btn btn-outline-primary">Apply Now</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +301,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12 text-center mb-5">
-                            <h2 class="display-5 fw-bold text-primary">10+ Years of Financial Expertise</h2>
+                            <h2 class="display-5 fw-bold text-primary">3+ Years of Financial Expertise</h2>
                             <p class="lead text-muted">
                                 Mwanasheria Mikopo Co. Ltd, established on December 15, 2022, is a pioneering student financing 
                                 company dedicated to providing innovative, efficient, and accessible financial solutions 
@@ -389,100 +472,115 @@
 
         <!-- Contact Section -->
         <section id="contact" class="inactive-section">
-            <h2>Contact Us</h2>
-            <div class="row g-4">
-                <!-- Mbeya Office -->
-                <div class="col-md-6">
-                    <div class="contact-card">
-                        <div class="contact-header">
-                            <span class="location-badge">Mbeya Office</span>
-                            <div class="contact-name">Silvester Mhagama</div>
-                            <div class="contact-role">Chief Executive Officer</div>
-                        </div>
-                        <div class="contact-body">
-                            <div class="icon-grid">
-                                <a href="https://wa.me/255687030949" target="_blank" class="icon-item">
-                                    <div class="icon-circle whatsapp">
-                                        <i class="fab fa-whatsapp"></i>
-                                    </div>
-                                    <span class="icon-label">WhatsApp</span>
-                                </a>
-                                <a href="tel:+255687030949" class="icon-item">
-                                    <div class="icon-circle phone">
-                                        <i class="fas fa-phone"></i>
-                                    </div>
-                                    <span class="icon-label">Call</span>
-                                </a>
-                                <a href="https://facebook.com" target="_blank" class="icon-item">
-                                    <div class="icon-circle facebook">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </div>
-                                    <span class="icon-label">Facebook</span>
-                                </a>
-                                <a href="https://instagram.com" target="_blank" class="icon-item">
-                                    <div class="icon-circle instagram">
-                                        <i class="fab fa-instagram"></i>
-                                    </div>
-                                    <span class="icon-label">Instagram</span>
-                                </a>
-                                <a href="https://twitter.com" target="_blank" class="icon-item">
-                                    <div class="icon-circle twitter">
-                                        <i class="fab fa-twitter"></i>
-                                    </div>
-                                    <span class="icon-label">Twitter</span>
-                                </a>
-                            </div>
+            <div class="contact-section py-5 bg-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center mb-5">
+                            <h2 class="display-5 fw-bold text-primary">Contact Mwanasheria Mikopo</h2>
+                            <p class="lead text-muted">
+                                Get in touch with us via the numbers below, visit our offices, 
+                                or fill out the form to connect with our team.
+                            </p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Dar es Salaam Office -->
-                <div class="col-md-6">
-                    <div class="contact-card">
-                        <div class="contact-header">
-                            <span class="location-badge">Dar es Salaam Office</span>
-                            <div class="contact-name">Tarcisius Mhagama</div>
-                            <div class="contact-role">General Manager</div>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <div class="mb-4">
+                                        <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
+                                    </div>
+                                    <h4 class="card-title mb-3">Dar es Salaam Office</h4>
+                                    <p class="card-text text-muted">
+                                        P.O.Box 34603, Africana Square,<br>
+                                        2nd Floor, Bagamoyo Road,<br>
+                                        Mbezi Africana, Dar es Salaam
+                                    </p>
+                                    <div class="mt-3">
+                                        <p class="mb-2">
+                                            <strong>Tel:</strong> +255 687 030 949
+                                        </p>
+                                        <p>
+                                            <strong>Email:</strong> dar@mwanasheriamikopo.co.tz
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="contact-body">
-                            <div class="icon-grid">
-                                <a href="https://wa.me/255696378787" target="_blank" class="icon-item">
-                                    <div class="icon-circle whatsapp">
-                                        <i class="fab fa-whatsapp"></i>
+
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <div class="mb-4">
+                                        <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
                                     </div>
-                                    <span class="icon-label">WhatsApp</span>
-                                </a>
-                                <a href="tel:+255696378787" class="icon-item">
-                                    <div class="icon-circle phone">
-                                        <i class="fas fa-phone"></i>
+                                    <h4 class="card-title mb-3">Mbeya Office</h4>
+                                    <p class="card-text text-muted">
+                                        House #3, Mlimwa Hills,<br>
+                                        Mbeya City,<br>
+                                        Tanzania
+                                    </p>
+                                    <div class="mt-3">
+                                        <p class="mb-2">
+                                            <strong>Tel:</strong> +255 696 378 787
+                                        </p>
+                                        <p>
+                                            <strong>Email:</strong> mbeya@mwanasheriamikopo.co.tz
+                                        </p>
                                     </div>
-                                    <span class="icon-label">Call</span>
-                                </a>
-                                <a href="https://facebook.com" target="_blank" class="icon-item">
-                                    <div class="icon-circle facebook">
-                                        <i class="fab fa-facebook-f"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <div class="mb-4">
+                                        <i class="fas fa-headset fa-3x text-primary"></i>
                                     </div>
-                                    <span class="icon-label">Facebook</span>
-                                </a>
-                                <a href="https://instagram.com" target="_blank" class="icon-item">
-                                    <div class="icon-circle instagram">
-                                        <i class="fab fa-instagram"></i>
+                                    <h4 class="card-title mb-3">Talk to an Expert</h4>
+                                    <div class="mt-3">
+                                        <p class="mb-2">
+                                            <i class="fas fa-phone me-2 text-primary"></i> +255 687 030 949
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="fas fa-phone me-2 text-primary"></i> +255 696 378 787
+                                        </p>
+                                        <p>
+                                            <i class="fas fa-envelope me-2 text-primary"></i> info@mwanasheriamikopo.co.tz
+                                        </p>
                                     </div>
-                                    <span class="icon-label">Instagram</span>
-                                </a>
-                                <a href="https://twitter.com" target="_blank" class="icon-item">
-                                    <div class="icon-circle twitter">
-                                        <i class="fab fa-twitter"></i>
+                                    <div class="social-links mt-4">
+                                        <a href="#" class="text-primary me-3" title="Facebook">
+                                            <i class="fab fa-facebook-f fa-lg"></i>
+                                        </a>
+                                        <a href="#" class="text-primary me-3" title="Twitter">
+                                            <i class="fab fa-twitter fa-lg"></i>
+                                        </a>
+                                        <a href="#" class="text-primary me-3" title="Instagram">
+                                            <i class="fab fa-instagram fa-lg"></i>
+                                        </a>
+                                        <a href="#" class="text-primary" title="WhatsApp">
+                                            <i class="fab fa-whatsapp fa-lg"></i>
+                                        </a>
                                     </div>
-                                    <span class="icon-label">Twitter</span>
-                                </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-    </main>
+
+        <style>
+            .social-links a {
+                transition: color 0.3s ease;
+            }
+            .social-links a:hover {
+                color: #0066cc !important;
+            }
+        </style>
 
     <footer class="bg-dark text-white text-center py-4 mt-4">
         <div class="container small">
