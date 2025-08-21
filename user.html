@@ -592,10 +592,10 @@
                 }
 
                 // Prepare loan data
-                const loanData = {
+            const loanData = {
                     uid: user.uid,
-                    status: "Pending",
-                    message: "",
+                status: "Pending",
+                message: "",
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     city: currentCity === 'dar' ? 'Dar es Salaam' : 'Mbeya',
                     name: document.getElementById(`${prefix}-borrower-name`).value,
