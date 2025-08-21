@@ -505,9 +505,13 @@
                         if (d.status === 'Approved') statusBadgeClass = 'bg-success';
                         else if (d.status === 'Declined') statusBadgeClass = 'bg-danger';
 
+                        // Truncate name if too long
+                        const truncateName = (name, maxLength = 20) => 
+                            name && name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+
                         row.innerHTML = `
-                            <td>${d.name || 'N/A'}</td>
-                            <td>${d.university || 'N/A'}</td>
+                            <td>${truncateName(d.name) || 'N/A'}</td>
+                            <td>${truncateName(d.university) || 'N/A'}</td>
                             <td>${d.city || 'N/A'}</td>
                             <td>${d.amount ? 'TShs ' + d.amount.toLocaleString() : 'N/A'}</td>
                             <td>
@@ -517,7 +521,7 @@
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <button onclick="viewLoan('${doc.id}')" class="btn btn-sm btn-info">
+                                    <button onclick="viewLoan('${doc.id}')" class="btn btn-sm btn-secondary">
                                         <i class="fas fa-eye"></i> View
                                     </button>
                                     <div class="btn-group" role="group">
@@ -525,16 +529,22 @@
                                             Actions
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#" onclick="changeLoanStatus('${doc.id}', 'Approved')">
-                                                <i class="fas fa-check text-success"></i> Approve
-                                            </a></li>
-                                            <li><a class="dropdown-item" href="#" onclick="changeLoanStatus('${doc.id}', 'Declined')">
-                                                <i class="fas fa-times text-danger"></i> Decline
-                                            </a></li>
+                                            <li>
+                                                <a class="dropdown-item text-success" href="#" onclick="changeLoanStatus('${doc.id}', 'Approved')">
+                                                    <i class="fas fa-check me-2"></i>Approve
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-warning" href="#" onclick="changeLoanStatus('${doc.id}', 'Declined')">
+                                                    <i class="fas fa-times me-2"></i>Decline
+                                                </a>
+                                            </li>
                                             <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#" onclick="deleteLoan('${doc.id}')">
-                                                <i class="fas fa-trash text-danger"></i> Delete Application
-                                            </a></li>
+                                            <li>
+                                                <a class="dropdown-item text-danger" href="#" onclick="deleteLoan('${doc.id}')">
+                                                    <i class="fas fa-trash me-2"></i>Delete
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>

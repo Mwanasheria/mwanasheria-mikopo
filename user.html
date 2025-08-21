@@ -490,15 +490,16 @@
         async function submitLoan(e) {
             e.preventDefault();
             console.log("Form submission started");
-            console.log("Firebase configuration:", firebaseConfig);
-            console.log("Firebase initialized:", firebase.apps.length > 0);
             
-            const form = e.target;
-
-            // Check if Firebase is properly initialized
+            // Ensure Firebase and Firestore are initialized
             if (!firebase || !firebase.firestore) {
                 console.error("Firebase or Firestore not properly initialized");
-                Swal.fire("Error", "Firebase services are not available", "error");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'System Error',
+                    text: 'Firebase services are not available. Please try again later.',
+                    footer: 'If the problem persists, contact support.'
+                });
                 return;
             }
 
@@ -506,45 +507,77 @@
             const user = auth.currentUser;
             if (!user) {
                 console.error("User not authenticated");
-                Swal.fire("Error", "You must be logged in to submit a loan", "error");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Authentication Required',
+                    text: 'You must be logged in to submit a loan application.',
+                    footer: '<a href="login.html">Go to Login</a>'
+                });
                 return;
             }
-            console.log("User authenticated:", user.uid);
-            console.log("User email:", user.email);
 
             try {
-                // Validate and map per city
-                let cityPayload = {};
+                // Determine which form is active
+                const prefix = currentCity === 'dar' ? 'dar' : 'mbeya';
                 console.log("Current city:", currentCity);
                 
-                const prefix = currentCity === 'dar' ? 'dar' : 'mbeya';
-                const requiredIds = [
+                // Validate all required fields
+                const requiredFields = [
                     `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-reg-number`, 
                     `${prefix}-nida`, `${prefix}-contact`, `${prefix}-address`, 
                     `${prefix}-guarantor-name`, `${prefix}-relationship`, 
                     `${prefix}-guarantor-address`, `${prefix}-guarantor-contact`, 
                     `${prefix}-collateral1`, `${prefix}-start-date`, 
                     `${prefix}-end-date`, `${prefix}-loan-amount`,
-                    `${prefix}-ram`, `${prefix}-storage`, `${prefix}-brand`
+                    `${prefix}-ram`, `${prefix}-storage`, `${prefix}-brand`,
+                    'purchase-date', 'condition', 'has-receipt', 
+                    'serial-number', 'estimated-value'
                 ];
 
-                // Validate form fields
-                for (const id of requiredIds) {
-                    const el = document.getElementById(id);
-                    if (!el) {
-                        console.error(`Element with id '${id}' not found`);
-                        Swal.fire('Error', `Form field '${id}' not found`, 'error');
-                        return;
+                let invalidFields = [];
+                requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (!field || !field.value.trim()) {
+                        invalidFields.push(fieldId);
+                        field?.classList.add('is-invalid');
                     }
-                    if (!el.value.trim()) {
-                        console.error(`Field '${id}' is empty`);
-                        Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
-                        el.focus();
-                        return;
+                });
+
+                // Date validation
+                const startDateField = document.getElementById(`${prefix}-start-date`);
+                const endDateField = document.getElementById(`${prefix}-end-date`);
+                
+                if (startDateField && endDateField) {
+                    const startDate = new Date(startDateField.value);
+                    const endDate = new Date(endDateField.value);
+
+                    if (!(endDate > startDate)) {
+                        invalidFields.push('start-date', 'end-date');
+                        startDateField.classList.add('is-invalid');
+                        endDateField.classList.add('is-invalid');
                     }
                 }
 
-                // Prepare complete loan data
+                // If there are invalid fields, show error and stop submission
+                if (invalidFields.length > 0) {
+                    const errorMessage = `Please fill in the following fields correctly:\n${invalidFields.map(id => 
+                        document.querySelector(`label[for="${id}"]`)?.textContent || id
+                    ).join(', ')}`;
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Incomplete Form',
+                        text: errorMessage,
+                        footer: 'Please review and complete all required fields.'
+                    });
+
+                    // Focus on first invalid field
+                    const firstInvalidField = document.getElementById(invalidFields[0]);
+                    firstInvalidField?.focus();
+                    return;
+                }
+
+                // Prepare loan data
                 const loanData = {
                     uid: user.uid,
                     status: "Pending",
@@ -586,38 +619,35 @@
                 console.log("Preparing to submit loan data:", loanData);
 
                 // Attempt Firestore submission
-                try {
-                    console.log("Firestore object:", db);
-                    console.log("Firestore collection method exists:", typeof db.collection === 'function');
-                    
-                    // Validate loan data before submission
-                    if (!loanData.uid) {
-                        throw new Error("User ID is missing");
-                    }
+                const docRef = await db.collection("loans").add(loanData);
+                console.log("Loan submitted successfully with ID:", docRef.id);
 
-                    const docRef = await db.collection("loans").add(loanData);
-                    console.log("Loan submitted successfully with ID:", docRef.id);
+                // Show success message with loan details
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Loan Application Submitted',
+                    html: `
+                        <p>Your loan application has been successfully submitted.</p>
+                        <p><strong>Application ID:</strong> ${docRef.id}</p>
+                        <p><strong>City:</strong> ${loanData.city}</p>
+                        <p><strong>Amount:</strong> TShs ${loanData.amount.toLocaleString()}</p>
+                    `,
+                    footer: 'We will review your application and contact you soon.'
+                });
 
-                    Swal.fire("Success", "Loan application submitted!", "success");
-                    form.reset();
-                    showDashboard();
-                } catch (firestoreError) {
-                    console.error("Firestore submission error:", firestoreError);
-                    console.error("Error details:", {
-                        name: firestoreError.name,
-                        message: firestoreError.message,
-                        stack: firestoreError.stack
-                    });
-                    Swal.fire("Error", `Failed to submit loan: ${firestoreError.message}`, "error");
-                }
+                // Reset form and show dashboard
+                e.target.reset();
+                showDashboard();
             } catch (error) {
                 console.error("Full submission error:", error);
-                console.error("Error details:", {
-                    name: error.name,
-                    message: error.message,
-                    stack: error.stack
+                
+                // Detailed error handling
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Failed',
+                    text: error.message || 'An unexpected error occurred during loan submission.',
+                    footer: 'Please try again or contact support if the problem persists.'
                 });
-                Swal.fire("Error", `An unexpected error occurred: ${error.message}`, "error");
             }
         }
 
