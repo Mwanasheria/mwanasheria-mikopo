@@ -832,34 +832,92 @@
 
         // Custom form validation to prevent browser validation errors
         function setupFormValidation() {
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                form.addEventListener('submit', function(event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        
-                        // Find and focus on the first invalid input
-                        const invalidInputs = form.querySelectorAll(':invalid');
-                        if (invalidInputs.length > 0) {
-                            invalidInputs[0].focus();
-                        }
-                    }
-                    form.classList.add('was-validated');
-                }, false);
+            const form = document.querySelector('form');
+            if (!form) return;
 
-                // Remove validation styling when input changes
-                const inputs = form.querySelectorAll('input, select');
-                inputs.forEach(input => {
-                    input.addEventListener('input', function() {
-                        input.classList.remove('is-invalid');
-                        form.classList.remove('was-validated');
-                    });
+            // Prevent default browser validation
+            form.setAttribute('novalidate', '');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                // Check which form is active
+                const activeForm = document.getElementById('darForm').style.display !== 'none' ? 'dar' : 'mbeya';
+                const prefix = activeForm;
+
+                // Validate form fields
+                const requiredFields = [
+                    `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-reg-number`, 
+                    `${prefix}-nida`, `${prefix}-contact`, `${prefix}-address`, 
+                    `${prefix}-guarantor-name`, `${prefix}-relationship`, 
+                    `${prefix}-guarantor-address`, `${prefix}-guarantor-contact`, 
+                    `${prefix}-collateral1`, `${prefix}-start-date`, 
+                    `${prefix}-end-date`, `${prefix}-loan-amount`,
+                    `${prefix}-ram`, `${prefix}-storage`, `${prefix}-brand`,
+                    'purchase-date', 'condition', 'has-receipt', 
+                    'serial-number', 'estimated-value'
+                ];
+
+                let isValid = true;
+                let firstInvalidElement = null;
+
+                requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (!field) {
+                        console.error(`Field ${fieldId} not found`);
+                        return;
+                    }
+
+                    // Check if field is empty or invalid
+                    if (!field.value.trim()) {
+                        field.classList.add('is-invalid');
+                        isValid = false;
+                        if (!firstInvalidElement) firstInvalidElement = field;
+                    } else {
+                        field.classList.remove('is-invalid');
+                    }
+                });
+
+                // Date validation for start and end dates
+                const startDateField = document.getElementById(`${prefix}-start-date`);
+                const endDateField = document.getElementById(`${prefix}-end-date`);
+                
+                if (startDateField && endDateField) {
+                    const startDate = new Date(startDateField.value);
+                    const endDate = new Date(endDateField.value);
+
+                    if (!(endDate > startDate)) {
+                        startDateField.classList.add('is-invalid');
+                        endDateField.classList.add('is-invalid');
+                        isValid = false;
+                        if (!firstInvalidElement) firstInvalidElement = startDateField;
+                    } else {
+                        startDateField.classList.remove('is-invalid');
+                        endDateField.classList.remove('is-invalid');
+                    }
+                }
+
+                // If form is invalid, focus on first invalid element
+                if (!isValid) {
+                    if (firstInvalidElement) firstInvalidElement.focus();
+                    Swal.fire('Error', 'Please fill in all required fields correctly', 'error');
+                    return;
+                }
+
+                // If all validations pass, submit the form
+                submitLoan(event);
+            });
+
+            // Remove invalid class when user starts typing
+            const inputs = form.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    this.classList.remove('is-invalid');
                 });
             });
         }
 
-        // Call this after the DOM is fully loaded
+        // Call validation setup after DOM is loaded
         document.addEventListener('DOMContentLoaded', setupFormValidation);
     </script>
 </body>

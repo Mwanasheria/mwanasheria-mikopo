@@ -111,6 +111,183 @@
         .twitter { background-color: #1DA1F2; }
         .instagram { background: linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
         .location-badge { background: #2c3e50; color: #fff; padding: 5px 15px; border-radius: 20px; font-size: .9rem; font-weight: 600; display: inline-block; margin-bottom: 15px; }
+
+        /* About Us Styles */
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #0066cc;
+            animation: fadeInDown 1s ease;
+        }
+
+        .company-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .intro {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .hours {
+            font-size: 0.95rem;
+            margin-bottom: 40px;
+            color: #666;
+        }
+
+        .sub-title {
+            font-size: 1.6rem;
+            margin: 50px 0 25px;
+            color: #222;
+            animation: fadeInUp 1s ease;
+        }
+
+        /* Mission, Vision & Values */
+        .mv-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .mv-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .mv-card.show {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+
+        .mv-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #0066cc;
+        }
+
+        .mv-card p, 
+        .mv-card ul {
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.6;
+        }
+
+        .mv-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mv-card ul li {
+            margin-bottom: 10px;
+        }
+
+        /* Leadership */
+        .leaders-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .leader-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            width: 260px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .leader-card.show {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+
+        .leader-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .leader-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .leader-card h4 {
+            font-size: 1.2rem;
+            color: #0066cc;
+        }
+
+        .leader-card p {
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        /* Team Roles */
+        .roles-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .role-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        .role-card.show {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 0.6s ease;
+        }
+
+        .role-card:hover {
+            transform: scale(1.05);
+            background: #0066cc;
+            color: #fff;
+        }
+
+        /* Branches */
+        .branches {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 
@@ -214,44 +391,75 @@
 
         <!-- About Section -->
         <section id="about" class="inactive-section">
-            <h2>MWANASHERIA MIKOPO CO.LTD</h2>
-            <p><strong>Founded:</strong> December 15, 2022</p>
-            <p><strong>Employees:</strong> 8</p>
-            <p><strong>Mission:</strong> To provide fast, secure, and affordable financial support for students in need. We believe in education as a right, not a privilege.</p>
-            <p><strong>How We Operate:</strong> Students can apply online or visit our branches. If they qualify, the loan is processed within minutes after verification. We support both collateral-based and guarantor-based models.</p>
-            <p><strong>Working Hours:</strong> Monday to Saturday — 8:00 AM to 5:00 PM | Sunday — Closed</p>
+            <div class="container">
+                <!-- Intro -->
+                <h2 class="section-title">About Us</h2>
+                <p class="company-name">MWANASHERIA MIKOPO CO. LTD</p>
+                <p class="intro">
+                    Founded on <strong>December 15, 2022</strong>, we are committed to making education
+                    accessible by providing fast, secure, and affordable student financing.
+                    With a dedicated team of 8 professionals, we strive to support students' dreams 
+                    because we believe education is a right — not a privilege.
+                </p>
+                <p class="hours"><strong>Working Hours:</strong> Mon–Sat 8:00 AM – 5:00 PM | Sunday Closed</p>
 
-            <h3>Leadership</h3>
-            <div class="leader">
-                <img src="ceo.jpg" alt="CEO - Silvester Mhagama" />
-                <div>
-                    <p><strong>Position:</strong> CEO</p>
-                    <p><strong>Name:</strong> Silvester Mhagama</p>
-                    <p><strong>Contact:</strong> +255 687 030 949</p>
+                <!-- Mission, Vision & Core Values -->
+                <h3 class="sub-title">Our Mission, Vision & Core Values</h3>
+                <div class="mv-container">
+                    <div class="mv-card">
+                        <h4>Our Mission</h4>
+                        <p>To empower students through financial aid that is fast, fair, and accessible — ensuring education remains a right, not a privilege.</p>
+                    </div>
+
+                    <div class="mv-card">
+                        <h4>Our Vision</h4>
+                        <p>To become Tanzania's most trusted student financing partner, enabling every learner to pursue education without financial barriers.</p>
+                    </div>
+
+                    <div class="mv-card">
+                        <h4>Our Core Values</h4>
+                        <ul>
+                            <li><strong>Reliability:</strong> We deliver on our promises.</li>
+                            <li><strong>Accessibility:</strong> Financing made simple and inclusive.</li>
+                            <li><strong>Trust:</strong> Honesty and integrity in all we do.</li>
+                            <li><strong>Excellence:</strong> Professionalism at every level.</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
 
-            <div class="leader">
-                <img src="gm.jpg" alt="GM - Tarcisius Mhagama" />
-                <div>
-                    <p><strong>Position:</strong> General Manager</p>
-                    <p><strong>Name:</strong> Tarcisius Mhagama</p>
-                    <p><strong>Contact:</strong> +255 696 378 787</p>
+                <!-- Leadership -->
+                <h3 class="sub-title">Leadership</h3>
+                <div class="leaders-container">
+                    <div class="leader-card">
+                        <img src="ceo.jpg" alt="CEO - Silvester Mhagama" />
+                        <h4>Silvester Mhagama</h4>
+                        <p>Chief Executive Officer</p>
+                        <p>+255 687 030 949</p>
+                    </div>
+
+                    <div class="leader-card">
+                        <img src="gm.jpg" alt="GM - Tarcisius Mhagama" />
+                        <h4>Tarcisius Mhagama</h4>
+                        <p>General Manager</p>
+                        <p>+255 696 378 787</p>
+                    </div>
                 </div>
+
+                <!-- Team Roles -->
+                <h3 class="sub-title">Our Team</h3>
+                <div class="roles-container">
+                    <div class="role-card">Finance Manager</div>
+                    <div class="role-card">Operations Manager</div>
+                    <div class="role-card">Risk & Compliance Manager</div>
+                    <div class="role-card">Marketing & Sales Manager</div>
+                    <div class="role-card">Customer Service Manager</div>
+                    <div class="role-card">HR Manager / Secretary</div>
+                </div>
+
+                <!-- Branches -->
+                <h3 class="sub-title">Our Reach</h3>
+                <p class="branches">Dar es Salaam | Mbeya</p>
             </div>
-
-            <h3>Other Key Roles</h3>
-            <ul>
-                <li>Finance Manager</li>
-                <li>Operations Manager</li>
-                <li>Risk & Compliance Manager</li>
-                <li>Marketing & Sales Manager</li>
-                <li>Customer Service Manager</li>
-                <li>HR Manager / Secretary</li>
-            </ul>
-
-            <h3>Branch Locations</h3>
-            <p>Dar es Salaam | Mbeya</p>
         </section>
 
         <!-- Terms Section -->
@@ -521,6 +729,12 @@
             // Update hash for deep-links
             if (location.hash.replace('#','') !== sectionId) {
                 history.replaceState(null, '', '#' + sectionId);
+            }
+
+            // Reveal elements on section show
+            if (sectionId === 'about') {
+                const revealElements = document.querySelectorAll('.mv-card, .leader-card, .role-card');
+                revealElements.forEach(el => el.classList.add('show'));
             }
         }
 

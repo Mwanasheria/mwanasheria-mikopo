@@ -527,12 +527,15 @@
                     if (!doc.exists || doc.data().role !== "admin") {
                         window.location.href = "user.html";
                     } else {
+                        // Set dropdown name text
+                        const dropdownNameItem = document.querySelector('.dropdown-menu .dropdown-item-text');
+                        if (dropdownNameItem) {
+                            dropdownNameItem.textContent = user.displayName || user.email || 'Admin';
+                        }
+                        
                         // Load avatar
                         const a = doc.data().avatar;
                         applyDefaultAvatarIfMissing(a);
-                        // Set dropdown name text
-                        const nameItem = document.getElementById('adminNameItem');
-                        if (nameItem) nameItem.textContent = user.displayName || user.email || 'Admin';
                         attachLoansListener();
                     }
                 });
