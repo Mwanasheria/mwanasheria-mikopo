@@ -115,21 +115,29 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#home" onclick="showSection('home')">
-                <img src="logo.jpg" alt="Logo" width="30" height="30" class="d-inline-block align-text-top" /> MWANASHERIA MIKOPO
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="logo.jpg" alt="Mwanasheria Mikopo" style="max-height: 50px;">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home" onclick="showSection('home')">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about" onclick="showSection('about')">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#terms" onclick="showSection('terms')">Terms</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact" onclick="showSection('contact')">Contact</a></li>
-                    <li class="nav-item"><a class="btn btn-primary ms-lg-2" href="login.html">Apply Now</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home" onclick="showSection('home')">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about" onclick="showSection('about')">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact" onclick="showSection('contact')">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white" href="login.html">Apply Now</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -495,7 +503,7 @@
                                     </div>
                                     <h4 class="card-title mb-3">Mbeya Office</h4>
                                     <p class="card-text text-muted mb-4">
-                                        P.O.Box 131, Mbeya Iiyunga Ikuti,<br>
+                                        P.O.Box 131, Mbeya Iyunga Ikuti,<br>
                                         Mbeya City, Tanzania
                                     </p>
                                     <div class="contact-methods">
@@ -549,7 +557,7 @@
         <!-- Footer -->
         <footer class="text-center py-3">
             <div class="container">
-                <p class="mb-0 text-primary">&copy; 2024 Mwanasheria Mikopo. All Rights Reserved.</p>
+                <p class="mb-0 text-primary">&copy; <span id="currentYear"></span> Mwanasheria Mikopo. All Rights Reserved.</p>
             </div>
         </footer>
 
@@ -665,6 +673,9 @@
 
             // Ensure proper viewport handling
             document.addEventListener('DOMContentLoaded', function() {
+                // Set current year
+                document.getElementById('currentYear').textContent = new Date().getFullYear();
+
                 // Prevent automatic text zooming on mobile
                 const metaViewport = document.createElement('meta');
                 metaViewport.name = 'viewport';
