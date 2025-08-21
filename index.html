@@ -133,10 +133,13 @@
                         <a class="nav-link" href="#about" onclick="showSection('about')">About</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#terms" onclick="showSection('terms')">Terms</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#contact" onclick="showSection('contact')">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white" href="login.html">Apply Now</a>
+                        <a class="btn btn-primary" href="login.html">Apply Now</a>
                     </li>
                 </ul>
             </div>
@@ -163,11 +166,11 @@
                                     designed to support your educational journey 
                                     without financial stress.
                                 </p>
-                                <div class="d-flex justify-content-center justify-content-lg-start gap-3 animate__animated animate__fadeInUp animate__delay-1s">
-                                    <a href="login.html" class="btn btn-primary btn-lg px-4 py-3 shadow">
+                                <div class="hero-button-container animate__animated animate__fadeInUp animate__delay-1s">
+                                    <a href="login.html" class="btn btn-primary">
                                         Apply Now
                                     </a>
-                                    <a href="#how-to-apply" class="btn btn-outline-primary btn-lg px-4 py-3 scrollLink">
+                                    <a href="#how-to-apply" class="btn btn-outline-primary scrollLink">
                                         Learn More
                                     </a>
                                 </div>
@@ -412,71 +415,36 @@
 
         <!-- Terms Section -->
         <section id="terms" class="inactive-section">
-            <div class="container">
-                <header class="text-center mb-4">
-                    <h1 class="text-primary">LOAN TERMS & CONDITIONS</h1>
-                    <p class="lead">For University Students</p>
-                </header>
-                
-                <div class="section mb-4">
-                    <h2 class="text-primary">LOAN ELIGIBILITY CRITERIA</h2>
-                    <p>Applicant must meet at least one of the two criteria. (Criterion 2 is used only for the study period.)</p>
-                    
-                    <h3 class="text-info">1. Loan with Collateral</h3>
-                    <ul>
-                        <li>Applicant must have collateral worth more than forty percent (40%) of the loan amount.</li>
-                        <li>Collateral will remain in the office until the loan is repaid.</li>
-                        <li>Collateral can be a Phone, PC, TV, Motorcycle, etc.</li>
-                    </ul>
-                    
-                    <div class="alert alert-info">
-                        <h3>Repayment Terms (Criterion 1)</h3>
-                        <p><strong>A.</strong> Applicant must repay the loan amount with 20%(Mbeya) / 25%(Dar es salaam) interest within the specified loan agreement period (30 days).</p>
-                        <p><strong>B.</strong> If any issue arises within the loan period, an extension request will be processed with an additional 20%(Mbeya) / 25%(Dar es salaam) interest on the amount due.</p>
-                        <p><strong>C.</strong> Contrary to (A/B), the collateral will be auctioned to recover the loan amount.</p>
+            <div class="container py-5">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="display-5 fw-bold text-primary mb-4">Terms & Conditions</h2>
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title mb-3">Loan Application Terms</h3>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <strong>Eligibility:</strong> Applicants must be registered students with valid university identification.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Loan Limits:</strong> Loans range from TShs 50,000 to 500,000 with specific terms for Dar es Salaam and Mbeya.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Interest Rates:</strong> 25% for Dar es Salaam, 20% for Mbeya, applied for a 30-day term.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Processing Fee:</strong> A fixed fee of TShs 3,000 applies to all loan applications.
+                                    </li>
+                                    <li class="list-group-item">
+                                        <strong>Repayment:</strong> Full repayment is expected within the specified loan term.
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <a href="#" class="btn btn-outline-primary">Download Full Terms PDF</a>
+                        </div>
                     </div>
-                    
-                    <h3 class="text-info">2. Loan with Loan Board Guarantee</h3>
-                    <p>If the applicant is guaranteed by the loan board and needs a loan to make repayments through self-sustaining funds from the loan board, the maximum amount is TShs 50,000/=.</p>
-                    
-                    <h3>Loan Board Guarantee Requirements</h3>
-                    <ul>
-                        <li>Visit the office with the bank card used to receive self-sustaining funds, HESLB and college information.</li>
-                        <li>One of the following identification documents:
-                            <ul>
-                                <li>Form Four Certificate</li>
-                                <li>Form Six Certificate</li>
-                                <li>National Identification (NIDA)</li>
-                                <li>Passport</li>
-                                <li>Driver's License</li>
-                            </ul>
-                        </li>
-                    </ul>
-                    
-                    <div class="alert alert-info">
-                        <h3>Repayment Terms (Criterion 2)</h3>
-                        <p><strong>A)</strong> Applicant must repay the loan amount with 20%(Mbeya) / 25%(Dar es salaam) interest within the specified loan agreement period (30 days).</p>
-                        <p><strong>B)</strong> If the loan exceeds the agreement period (30 days), and the applicant fails to repay due to delayed self-sustaining funds, the following terms will apply to the loan and interest calculation:
-                            <ul>
-                                <li><strong>Days 1 to 15:</strong> Additional 15% of the amount due.</li>
-                                <li><strong>Days 16 to 30:</strong> Additional 20%(Mbeya) / 25%(Dar es salaam) of the amount due.</li>
-            </ul>
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="section mb-4">
-                    <h2 class="text-primary">DIGITAL SYSTEM REGISTRATION</h2>
-                    <p>Applicant will register on the Mwanasheria-Mikopo digital system for tracking, reminders, and record keeping for the applicant's and office's benefit.</p>
-                </div>
-                
-                <div class="section mb-4">
-                    <h2 class="text-primary">LOAN VERIFICATION</h2>
-                    <p>By accepting a loan from Mwanasheria-Mikopo Co. Ltd, the applicant agrees to all terms set forth and commits to fully comply.</p>
-                </div>
-                
-                <div class="text-center mt-4">
-                    <a href="terms_conditions.pdf" download class="btn btn-outline-primary mt-3">Download Signed Terms & Conditions PDF</a>
                 </div>
             </div>
         </section>
@@ -562,6 +530,106 @@
         </footer>
 
         <style>
+            /* Professional Button Styles */
+            .btn-primary {
+                position: relative;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-weight: 600;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                padding: 12px 24px;
+                background-color: #2c3e50;
+                border-color: #2c3e50;
+            }
+
+            .btn-primary::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+                transition: all 0.5s ease;
+            }
+
+            .btn-primary:hover::before {
+                left: 100%;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+                background-color: #34495e;
+                border-color: #34495e;
+            }
+
+            .btn-primary:active {
+                transform: translateY(1px);
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+
+            .btn-outline-primary {
+                border-width: 2px;
+                border-color: #2c3e50;
+                color: #2c3e50;
+                transition: all 0.3s ease;
+                border-radius: 8px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                padding: 12px 24px;
+            }
+
+            .btn-outline-primary:hover {
+                background-color: #2c3e50;
+                color: white !important;
+                border-color: #2c3e50;
+            }
+
+            /* Responsive Button Adjustments */
+            @media (max-width: 768px) {
+                .btn-primary, .btn-outline-primary {
+                    padding: 10px 20px;
+                    font-size: 0.9rem;
+                }
+
+                .navbar .btn-primary {
+                    display: block;
+                    width: 100%;
+                    margin-top: 10px;
+                }
+            }
+
+            /* Ensure touch targets */
+            .btn {
+                min-height: 44px;
+                min-width: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                user-select: none;
+                -webkit-user-select: none;
+                touch-action: manipulation;
+            }
+
+            /* Hero Section Button Container */
+            .hero-button-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                justify-content: center;
+            }
+
+            @media (min-width: 768px) {
+                .hero-button-container {
+                    justify-content: flex-start;
+                }
+            }
+
             /* Mobile Responsiveness Enhancements */
             @media (max-width: 768px) {
                 .hero-wrapper {
@@ -619,15 +687,6 @@
                 max-width: 100%;
                 padding-left: 15px;
                 padding-right: 15px;
-            }
-
-            /* Improve touch target sizes */
-            .btn {
-                min-height: 44px;
-                min-width: 44px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
             }
 
             /* Responsive Typography */
