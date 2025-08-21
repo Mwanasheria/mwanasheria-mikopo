@@ -547,9 +547,9 @@
         </section>
 
         <!-- Footer -->
-        <footer class="bg-primary text-white text-center py-3">
+        <footer class="text-center py-3">
             <div class="container">
-                <p class="mb-0">&copy; 2024 Mwanasheria Mikopo. All Rights Reserved.</p>
+                <p class="mb-0 text-primary">&copy; 2024 Mwanasheria Mikopo. All Rights Reserved.</p>
             </div>
         </footer>
 
@@ -639,6 +639,30 @@
         </style>
 
         <script>
+            // Restore showSection function
+            function showSection(sectionId) {
+                // Hide all sections
+                ['home', 'about', 'terms', 'contact'].forEach(id => {
+                    const section = document.getElementById(id);
+                    if (section) {
+                        section.classList.remove('active-section');
+                        section.classList.add('inactive-section');
+                    }
+                });
+
+                // Show selected section
+                const selectedSection = document.getElementById(sectionId);
+                if (selectedSection) {
+                    selectedSection.classList.remove('inactive-section');
+                    selectedSection.classList.add('active-section');
+                }
+
+                // Update URL hash
+                if (location.hash !== '#' + sectionId) {
+                    history.replaceState(null, '', '#' + sectionId);
+                }
+            }
+
             // Ensure proper viewport handling
             document.addEventListener('DOMContentLoaded', function() {
                 // Prevent automatic text zooming on mobile
@@ -646,6 +670,16 @@
                 metaViewport.name = 'viewport';
                 metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
                 document.head.appendChild(metaViewport);
+
+                // Restore hash navigation
+                function handleHashNavigation() {
+                    const hash = (location.hash || '#home').replace('#','');
+                    const allowed = ['home','about','terms','contact'];
+                    showSection(allowed.includes(hash) ? hash : 'home');
+                }
+
+                window.addEventListener('hashchange', handleHashNavigation);
+                handleHashNavigation();
 
                 // Responsive image handling
                 const heroImage = document.querySelector('.hero-image img');
