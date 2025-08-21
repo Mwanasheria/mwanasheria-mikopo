@@ -103,6 +103,25 @@
         .status-pending { background:#fff3cd; color:#8a6d3b; }
         .status-approved { background:#d1e7dd; color:#0f5132; }
         .status-declined { background:#f8d7da; color:#842029; }
+
+        /* Form validation styles */
+        .was-validated .form-control:invalid {
+            border-color: #dc3545;
+            padding-right: calc(1.5em + 0.75rem);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        }
+
+        .was-validated .form-control:valid {
+            border-color: #198754;
+            padding-right: calc(1.5em + 0.75rem);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right calc(0.375em + 0.1875rem) center;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+        }
     </style>
 </head>
 
@@ -198,10 +217,22 @@
                             <label class="form-label">End Date</label>
                             <input class="form-control" id="dar-end-date" name="dar-end-date" type="date" required />
                         </div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-loan-amount" name="dar-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-interest-rate" name="dar-interest-rate" value="25" readonly /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-processing-fee" name="dar-processing-fee" value="3000" readonly /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="dar-total-amount" name="dar-total-amount" placeholder="Jumla ya kurejeshwa" readonly /></div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Kiasi cha mkopo (TShs)</label>
+                            <input class="form-control" id="dar-loan-amount" name="dar-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required />
+                        </div>
+                        <div class="col-md-4 mb-2 d-none">
+                            <label class="form-label">Interest Rate (%)</label>
+                            <input class="form-control" id="dar-interest-rate" name="dar-interest-rate" value="25" readonly />
+                        </div>
+                        <div class="col-md-4 mb-2 d-none">
+                            <label class="form-label">Processing Fee (TShs)</label>
+                            <input class="form-control" id="dar-processing-fee" name="dar-processing-fee" value="3000" readonly />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Jumla ya kurejeshwa (TShs)</label>
+                            <input class="form-control" id="dar-total-amount" name="dar-total-amount" placeholder="Jumla ya kurejeshwa" readonly />
+                        </div>
                     </div>
                     <!-- Optional device details as before -->
                     <div class="row">
@@ -240,10 +271,22 @@
                             <label class="form-label">End Date</label>
                             <input class="form-control" id="mbeya-end-date" name="mbeya-end-date" type="date" required />
                         </div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-loan-amount" name="mbeya-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-interest-rate" name="mbeya-interest-rate" value="20" readonly /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-processing-fee" name="mbeya-processing-fee" value="3000" readonly /></div>
-                        <div class="col-md-4 mb-2"><input class="form-control" id="mbeya-total-amount" name="mbeya-total-amount" placeholder="Jumla ya kurejeshwa" readonly /></div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Kiasi cha mkopo (TShs)</label>
+                            <input class="form-control" id="mbeya-loan-amount" name="mbeya-loan-amount" placeholder="Kiasi cha mkopo (TShs)" type="number" required />
+                        </div>
+                        <div class="col-md-4 mb-2 d-none">
+                            <label class="form-label">Interest Rate (%)</label>
+                            <input class="form-control" id="mbeya-interest-rate" name="mbeya-interest-rate" value="20" readonly />
+                        </div>
+                        <div class="col-md-4 mb-2 d-none">
+                            <label class="form-label">Processing Fee (TShs)</label>
+                            <input class="form-control" id="mbeya-processing-fee" name="mbeya-processing-fee" value="3000" readonly />
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label class="form-label">Jumla ya kurejeshwa (TShs)</label>
+                            <input class="form-control" id="mbeya-total-amount" name="mbeya-total-amount" placeholder="Jumla ya kurejeshwa" readonly />
+                        </div>
                     </div>
                     <!-- Optional device details as before -->
                     <div class="row">
@@ -590,9 +633,9 @@
                 }
 
                 const loanData = Object.assign({
-                    uid: auth.currentUser.uid,
-                    status: "Pending",
-                    message: "",
+                uid: auth.currentUser.uid,
+                status: "Pending",
+                message: "",
                     collateralQuality: {
                         purchaseDate,
                         condition,
@@ -600,7 +643,7 @@
                         serialNumber,
                         estimatedValue
                     },
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 }, cityPayload);
 
                 console.log("Submitting loan data:", loanData);
@@ -820,6 +863,38 @@
                 window.location.href = "login.html";
             }
         });
+
+        // Custom form validation to prevent browser validation errors
+        function setupFormValidation() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        
+                        // Find and focus on the first invalid input
+                        const invalidInputs = form.querySelectorAll(':invalid');
+                        if (invalidInputs.length > 0) {
+                            invalidInputs[0].focus();
+                        }
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+
+                // Remove validation styling when input changes
+                const inputs = form.querySelectorAll('input, select');
+                inputs.forEach(input => {
+                    input.addEventListener('input', function() {
+                        input.classList.remove('is-invalid');
+                        form.classList.remove('was-validated');
+                    });
+                });
+            });
+        }
+
+        // Call this after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', setupFormValidation);
     </script>
 </body>
 
