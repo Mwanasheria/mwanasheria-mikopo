@@ -510,13 +510,13 @@
                 return;
             }
             console.log("User authenticated:", user.uid);
+            console.log("User email:", user.email);
 
             try {
                 // Validate and map per city
                 let cityPayload = {};
                 console.log("Current city:", currentCity);
                 
-                // Determine which form is active
                 const prefix = currentCity === 'dar' ? 'dar' : 'mbeya';
                 const requiredIds = [
                     `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-reg-number`, 
@@ -544,25 +544,12 @@
                     }
                 }
 
-                // Date validation
-                const startDateEl = document.getElementById(`${prefix}-start-date`);
-                const endDateEl = document.getElementById(`${prefix}-end-date`);
-                const start = new Date(startDateEl.value);
-                const end = new Date(endDateEl.value);
-                
-                if (!(end > start)) {
-                    Swal.fire('Error', 'End date must be after start date', 'error');
-                    endDateEl.focus();
-                    return;
-                }
-
-                // Prepare loan data
-                const amountNum = parseFloat(document.getElementById(`${prefix}-loan-amount`).value) || 0;
-                const interestRateNum = parseFloat(document.getElementById(`${prefix}-interest-rate`).value) || 0;
-                const feeNum = parseFloat(document.getElementById(`${prefix}-processing-fee`).value) || 0;
-                const totalNum = amountNum + (amountNum * interestRateNum/100) + feeNum;
-
-                cityPayload = {
+                // Prepare complete loan data
+                const loanData = {
+                    uid: user.uid,
+                    status: "Pending",
+                    message: "",
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     city: currentCity === 'dar' ? 'Dar es Salaam' : 'Mbeya',
                     name: document.getElementById(`${prefix}-borrower-name`).value,
                     university: document.getElementById(`${prefix}-university`).value,
@@ -578,44 +565,22 @@
                         document.getElementById(`${prefix}-collateral1`).value, 
                         document.getElementById(`${prefix}-collateral2`).value
                     ].filter(Boolean).join(' ; '),
-                    startDate: startDateEl.value,
-                    endDate: endDateEl.value,
-                    amount: amountNum,
-                    interestRate: interestRateNum,
-                    processingFee: feeNum,
-                    totalAmount: totalNum,
+                    startDate: document.getElementById(`${prefix}-start-date`).value,
+                    endDate: document.getElementById(`${prefix}-end-date`).value,
+                    amount: parseFloat(document.getElementById(`${prefix}-loan-amount`).value) || 0,
+                    interestRate: parseFloat(document.getElementById(`${prefix}-interest-rate`).value) || 0,
+                    processingFee: parseFloat(document.getElementById(`${prefix}-processing-fee`).value) || 0,
+                    totalAmount: parseFloat(document.getElementById(`${prefix}-total-amount`).value) || 0,
                     ram: document.getElementById(`${prefix}-ram`).value,
                     storage: document.getElementById(`${prefix}-storage`).value,
-                    brand: document.getElementById(`${prefix}-brand`).value
-                };
-
-                // Collateral quality validation
-                const purchaseDate = document.getElementById('purchase-date').value;
-                const condition = document.getElementById('condition').value;
-                const hasReceipt = document.getElementById('has-receipt').value;
-                const serialNumber = document.getElementById('serial-number').value;
-                const estimatedValue = parseFloat(document.getElementById('estimated-value').value || '0');
-                
-                // Validate collateral quality
-                if (!purchaseDate || !condition || !hasReceipt || !serialNumber || !estimatedValue) {
-                    Swal.fire('Error', 'Please complete the collateral quality section', 'error');
-                    return;
-                }
-
-                // Prepare complete loan data
-                const loanData = {
-                    uid: user.uid,
-                    status: "Pending",
-                    message: "",
+                    brand: document.getElementById(`${prefix}-brand`).value,
                     collateralQuality: {
-                        purchaseDate,
-                        condition,
-                        hasReceipt,
-                        serialNumber,
-                        estimatedValue
-                    },
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                    ...cityPayload
+                        purchaseDate: document.getElementById('purchase-date').value,
+                        condition: document.getElementById('condition').value,
+                        hasReceipt: document.getElementById('has-receipt').value,
+                        serialNumber: document.getElementById('serial-number').value,
+                        estimatedValue: parseFloat(document.getElementById('estimated-value').value || '0')
+                    }
                 };
 
                 console.log("Preparing to submit loan data:", loanData);
@@ -625,6 +590,11 @@
                     console.log("Firestore object:", db);
                     console.log("Firestore collection method exists:", typeof db.collection === 'function');
                     
+                    // Validate loan data before submission
+                    if (!loanData.uid) {
+                        throw new Error("User ID is missing");
+                    }
+
                     const docRef = await db.collection("loans").add(loanData);
                     console.log("Loan submitted successfully with ID:", docRef.id);
 
@@ -633,10 +603,20 @@
                     showDashboard();
                 } catch (firestoreError) {
                     console.error("Firestore submission error:", firestoreError);
+                    console.error("Error details:", {
+                        name: firestoreError.name,
+                        message: firestoreError.message,
+                        stack: firestoreError.stack
+                    });
                     Swal.fire("Error", `Failed to submit loan: ${firestoreError.message}`, "error");
                 }
             } catch (error) {
                 console.error("Full submission error:", error);
+                console.error("Error details:", {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack
+                });
                 Swal.fire("Error", `An unexpected error occurred: ${error.message}`, "error");
             }
         }
