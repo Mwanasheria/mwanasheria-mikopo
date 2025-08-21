@@ -90,9 +90,7 @@
                 <img id="topAvatar" src="logo.jpg" alt="avatar" class="rounded-circle" style="width:34px;height:34px;object-fit:cover;">
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-                <li><button class="dropdown-item" onclick="openProfileModal()">My Profile</button></li>
-                <li><button id="notifyMenuItem" class="dropdown-item" onclick="enableNotifications()">Enable Notifications</button></li>
-                <li><button class="dropdown-item" onclick="openAvatarModal()">Choose Avatar</button></li>
+                <li><span class="dropdown-item-text" id="adminNameItem">Admin</span></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><button class="dropdown-item text-danger" onclick="logout()">Logout</button></li>
             </ul>
@@ -532,11 +530,9 @@
                         // Load avatar
                         const a = doc.data().avatar;
                         applyDefaultAvatarIfMissing(a);
-                        // Set user name for profile modal
-                        const pfName = document.getElementById('pfName');
-                        const pfEmail = document.getElementById('pfEmail');
-                        if (pfName) pfName.textContent = user.displayName || user.email || 'Admin';
-                        if (pfEmail) pfEmail.textContent = user.email || 'No email';
+                        // Set dropdown name text
+                        const nameItem = document.getElementById('adminNameItem');
+                        if (nameItem) nameItem.textContent = user.displayName || user.email || 'Admin';
                         attachLoansListener();
                     }
                 });

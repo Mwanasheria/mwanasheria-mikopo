@@ -490,15 +490,26 @@
         async function submitLoan(e) {
             e.preventDefault();
             console.log("Form submission started");
+            console.log("Firebase configuration:", firebaseConfig);
+            console.log("Firebase initialized:", firebase.apps.length > 0);
+            
             const form = e.target;
 
+            // Check if Firebase is properly initialized
+            if (!firebase || !firebase.firestore) {
+                console.error("Firebase or Firestore not properly initialized");
+                Swal.fire("Error", "Firebase services are not available", "error");
+                return;
+            }
+
             // Check if user is authenticated
-            if (!auth.currentUser) {
+            const user = auth.currentUser;
+            if (!user) {
                 console.error("User not authenticated");
                 Swal.fire("Error", "You must be logged in to submit a loan", "error");
                 return;
             }
-            console.log("User authenticated:", auth.currentUser.uid);
+            console.log("User authenticated:", user.uid);
 
             try {
                 // Validate and map per city
@@ -506,15 +517,6 @@
                 console.log("Current city:", currentCity);
                 
                 // Determine which form is active
-                const activeForm = currentCity === 'dar' ? 'darForm' : 'mbeyaForm';
-                const formElement = document.getElementById(activeForm);
-                
-                if (!formElement) {
-                    console.error(`Form element ${activeForm} not found`);
-                    Swal.fire('Error', 'Loan form not found', 'error');
-                    return;
-                }
-
                 const prefix = currentCity === 'dar' ? 'dar' : 'mbeya';
                 const requiredIds = [
                     `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-reg-number`, 
@@ -526,6 +528,7 @@
                     `${prefix}-ram`, `${prefix}-storage`, `${prefix}-brand`
                 ];
 
+                // Validate form fields
                 for (const id of requiredIds) {
                     const el = document.getElementById(id);
                     if (!el) {
@@ -541,6 +544,7 @@
                     }
                 }
 
+                // Date validation
                 const startDateEl = document.getElementById(`${prefix}-start-date`);
                 const endDateEl = document.getElementById(`${prefix}-end-date`);
                 const start = new Date(startDateEl.value);
@@ -552,6 +556,7 @@
                     return;
                 }
 
+                // Prepare loan data
                 const amountNum = parseFloat(document.getElementById(`${prefix}-loan-amount`).value) || 0;
                 const interestRateNum = parseFloat(document.getElementById(`${prefix}-interest-rate`).value) || 0;
                 const feeNum = parseFloat(document.getElementById(`${prefix}-processing-fee`).value) || 0;
@@ -584,11 +589,6 @@
                     brand: document.getElementById(`${prefix}-brand`).value
                 };
 
-                const submitBtn = form.querySelector('button[type="submit"]');
-                const originalBtnText = submitBtn.textContent;
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Submitting...';
-
                 // Collateral quality validation
                 const purchaseDate = document.getElementById('purchase-date').value;
                 const condition = document.getElementById('condition').value;
@@ -596,46 +596,17 @@
                 const serialNumber = document.getElementById('serial-number').value;
                 const estimatedValue = parseFloat(document.getElementById('estimated-value').value || '0');
                 
-                if (!purchaseDate) {
-                    Swal.fire('Error', 'Please select purchase date', 'error');
-                    document.getElementById('purchase-date').focus();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalBtnText;
-                    return;
-                }
-                if (!condition) {
-                    Swal.fire('Error', 'Please select collateral condition', 'error');
-                    document.getElementById('condition').focus();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalBtnText;
-                    return;
-                }
-                if (!hasReceipt) {
-                    Swal.fire('Error', 'Please select receipt availability', 'error');
-                    document.getElementById('has-receipt').focus();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalBtnText;
-                    return;
-                }
-                if (!serialNumber.trim()) {
-                    Swal.fire('Error', 'Please enter serial/IMEI number', 'error');
-                    document.getElementById('serial-number').focus();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalBtnText;
-                    return;
-                }
-                if (!estimatedValue || estimatedValue <= 0) {
-                    Swal.fire('Error', 'Please enter valid estimated value', 'error');
-                    document.getElementById('estimated-value').focus();
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = originalBtnText;
+                // Validate collateral quality
+                if (!purchaseDate || !condition || !hasReceipt || !serialNumber || !estimatedValue) {
+                    Swal.fire('Error', 'Please complete the collateral quality section', 'error');
                     return;
                 }
 
-                const loanData = Object.assign({
-                uid: auth.currentUser.uid,
-                status: "Pending",
-                message: "",
+                // Prepare complete loan data
+                const loanData = {
+                    uid: user.uid,
+                    status: "Pending",
+                    message: "",
                     collateralQuality: {
                         purchaseDate,
                         condition,
@@ -643,53 +614,68 @@
                         serialNumber,
                         estimatedValue
                     },
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                }, cityPayload);
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    ...cityPayload
+                };
 
-                console.log("Submitting loan data:", loanData);
+                console.log("Preparing to submit loan data:", loanData);
 
-                const docRef = await db.collection("loans").add(loanData);
-                console.log("Loan submitted with ID:", docRef.id);
+                // Attempt Firestore submission
+                try {
+                    console.log("Firestore object:", db);
+                    console.log("Firestore collection method exists:", typeof db.collection === 'function');
+                    
+                    const docRef = await db.collection("loans").add(loanData);
+                    console.log("Loan submitted successfully with ID:", docRef.id);
 
-                Swal.fire("Success", "Loan application submitted!", "success");
-                form.reset();
-                showDashboard();
-                // Reset UI
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalBtnText;
-            } catch (error) {
-                console.error("Full error details:", error);
-                Swal.fire("Error", `Failed to submit loan application: ${error.message}`, "error");
-                // Reset UI on error
-                const form = e.target;
-                const submitBtn = form.querySelector('button[type="submit"]');
-                if (submitBtn) { 
-                    submitBtn.disabled = false; 
-                    submitBtn.textContent = 'Submit Loan'; 
+                    Swal.fire("Success", "Loan application submitted!", "success");
+                    form.reset();
+                    showDashboard();
+                } catch (firestoreError) {
+                    console.error("Firestore submission error:", firestoreError);
+                    Swal.fire("Error", `Failed to submit loan: ${firestoreError.message}`, "error");
                 }
+            } catch (error) {
+                console.error("Full submission error:", error);
+                Swal.fire("Error", `An unexpected error occurred: ${error.message}`, "error");
             }
         }
 
         function enableNotifications() {
+            const STORAGE_KEY = 'notificationsEnabled';
             if (!('Notification' in window)) {
                 Swal.fire('Unsupported', 'Your browser does not support notifications.', 'info');
                 return;
             }
-            if (Notification.permission === 'granted') {
-                Swal.fire('Enabled', 'Notifications are already enabled.', 'success');
+            const current = localStorage.getItem(STORAGE_KEY) === 'true';
+            // If currently enabled, turn off
+            if (current) {
+                localStorage.setItem(STORAGE_KEY, 'false');
                 const item = document.getElementById('notifyMenuItem');
-                if (item) item.textContent = 'Notifications On';
+                if (item) item.textContent = 'Enable Notifications';
+                Swal.fire('Disabled', 'Notifications turned off.', 'success');
                 return;
             }
+            // Request permission to turn on
+            if (Notification.permission === 'granted') {
+                localStorage.setItem(STORAGE_KEY, 'true');
+                const item = document.getElementById('notifyMenuItem');
+                if (item) item.textContent = 'Disable Notifications';
+                Swal.fire('Enabled', 'You will receive updates when your loan status changes.', 'success');
+            } else if (Notification.permission !== 'denied') {
             Notification.requestPermission().then(permission => {
                 if (permission === 'granted') {
-                    const item = document.getElementById('notifyMenuItem');
-                    if (item) item.textContent = 'Notifications On';
+                        localStorage.setItem(STORAGE_KEY, 'true');
+                        const item = document.getElementById('notifyMenuItem');
+                        if (item) item.textContent = 'Disable Notifications';
                     Swal.fire('Enabled', 'You will receive updates when your loan status changes.', 'success');
                 } else {
                     Swal.fire('Notice', 'Notifications were not enabled.', 'info');
                 }
             });
+            } else {
+                Swal.fire('Blocked', 'Notifications are blocked in browser settings.', 'info');
+            }
         }
 
         function notifyStatusChange(status, message) {
