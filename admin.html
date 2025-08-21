@@ -364,6 +364,39 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <!-- Signature Section -->
+                        <div class="row mt-4">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">Applicant Signature</div>
+                                    <div class="card-body" style="min-height: 150px;">
+                                        <p class="text-muted">Signature: ____________________</p>
+                                        <p class="text-muted">Date: ____________________</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">CEO Signature</div>
+                                    <div class="card-body" style="min-height: 150px;">
+                                        <p class="text-muted">Name: Silvester Mhagama</p>
+                                        <p class="text-muted">Signature: ____________________</p>
+                                        <p class="text-muted">Date: ____________________</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header">General Manager Signature</div>
+                                    <div class="card-body" style="min-height: 150px;">
+                                        <p class="text-muted">Name: Tarcisius Mhagama</p>
+                                        <p class="text-muted">Signature: ____________________</p>
+                                        <p class="text-muted">Date: ____________________</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 `;
                 
@@ -549,27 +582,24 @@
                         };
 
                         row.innerHTML = `
-                            <td>${truncate(d.name)}</td>
-                            <td>${truncate(d.university)}</td>
                             <td>${d.city || 'N/A'}</td>
+                            <td>${truncate(d.name)}</td>
                             <td>${formatAmount(d.amount)}</td>
                             <td>${getStatusBadge(d.status)}</td>
                             <td>
                                 <div class="d-flex justify-content-start align-items-center">
                                     <button onclick="viewLoan('${doc.id}')" class="btn btn-sm btn-secondary me-2" title="View Details">
-                                        <i class="fas fa-eye"></i>
+                                        View
                                     </button>
-                                    <div class="btn-group" role="group">
-                                        <button onclick="changeLoanStatus('${doc.id}', 'Approved')" class="btn btn-sm btn-success me-2" title="Approve">
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                        <button onclick="changeLoanStatus('${doc.id}', 'Declined')" class="btn btn-sm btn-warning me-2" title="Decline">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                        <button onclick="deleteLoan('${doc.id}')" class="btn btn-sm btn-danger" title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
+                                    <button onclick="changeLoanStatus('${doc.id}', 'Approved')" class="btn btn-sm btn-success me-2" title="Approve">
+                                        Approve
+                                    </button>
+                                    <button onclick="changeLoanStatus('${doc.id}', 'Declined')" class="btn btn-sm btn-warning me-2" title="Decline">
+                                        Decline
+                                    </button>
+                                    <button onclick="deleteLoan('${doc.id}')" class="btn btn-sm btn-danger" title="Delete">
+                                        Delete
+                                    </button>
                                 </div>
                             </td>
                         `;
