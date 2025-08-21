@@ -106,49 +106,49 @@
         <a href="#" onclick="exportLoans()">📤 Export to CSV</a>
     </div>
 
-    <div class="main" id="mainContent">
-        <div class="d-flex align-items-center justify-content-between">
-            <h4 class="mb-0">Loan Requests</h4>
-            <div class="d-flex gap-2 small">
-                <span class="badge text-bg-secondary" id="countPending">Pending: 0</span>
-                <span class="badge text-bg-success" id="countApproved">Approved: 0</span>
-                <span class="badge text-bg-danger" id="countDeclined">Declined: 0</span>
+    <!-- Loan Applications Section -->
+    <div class="container-fluid">
+        <div class="row mb-3">
+            <div class="col-12 d-flex justify-content-between align-items-center">
+                <h2>Loan Applications</h2>
+                <div>
+                    <span id="countPending" class="badge bg-warning me-2">Pending: 0</span>
+                    <span id="countApproved" class="badge bg-success me-2">Approved: 0</span>
+                    <span id="countDeclined" class="badge bg-danger">Declined: 0</span>
+                </div>
             </div>
         </div>
+        
         <div class="table-responsive mt-3">
-            <table class="table table-bordered table-sm align-middle" id="loansTable">
+            <table id="loansTable" class="table table-striped">
                 <thead>
                     <tr>
                         <th>City</th>
                         <th>Name</th>
-                        <th>Contact</th>
-                        <th>University</th>
-                        <th>Collateral</th>
-                        <th>Quality</th>
                         <th>Amount</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody></tbody>
             </table>
         </div>
+    </div>
 
-        <!-- Details Modal -->
-        <div class="modal fade" id="loanDetailsModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Loan Application Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div id="loanDetailsContent"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="downloadPdfBtn" class="btn btn-secondary">Download PDF</button>
-                        <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+    <!-- Details Modal -->
+    <div class="modal fade" id="loanDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Loan Application Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="loanDetailsContent"></div>
+                </div>
+                <div class="modal-footer">
+                    <button id="downloadPdfBtn" class="btn btn-secondary">Download PDF</button>
+                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -556,58 +556,63 @@
             loansTableBody.innerHTML = ''; // Clear existing rows
 
             db.collection('loans').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-                snapshot.docChanges().forEach(change => {
-                    if (change.type === 'added' || change.type === 'modified') {
-                        const doc = change.doc;
-                        const d = doc.data();
-                        const row = document.createElement('tr');
-                        
-                        // Truncate and format functions
-                        const truncate = (text, maxLength = 20) => 
-                            text && text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-                        
-                        const formatAmount = (amount) => 
-                            amount ? `TShs ${amount.toLocaleString()}` : 'N/A';
-                        
-                        // Determine status badge
-                        const getStatusBadge = (status) => {
-                            switch(status) {
-                                case 'Approved': 
-                                    return '<span class="badge bg-success">Approved</span>';
-                                case 'Declined': 
-                                    return '<span class="badge bg-danger">Declined</span>';
-                                default: 
-                                    return '<span class="badge bg-warning">Pending</span>';
-                            }
-                        };
+                let pending = 0, approved = 0, declined = 0;
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const tr = document.createElement('tr');
+                    
+                    // Truncate name if too long
+                    const truncateName = (name, maxLength = 20) => 
+                        name && name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+                    
+                    // Format amount
+                    const formatAmount = (amount) => 
+                        amount ? `TShs ${amount.toLocaleString()}` : 'N/A';
+                    
+                    // Status badge
+                    const statusBadge = (status) => {
+                        switch(status.toLowerCase()) {
+                            case 'approved': 
+                                approved++;
+                                return '<span class="badge bg-success">Approved</span>';
+                            case 'declined': 
+                                declined++;
+                                return '<span class="badge bg-danger">Declined</span>';
+                            default: 
+                                pending++;
+                                return '<span class="badge bg-warning">Pending</span>';
+                        }
+                    };
 
-                        row.innerHTML = `
-                            <td>${d.city || 'N/A'}</td>
-                            <td>${truncate(d.name)}</td>
-                            <td>${formatAmount(d.amount)}</td>
-                            <td>${getStatusBadge(d.status)}</td>
-                            <td>
-                                <div class="d-flex justify-content-start align-items-center">
-                                    <button onclick="viewLoan('${doc.id}')" class="btn btn-sm btn-secondary me-2" title="View Details">
-                                        View
-                                    </button>
-                                    <button onclick="changeLoanStatus('${doc.id}', 'Approved')" class="btn btn-sm btn-success me-2" title="Approve">
-                                        Approve
-                                    </button>
-                                    <button onclick="changeLoanStatus('${doc.id}', 'Declined')" class="btn btn-sm btn-warning me-2" title="Decline">
-                                        Decline
-                                    </button>
-                                    <button onclick="deleteLoan('${doc.id}')" class="btn btn-sm btn-danger" title="Delete">
-                                        Delete
-                                    </button>
-                                </div>
-                            </td>
-                        `;
-                        
-                        // Prepend new row to maintain descending order
-                        loansTableBody.insertBefore(row, loansTableBody.firstChild);
-                    }
+                    tr.innerHTML = `
+                        <td>${data.city || 'N/A'}</td>
+                        <td>${truncateName(data.name)}</td>
+                        <td>${formatAmount(data.amount)}</td>
+                        <td>${statusBadge(data.status)}</td>
+                        <td>
+                            <div class="d-flex justify-content-start align-items-center">
+                                <button onclick="viewLoan('${doc.id}')" class="btn btn-sm btn-secondary me-2" title="View Details">
+                                    View
+                                </button>
+                                <button onclick="changeLoanStatus('${doc.id}', 'Approved')" class="btn btn-sm btn-success me-2" title="Approve">
+                                    Approve
+                                </button>
+                                <button onclick="changeLoanStatus('${doc.id}', 'Declined')" class="btn btn-sm btn-warning me-2" title="Decline">
+                                    Decline
+                                </button>
+                                <button onclick="deleteLoan('${doc.id}')" class="btn btn-sm btn-danger" title="Delete">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    loansTableBody.appendChild(tr);
                 });
+
+                // Update status counts
+                document.getElementById('countPending').textContent = `Pending: ${pending}`;
+                document.getElementById('countApproved').textContent = `Approved: ${approved}`;
+                document.getElementById('countDeclined').textContent = `Declined: ${declined}`;
             }, error => {
                 console.error("Error fetching loans:", error);
                 Swal.fire('Error', 'Failed to load loan applications', 'error');
