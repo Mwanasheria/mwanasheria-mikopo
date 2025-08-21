@@ -238,6 +238,141 @@
             auth.signOut().then(() => window.location.href = 'index.html');
         }
 
+        function sendUserNotification(userId, loanId, status, message) {
+            // Create a notification document in a 'notifications' collection
+            return db.collection('notifications').add({
+                userId: userId,
+                loanId: loanId,
+                status: status,
+                message: message,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                read: false
+            });
+        }
+
+        function changeLoanStatus(docId, status) {
+            // Ensure user is authenticated and is an admin
+            const user = auth.currentUser;
+            if (!user) {
+                Swal.fire('Error', 'You must be logged in', 'error');
+                return;
+            }
+
+            // Prepare notification message based on status
+            let notificationMessage = '';
+            switch(status) {
+                case 'Approved':
+                    notificationMessage = 'Congratulations! Your loan application has been approved. Please visit our office for further details.';
+                    break;
+                case 'Declined':
+                    notificationMessage = 'We regret to inform you that your loan application has been declined. Please contact our office for more information.';
+                    break;
+                default:
+                    notificationMessage = 'There has been an update to your loan application.';
+            }
+
+            // Prompt for additional message
+            Swal.fire({
+                title: `Change Status to ${status}`,
+                text: 'Do you want to add a custom message?',
+                input: 'textarea',
+                inputPlaceholder: 'Optional custom message...',
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
+                cancelButtonText: 'Cancel',
+                preConfirm: (customMessage) => {
+                    // If custom message is provided, use it; otherwise use default
+                    const finalMessage = customMessage || notificationMessage;
+
+                    // Update Firestore document
+                    return db.collection('loans').doc(docId).get()
+                        .then(doc => {
+                            const loanData = doc.data();
+                            
+                            // Update loan status
+                            return doc.ref.update({
+                                status: status,
+                                message: finalMessage
+                            })
+                            .then(() => {
+                                // Send notification to user
+                                return sendUserNotification(
+                                    loanData.uid, 
+                                    docId, 
+                                    status, 
+                                    finalMessage
+                                );
+                            });
+                        })
+                        .then(() => {
+                            // Refresh loans list
+                            attachLoansListener();
+                            
+                            // Show success message
+                            Swal.fire(
+                                'Updated!', 
+                                `Loan application status changed to ${status}`, 
+                                'success'
+                            );
+                        })
+                        .catch(error => {
+                            console.error("Error updating loan status:", error);
+                            Swal.fire(
+                                'Error!', 
+                                `Failed to update status: ${error.message}`, 
+                                'error'
+                            );
+                        });
+                }
+            });
+        }
+
+        function deleteLoan(docId) {
+            // Confirm deletion
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to permanently delete this loan application!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Delete from Firestore
+                    db.collection('loans').doc(docId).delete()
+                        .then(() => {
+                            // Optional: Delete associated notifications
+                            return db.collection('notifications')
+                                .where('loanId', '==', docId)
+                                .get()
+                                .then(snapshot => {
+                                    const batch = db.batch();
+                                    snapshot.docs.forEach(doc => batch.delete(doc.ref));
+                                    return batch.commit();
+                                });
+                        })
+                        .then(() => {
+                            Swal.fire(
+                                'Deleted!',
+                                'The loan application has been deleted.',
+                                'success'
+                            );
+                            // Refresh loans list
+                            attachLoansListener();
+                        })
+                        .catch((error) => {
+                            console.error("Error deleting loan:", error);
+                            Swal.fire(
+                                'Error!',
+                                `Failed to delete loan: ${error.message}`,
+                                'error'
+                            );
+                        });
+                }
+            });
+        }
+
         function attachLoansListener() {
             const loansTable = document.getElementById('loansTable');
             const loansTableBody = loansTable.querySelector('tbody');
@@ -272,7 +407,7 @@
                                     </button>
                                     <div class="btn-group" role="group">
                                         <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                            Change Status
+                                            Actions
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><a class="dropdown-item" href="#" onclick="changeLoanStatus('${doc.id}', 'Approved')">
@@ -281,8 +416,9 @@
                                             <li><a class="dropdown-item" href="#" onclick="changeLoanStatus('${doc.id}', 'Declined')">
                                                 <i class="fas fa-times text-danger"></i> Decline
                                             </a></li>
-                                            <li><a class="dropdown-item" href="#" onclick="changeLoanStatus('${doc.id}', 'Pending')">
-                                                <i class="fas fa-clock text-warning"></i> Reset to Pending
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#" onclick="deleteLoan('${doc.id}')">
+                                                <i class="fas fa-trash text-danger"></i> Delete Application
                                             </a></li>
                                         </ul>
                                     </div>
@@ -486,25 +622,6 @@
                 console.error("Error fetching loan details:", error);
                 Swal.fire('Error', 'Failed to retrieve loan details', 'error');
             });
-        }
-
-        async function deleteLoan(id) {
-            const confirm = await Swal.fire({
-                title: 'Delete application?',
-                text: 'This will remove the document and its images.',
-                icon: 'warning',
-                showCancelButton: true
-            });
-            if (!confirm.isConfirmed) return;
-
-            try {
-                const docRef = db.collection('loans').doc(id);
-                await docRef.delete();
-                Swal.fire('Deleted', 'Application removed', 'success');
-            } catch (e) {
-                console.error(e);
-                Swal.fire('Error', 'Failed to delete application', 'error');
-            }
         }
 
         function openAvatarModal() {
