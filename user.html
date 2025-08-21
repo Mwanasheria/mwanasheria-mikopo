@@ -256,7 +256,7 @@
                 <!-- Collateral Quality Section -->
                 <div class="border rounded p-3 mb-2">
                     <label class="form-label fw-semibold">Collateral Quality Details</label>
-                    <div class="row">
+                <div class="row">
                         <div class="col-md-4 mb-2">
                             <label class="form-label">Purchase Date</label>
                             <input class="form-control" id="purchase-date" name="purchase-date" type="date" required />
@@ -278,8 +278,8 @@
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
                                 <option value="No">No</option>
-                            </select>
-                        </div>
+            </select>
+                    </div>
                         <div class="col-md-6 mb-2">
                             <label class="form-label">Serial/IMEI Number</label>
                             <input class="form-control" id="serial-number" name="serial-number" placeholder="Serial or IMEI" required />
@@ -451,7 +451,7 @@
 
             // Check if user is authenticated
             if (!auth.currentUser) {
-                console.log("User not authenticated");
+                console.error("User not authenticated");
                 Swal.fire("Error", "You must be logged in to submit a loan", "error");
                 return;
             }
@@ -461,105 +461,85 @@
                 // Validate and map per city
                 let cityPayload = {};
                 console.log("Current city:", currentCity);
-                if (currentCity === 'dar') {
-                    const requiredIds = ['dar-borrower-name','dar-university','dar-reg-number','dar-nida','dar-contact','dar-address','dar-guarantor-name','dar-relationship','dar-guarantor-address','dar-guarantor-contact','dar-collateral1','dar-start-date','dar-end-date','dar-loan-amount','dar-ram','dar-storage','dar-brand'];
-                    for (const id of requiredIds) {
-                        const el = document.getElementById(id);
-                        if (!el) {
-                            console.error(`Element with id '${id}' not found`);
-                            Swal.fire('Error', `Form field '${id}' not found`, 'error');
-                            return;
-                        }
-                        if (!el.value.trim()) {
-                            console.error(`Field '${id}' is empty`);
-                            Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
-                            el.focus();
-                            return;
-                        }
-                    }
-                    const start = new Date(document.getElementById('dar-start-date').value);
-                    const end = new Date(document.getElementById('dar-end-date').value);
-                    if (!(end > start)) {
-                        Swal.fire('Error', 'End date must be after start date', 'error');
-                        return;
-                    }
-                    const amountNum = parseFloat(document.getElementById('dar-loan-amount').value) || 0;
-                    const interestRateNum = parseFloat(document.getElementById('dar-interest-rate').value) || 0;
-                    const feeNum = parseFloat(document.getElementById('dar-processing-fee').value) || 0;
-                    const totalNum = amountNum + (amountNum * interestRateNum/100) + feeNum;
-                    cityPayload = {
-                        city: 'Dar es Salaam',
-                        name: document.getElementById('dar-borrower-name').value,
-                        university: document.getElementById('dar-university').value,
-                        regNumber: document.getElementById('dar-reg-number').value,
-                        nida: document.getElementById('dar-nida').value,
-                        contact: document.getElementById('dar-contact').value,
-                        place: document.getElementById('dar-address').value,
-                        guarantor: document.getElementById('dar-guarantor-name').value,
-                        relation: document.getElementById('dar-relationship').value,
-                        guarantorAddress: document.getElementById('dar-guarantor-address').value,
-                        gcontact: document.getElementById('dar-guarantor-contact').value,
-                        collateral: [document.getElementById('dar-collateral1').value, document.getElementById('dar-collateral2').value].filter(Boolean).join(' ; '),
-                        startDate: document.getElementById('dar-start-date').value,
-                        endDate: document.getElementById('dar-end-date').value,
-                        amount: amountNum,
-                        interestRate: interestRateNum,
-                        processingFee: feeNum,
-                        totalAmount: totalNum,
-                        ram: document.getElementById('dar-ram').value,
-                        storage: document.getElementById('dar-storage').value,
-                        brand: document.getElementById('dar-brand').value
-                    };
-                } else {
-                    const requiredIds = ['mbeya-borrower-name','mbeya-university','mbeya-reg-number','mbeya-nida','mbeya-contact','mbeya-address','mbeya-guarantor-name','mbeya-relationship','mbeya-guarantor-address','mbeya-guarantor-contact','mbeya-collateral1','mbeya-start-date','mbeya-end-date','mbeya-loan-amount','mbeya-ram','mbeya-storage','mbeya-brand'];
-                    for (const id of requiredIds) {
-                        const el = document.getElementById(id);
-                        if (!el) {
-                            console.error(`Element with id '${id}' not found`);
-                            Swal.fire('Error', `Form field '${id}' not found`, 'error');
-                            return;
-                        }
-                        if (!el.value.trim()) {
-                            console.error(`Field '${id}' is empty`);
-                            Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
-                            el.focus();
-                            return;
-                        }
-                    }
-                    const start = new Date(document.getElementById('mbeya-start-date').value);
-                    const end = new Date(document.getElementById('mbeya-end-date').value);
-                    if (!(end > start)) {
-                        Swal.fire('Error', 'End date must be after start date', 'error');
-                        return;
-                    }
-                    const amountNum = parseFloat(document.getElementById('mbeya-loan-amount').value) || 0;
-                    const interestRateNum = parseFloat(document.getElementById('mbeya-interest-rate').value) || 0;
-                    const feeNum = parseFloat(document.getElementById('mbeya-processing-fee').value) || 0;
-                    const totalNum = amountNum + (amountNum * interestRateNum/100) + feeNum;
-                    cityPayload = {
-                        city: 'Mbeya',
-                        name: document.getElementById('mbeya-borrower-name').value,
-                        university: document.getElementById('mbeya-university').value,
-                        regNumber: document.getElementById('mbeya-reg-number').value,
-                        nida: document.getElementById('mbeya-nida').value,
-                        contact: document.getElementById('mbeya-contact').value,
-                        place: document.getElementById('mbeya-address').value,
-                        guarantor: document.getElementById('mbeya-guarantor-name').value,
-                        relation: document.getElementById('mbeya-relationship').value,
-                        guarantorAddress: document.getElementById('mbeya-guarantor-address').value,
-                        gcontact: document.getElementById('mbeya-guarantor-contact').value,
-                        collateral: [document.getElementById('mbeya-collateral1').value, document.getElementById('mbeya-collateral2').value].filter(Boolean).join(' ; '),
-                        startDate: document.getElementById('mbeya-start-date').value,
-                        endDate: document.getElementById('mbeya-end-date').value,
-                        amount: amountNum,
-                        interestRate: interestRateNum,
-                        processingFee: feeNum,
-                        totalAmount: totalNum,
-                        ram: document.getElementById('mbeya-ram').value,
-                        storage: document.getElementById('mbeya-storage').value,
-                        brand: document.getElementById('mbeya-brand').value
-                    };
+                
+                // Determine which form is active
+                const activeForm = currentCity === 'dar' ? 'darForm' : 'mbeyaForm';
+                const formElement = document.getElementById(activeForm);
+                
+                if (!formElement) {
+                    console.error(`Form element ${activeForm} not found`);
+                    Swal.fire('Error', 'Loan form not found', 'error');
+                    return;
                 }
+
+                const prefix = currentCity === 'dar' ? 'dar' : 'mbeya';
+                const requiredIds = [
+                    `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-reg-number`, 
+                    `${prefix}-nida`, `${prefix}-contact`, `${prefix}-address`, 
+                    `${prefix}-guarantor-name`, `${prefix}-relationship`, 
+                    `${prefix}-guarantor-address`, `${prefix}-guarantor-contact`, 
+                    `${prefix}-collateral1`, `${prefix}-start-date`, 
+                    `${prefix}-end-date`, `${prefix}-loan-amount`,
+                    `${prefix}-ram`, `${prefix}-storage`, `${prefix}-brand`
+                ];
+
+                for (const id of requiredIds) {
+                    const el = document.getElementById(id);
+                    if (!el) {
+                        console.error(`Element with id '${id}' not found`);
+                        Swal.fire('Error', `Form field '${id}' not found`, 'error');
+                        return;
+                    }
+                    if (!el.value.trim()) {
+                        console.error(`Field '${id}' is empty`);
+                        Swal.fire('Error', `Please fill in: ${id.replace(/-/g,' ')}`, 'error');
+                        el.focus();
+                        return;
+                    }
+                }
+
+                const startDateEl = document.getElementById(`${prefix}-start-date`);
+                const endDateEl = document.getElementById(`${prefix}-end-date`);
+                const start = new Date(startDateEl.value);
+                const end = new Date(endDateEl.value);
+                
+                if (!(end > start)) {
+                    Swal.fire('Error', 'End date must be after start date', 'error');
+                    endDateEl.focus();
+                    return;
+                }
+
+                const amountNum = parseFloat(document.getElementById(`${prefix}-loan-amount`).value) || 0;
+                const interestRateNum = parseFloat(document.getElementById(`${prefix}-interest-rate`).value) || 0;
+                const feeNum = parseFloat(document.getElementById(`${prefix}-processing-fee`).value) || 0;
+                const totalNum = amountNum + (amountNum * interestRateNum/100) + feeNum;
+
+                cityPayload = {
+                    city: currentCity === 'dar' ? 'Dar es Salaam' : 'Mbeya',
+                    name: document.getElementById(`${prefix}-borrower-name`).value,
+                    university: document.getElementById(`${prefix}-university`).value,
+                    regNumber: document.getElementById(`${prefix}-reg-number`).value,
+                    nida: document.getElementById(`${prefix}-nida`).value,
+                    contact: document.getElementById(`${prefix}-contact`).value,
+                    place: document.getElementById(`${prefix}-address`).value,
+                    guarantor: document.getElementById(`${prefix}-guarantor-name`).value,
+                    relation: document.getElementById(`${prefix}-relationship`).value,
+                    guarantorAddress: document.getElementById(`${prefix}-guarantor-address`).value,
+                    gcontact: document.getElementById(`${prefix}-guarantor-contact`).value,
+                    collateral: [
+                        document.getElementById(`${prefix}-collateral1`).value, 
+                        document.getElementById(`${prefix}-collateral2`).value
+                    ].filter(Boolean).join(' ; '),
+                    startDate: startDateEl.value,
+                    endDate: endDateEl.value,
+                    amount: amountNum,
+                    interestRate: interestRateNum,
+                    processingFee: feeNum,
+                    totalAmount: totalNum,
+                    ram: document.getElementById(`${prefix}-ram`).value,
+                    storage: document.getElementById(`${prefix}-storage`).value,
+                    brand: document.getElementById(`${prefix}-brand`).value
+                };
 
                 const submitBtn = form.querySelector('button[type="submit"]');
                 const originalBtnText = submitBtn.textContent;
@@ -640,7 +620,10 @@
                 // Reset UI on error
                 const form = e.target;
                 const submitBtn = form.querySelector('button[type="submit"]');
-                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit Loan'; }
+                if (submitBtn) { 
+                    submitBtn.disabled = false; 
+                    submitBtn.textContent = 'Submit Loan'; 
+                }
             }
         }
 

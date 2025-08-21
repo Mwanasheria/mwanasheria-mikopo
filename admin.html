@@ -532,6 +532,11 @@
                         // Load avatar
                         const a = doc.data().avatar;
                         applyDefaultAvatarIfMissing(a);
+                        // Set user name for profile modal
+                        const pfName = document.getElementById('pfName');
+                        const pfEmail = document.getElementById('pfEmail');
+                        if (pfName) pfName.textContent = user.displayName || user.email || 'Admin';
+                        if (pfEmail) pfEmail.textContent = user.email || 'No email';
                         attachLoansListener();
                     }
                 });
