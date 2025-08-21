@@ -138,38 +138,50 @@
     <main class="container mt-4">
         <!-- Home Section -->
         <section id="home" class="active-section">
-            <div class="hero-section position-relative overflow-hidden text-white">
-                <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100"></div>
-                <div class="container position-relative">
-                    <div class="row align-items-center vh-100">
-                        <div class="col-lg-7">
-                            <div class="hero-content">
-                                <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">
-                                    Student Loans Made Simple
+            <div class="hero-section position-relative">
+                <div class="container">
+                    <div class="row align-items-center min-vh-100">
+                        <div class="col-lg-6 order-2 order-lg-1">
+                            <div class="hero-content text-center text-lg-start">
+                                <div class="d-inline-block bg-primary text-white px-3 py-2 rounded mb-3 animate__animated animate__fadeInUp">
+                                    Student Financial Solutions
+                                </div>
+                                <h1 class="display-4 fw-bold mb-4 animate__animated animate__fadeInUp">
+                                    Empowering Education,<br>Financing Futures
                                 </h1>
-                                <p class="lead mb-5 animate__animated animate__fadeInUp">
-                                    Fast, secure, and flexible financial solutions 
-                                    designed to help you focus on your education, 
-                                    not your financial stress.
+                                <p class="lead text-muted mb-5 animate__animated animate__fadeInUp">
+                                    Unlock your potential with flexible, student-friendly loans 
+                                    designed to support your academic journey.
                                 </p>
-                                <div class="d-flex gap-3 animate__animated animate__fadeInUp animate__delay-1s">
+                                <div class="d-flex justify-content-center justify-content-lg-start gap-3 animate__animated animate__fadeInUp animate__delay-1s">
                                     <a href="login.html" class="btn btn-primary btn-lg px-4 py-3 shadow">
-                                        Apply Now
+                                        Get Started
                                     </a>
-                                    <a href="#how-to-apply" class="btn btn-outline-light btn-lg px-4 py-3 scrollLink">
-                                        Learn How
+                                    <a href="#how" class="btn btn-outline-secondary btn-lg px-4 py-3 scrollLink">
+                                        Learn More
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-5 d-none d-lg-block">
-                            <div class="hero-image text-center">
-                                <img src="logo.jpg" alt="Mwanasheria Mikopo" 
-                                     class="img-fluid rounded-circle shadow-lg animate__animated animate__zoomIn" 
-                                     style="max-width: 400px; border: 6px solid rgba(255,255,255,0.2);">
+                        <div class="col-lg-6 order-1 order-lg-2 text-center mb-5 mb-lg-0">
+                            <div class="hero-image position-relative">
+                                <div class="hero-image-wrapper position-relative d-inline-block">
+                                    <img src="logo.jpg" alt="Mwanasheria Mikopo" 
+                                         class="img-fluid rounded-circle shadow-lg animate__animated animate__zoomIn" 
+                                         style="max-width: 400px; border: 8px solid rgba(52, 152, 219, 0.2);">
+                                    <div class="hero-image-badge position-absolute bg-white shadow-sm rounded-pill py-2 px-3">
+                                        <i class="fas fa-graduation-cap text-primary me-2"></i>
+                                        Student Loans Made Easy
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="hero-shape position-absolute bottom-0 start-0 w-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+                        <path fill="#f8f9fa" fill-opacity="1" d="M0,256L48,240C96,224,192,192,288,176C384,160,480,160,576,170.7C672,181,768,203,864,202.7C960,203,1056,181,1152,170.7C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
                 </div>
             </div>
 
@@ -220,80 +232,272 @@
                 </div>
             </div>
 
-            <div id="offers" class="py-5">
+            <!-- Available Offers Section -->
+            <section id="offers" class="bg-light py-5">
                 <div class="container">
-                    <h2 class="text-center mb-5">Available Loan Offers</h2>
+                    <div class="row mb-4">
+                        <div class="col-12 text-center">
+                            <h2 class="display-5 fw-bold text-primary mb-3">Available Loan Offers</h2>
+                            <p class="lead text-muted">Explore our tailored financial solutions for students</p>
+                        </div>
+                    </div>
                     <div class="row g-4">
-                        <div class="col-md-6">
-                            <div class="card offer-card h-100 shadow-sm border-0">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="offer1.jpg" class="card-img-top" alt="Student Laptop Loan">
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h3 class="card-title mb-0">Dar es Salaam Offer</h3>
-                                        <span class="badge bg-primary">25% Interest</span>
-                                    </div>
-                                    <p class="card-text text-muted mb-4">
-                                        Tailored financial support for students in Dar es Salaam
-                                    </p>
-                                    <ul class="list-unstyled mb-4">
-                                        <li class="mb-2">
-                                            <i class="fas fa-check-circle text-success me-2"></i>
-                                            Loan Amount: TShs 50,000 - 500,000
-                                        </li>
-                                        <li class="mb-2">
-                                            <i class="fas fa-check-circle text-success me-2"></i>
-                                            30-Day Repayment Term
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check-circle text-success me-2"></i>
-                                            Processing Fee: TShs 3,000
-                                        </li>
-                                    </ul>
-                                    <div class="d-flex gap-2">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#darOfferModal">
-                                            View Details
+                                    <h5 class="card-title">Student Tech Loan</h5>
+                                    <p class="card-text text-muted">Financing for laptops and essential tech for students</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">Up to TShs 1,500,000</span>
+                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#offerModal1">
+                                            View Offer
                                         </button>
-                                        <a href="login.html" class="btn btn-outline-primary">Apply Now</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="card offer-card h-100 shadow-sm border-0">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="offer2.jpg" class="card-img-top" alt="Education Support Loan">
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h3 class="card-title mb-0">Mbeya Offer</h3>
-                                        <span class="badge bg-primary">20% Interest</span>
-                                    </div>
-                                    <p class="card-text text-muted mb-4">
-                                        Specialized financing for students in Mbeya region
-                                    </p>
-                                    <ul class="list-unstyled mb-4">
-                                        <li class="mb-2">
-                                            <i class="fas fa-check-circle text-success me-2"></i>
-                                            Loan Amount: TShs 50,000 - 500,000
-                                        </li>
-                                        <li class="mb-2">
-                                            <i class="fas fa-check-circle text-success me-2"></i>
-                                            30-Day Repayment Term
-                                        </li>
-                                        <li>
-                                            <i class="fas fa-check-circle text-success me-2"></i>
-                                            Processing Fee: TShs 3,000
-                                        </li>
-                                    </ul>
-                                    <div class="d-flex gap-2">
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#mbeyaOfferModal">
-                                            View Details
+                                    <h5 class="card-title">Education Support Loan</h5>
+                                    <p class="card-text text-muted">Comprehensive financial support for academic expenses</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">Up to TShs 2,000,000</span>
+                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#offerModal2">
+                                            View Offer
                                         </button>
-                                        <a href="login.html" class="btn btn-outline-primary">Apply Now</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <img src="offer3.jpg" class="card-img-top" alt="Emergency Fund Loan">
+                                <div class="card-body">
+                                    <h5 class="card-title">Emergency Fund Loan</h5>
+                                    <p class="card-text text-muted">Quick financial assistance for unexpected academic needs</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary">Up to TShs 1,000,000</span>
+                                        <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#offerModal3">
+                                            View Offer
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <!-- Offer Modals -->
+            <div class="modal fade" id="offerModal1" tabindex="-1" aria-labelledby="offerModal1Label" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="offerModal1Label">Student Tech Loan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img src="offer1.jpg" class="img-fluid rounded mb-3" alt="Student Tech Loan Poster">
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="text-primary mb-3">Detailed Offer Information</h4>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Maximum Loan Amount
+                                            <span class="badge bg-primary rounded-pill">TShs 1,500,000</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Interest Rate
+                                            <span class="badge bg-success rounded-pill">25% p.a.</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Loan Duration
+                                            <span class="badge bg-info rounded-pill">6-12 Months</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Eligibility:</strong> Active university students
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Purpose:</strong> Purchase of laptops, tablets, and essential tech
+                                        </li>
+                                    </ul>
+                                    <div class="mt-3">
+                                        <h5 class="text-primary mb-2">Key Benefits</h5>
+                                        <div class="list-group">
+                                            <div class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Flexible Repayment</h6>
+                                                </div>
+                                                <p class="mb-1 text-muted">Customizable repayment plans to suit your financial situation</p>
+                                            </div>
+                                            <div class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Quick Approval</h6>
+                                                </div>
+                                                <p class="mb-1 text-muted">Fast processing with minimal documentation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="login.html" class="btn btn-primary">Apply Now</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </section>
+
+            <div class="modal fade" id="offerModal2" tabindex="-1" aria-labelledby="offerModal2Label" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="offerModal2Label">Education Support Loan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img src="offer2.jpg" class="img-fluid rounded mb-3" alt="Education Support Loan Poster">
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="text-primary mb-3">Detailed Offer Information</h4>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Maximum Loan Amount
+                                            <span class="badge bg-primary rounded-pill">TShs 2,000,000</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Interest Rate
+                                            <span class="badge bg-success rounded-pill">20% p.a.</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Loan Duration
+                                            <span class="badge bg-info rounded-pill">12-24 Months</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Eligibility:</strong> Full-time university students
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Purpose:</strong> Comprehensive academic expense coverage
+                                        </li>
+                                    </ul>
+                                    <div class="mt-3">
+                                        <h5 class="text-primary mb-2">Key Benefits</h5>
+                                        <div class="list-group">
+                                            <div class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Comprehensive Coverage</h6>
+                                                </div>
+                                                <p class="mb-1 text-muted">Covers tuition, books, accommodation, and other academic expenses</p>
+                                            </div>
+                                            <div class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Flexible Terms</h6>
+                                                </div>
+                                                <p class="mb-1 text-muted">Adaptable repayment schedules tailored to student needs</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="login.html" class="btn btn-primary">Apply Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="offerModal3" tabindex="-1" aria-labelledby="offerModal3Label" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="offerModal3Label">Emergency Fund Loan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img src="offer3.jpg" class="img-fluid rounded mb-3" alt="Emergency Fund Loan Poster">
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="text-primary mb-3">Detailed Offer Information</h4>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Maximum Loan Amount
+                                            <span class="badge bg-primary rounded-pill">TShs 1,000,000</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Interest Rate
+                                            <span class="badge bg-success rounded-pill">30% p.a.</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            Loan Duration
+                                            <span class="badge bg-info rounded-pill">3-6 Months</span>
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Eligibility:</strong> University students with urgent financial needs
+                                        </li>
+                                        <li class="list-group-item">
+                                            <strong>Purpose:</strong> Immediate financial support for unexpected expenses
+                                        </li>
+                                    </ul>
+                                    <div class="mt-3">
+                                        <h5 class="text-primary mb-2">Key Benefits</h5>
+                                        <div class="list-group">
+                                            <div class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Rapid Disbursement</h6>
+                                                </div>
+                                                <p class="mb-1 text-muted">Quick processing and fund release for urgent needs</p>
+                                            </div>
+                                            <div class="list-group-item list-group-item-action">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1">Minimal Requirements</h6>
+                                                </div>
+                                                <p class="mb-1 text-muted">Simplified application process with fewer documentation needs</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <a href="login.html" class="btn btn-primary">Apply Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                #offers .card {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                }
+
+                #offers .card:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+                }
+
+                .modal-body img {
+                    max-height: 400px;
+                    object-fit: cover;
+                    width: 100%;
+                }
+
+                .list-group-item-action:hover {
+                    background-color: rgba(0,123,255,0.05);
+                }
+            </style>
 
         <!-- About Section -->
         <section id="about" class="inactive-section">
@@ -478,92 +682,67 @@
                         <div class="col-12 text-center mb-5">
                             <h2 class="display-5 fw-bold text-primary">Contact Mwanasheria Mikopo</h2>
                             <p class="lead text-muted">
-                                Get in touch with us via the numbers below, visit our offices, 
-                                or fill out the form to connect with our team.
+                                Get in touch with us through our office locations
                             </p>
                         </div>
                     </div>
 
                     <div class="row g-4">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
                                 <div class="card-body text-center">
                                     <div class="mb-4">
                                         <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
                                     </div>
                                     <h4 class="card-title mb-3">Dar es Salaam Office</h4>
-                                    <p class="card-text text-muted">
+                                    <p class="card-text text-muted mb-3">
                                         P.O.Box 34603, Africana Square,<br>
                                         2nd Floor, Bagamoyo Road,<br>
                                         Mbezi Africana, Dar es Salaam
                                     </p>
-                                    <div class="mt-3">
+                                    <div class="contact-methods">
                                         <p class="mb-2">
-                                            <strong>Tel:</strong> +255 687 030 949
+                                            <i class="fab fa-whatsapp text-success me-2"></i>
+                                            <a href="https://wa.me/255687030949" class="text-muted">+255 687 030 949</a>
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="fas fa-phone text-primary me-2"></i>
+                                            <a href="tel:+255687030949" class="text-muted">+255 687 030 949</a>
                                         </p>
                                         <p>
-                                            <strong>Email:</strong> dar@mwanasheriamikopo.co.tz
+                                            <i class="fas fa-envelope text-danger me-2"></i>
+                                            <a href="mailto:dar@mwanasheriamikopo.co.tz" class="text-muted">dar@mwanasheriamikopo.co.tz</a>
                                         </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="card h-100 border-0 shadow-sm">
                                 <div class="card-body text-center">
                                     <div class="mb-4">
                                         <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
                                     </div>
                                     <h4 class="card-title mb-3">Mbeya Office</h4>
-                                    <p class="card-text text-muted">
+                                    <p class="card-text text-muted mb-3">
                                         House #3, Mlimwa Hills,<br>
                                         Mbeya City,<br>
                                         Tanzania
                                     </p>
-                                    <div class="mt-3">
+                                    <div class="contact-methods">
                                         <p class="mb-2">
-                                            <strong>Tel:</strong> +255 696 378 787
+                                            <i class="fab fa-whatsapp text-success me-2"></i>
+                                            <a href="https://wa.me/255696378787" class="text-muted">+255 696 378 787</a>
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="fas fa-phone text-primary me-2"></i>
+                                            <a href="tel:+255696378787" class="text-muted">+255 696 378 787</a>
                                         </p>
                                         <p>
-                                            <strong>Email:</strong> mbeya@mwanasheriamikopo.co.tz
+                                            <i class="fas fa-envelope text-danger me-2"></i>
+                                            <a href="mailto:mbeya@mwanasheriamikopo.co.tz" class="text-muted">mbeya@mwanasheriamikopo.co.tz</a>
                                         </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="card h-100 border-0 shadow-sm">
-                                <div class="card-body text-center">
-                                    <div class="mb-4">
-                                        <i class="fas fa-headset fa-3x text-primary"></i>
-                                    </div>
-                                    <h4 class="card-title mb-3">Talk to an Expert</h4>
-                                    <div class="mt-3">
-                                        <p class="mb-2">
-                                            <i class="fas fa-phone me-2 text-primary"></i> +255 687 030 949
-                                        </p>
-                                        <p class="mb-2">
-                                            <i class="fas fa-phone me-2 text-primary"></i> +255 696 378 787
-                                        </p>
-                                        <p>
-                                            <i class="fas fa-envelope me-2 text-primary"></i> info@mwanasheriamikopo.co.tz
-                                        </p>
-                                    </div>
-                                    <div class="social-links mt-4">
-                                        <a href="#" class="text-primary me-3" title="Facebook">
-                                            <i class="fab fa-facebook-f fa-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-primary me-3" title="Twitter">
-                                            <i class="fab fa-twitter fa-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-primary me-3" title="Instagram">
-                                            <i class="fab fa-instagram fa-lg"></i>
-                                        </a>
-                                        <a href="#" class="text-primary" title="WhatsApp">
-                                            <i class="fab fa-whatsapp fa-lg"></i>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -572,6 +751,44 @@
                 </div>
             </div>
         </section>
+
+        <!-- Footer -->
+        <footer class="bg-primary text-white py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <h5 class="mb-3">Mwanasheria Mikopo</h5>
+                        <p class="text-white-50">
+                            Empowering students through accessible and flexible financial solutions, 
+                            helping you turn your educational dreams into reality.
+                        </p>
+                    </div>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <h5 class="mb-3">Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><a href="#home" class="text-white-50 text-decoration-none">Home</a></li>
+                            <li class="mb-2"><a href="#about" class="text-white-50 text-decoration-none">About Us</a></li>
+                            <li class="mb-2"><a href="#offers" class="text-white-50 text-decoration-none">Loan Offers</a></li>
+                            <li><a href="#contact" class="text-white-50 text-decoration-none">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h5 class="mb-3">Connect With Us</h5>
+                        <div class="social-links">
+                            <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4 pt-3 border-top border-white border-opacity-10">
+                    <div class="col-12 text-center">
+                        <p class="mb-0">&copy; 2024 Mwanasheria Mikopo. All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
         <style>
             .social-links a {
@@ -598,32 +815,6 @@
         <div class="d-flex justify-content-between align-items-center">
             <span class="small">Ready to apply?</span>
             <a class="btn btn-primary btn-sm" href="login.html">Apply Now</a>
-        </div>
-    </div>
-
-    <!-- Offer Modal -->
-    <div class="modal fade" id="offerModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="offerTitle">Offer Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row g-4">
-                        <div class="col-lg-6">
-                            <img id="offerImage" src="poster1.jpg" class="img-fluid rounded" alt="Offer image" />
-                        </div>
-                        <div class="col-lg-6">
-                            <div id="offerContent"></div>
-                            <div class="mt-3 d-flex gap-2">
-                                <a class="btn btn-primary" href="login.html">Apply Now</a>
-                                <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
