@@ -741,34 +741,20 @@
         </style>
 
         <script>
-            // Ensure proper navigation and section switching
-            function showSection(sectionId) {
-                // Hide all sections
+            // Ensure showSection is globally accessible for inline onclick handlers
+            window.showSection = function(sectionId) {
                 ['home', 'about', 'terms', 'contact'].forEach(id => {
                     const section = document.getElementById(id);
                     if (section) {
-                        section.classList.remove('active-section');
-                        section.classList.add('inactive-section');
+                        section.classList.toggle('active-section', id === sectionId);
+                        section.classList.toggle('inactive-section', id !== sectionId);
                     }
                 });
-
-                // Show selected section
-                const selectedSection = document.getElementById(sectionId);
-                if (selectedSection) {
-                    selectedSection.classList.remove('inactive-section');
-                    selectedSection.classList.add('active-section');
-                }
-
-                // Update URL hash
                 if (location.hash !== '#' + sectionId) {
                     history.replaceState(null, '', '#' + sectionId);
                 }
-
-                // Close mobile menu after selection
-                const navbarToggler = document.querySelector('.navbar-toggler');
                 const navbarCollapse = document.querySelector('.navbar-collapse');
-                if (navbarToggler && navbarCollapse) {
-                    navbarToggler.classList.add('collapsed');
+                if (navbarCollapse && navbarCollapse.classList.contains('show')) {
                     navbarCollapse.classList.remove('show');
                 }
             }
@@ -786,7 +772,7 @@
                 // Set current year
                 document.getElementById('currentYear').textContent = new Date().getFullYear();
             });
-    </script>
+        </script>
 </body>
 
 </html>
