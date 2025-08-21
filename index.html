@@ -415,36 +415,71 @@
 
         <!-- Terms Section -->
         <section id="terms" class="inactive-section">
-            <div class="container py-5">
-                <div class="row">
-                    <div class="col-12">
-                        <h2 class="display-5 fw-bold text-primary mb-4">Terms & Conditions</h2>
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title mb-3">Loan Application Terms</h3>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <strong>Eligibility:</strong> Applicants must be registered students with valid university identification.
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>Loan Limits:</strong> Loans range from TShs 50,000 to 500,000 with specific terms for Dar es Salaam and Mbeya.
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>Interest Rates:</strong> 25% for Dar es Salaam, 20% for Mbeya, applied for a 30-day term.
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>Processing Fee:</strong> A fixed fee of TShs 3,000 applies to all loan applications.
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>Repayment:</strong> Full repayment is expected within the specified loan term.
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="btn btn-outline-primary">Download Full Terms PDF</a>
-                        </div>
+            <div class="container">
+                <header class="text-center mb-4">
+                    <h1 class="text-primary">LOAN TERMS & CONDITIONS</h1>
+                    <p class="lead">For University Students</p>
+                </header>
+                
+                <div class="section mb-4">
+                    <h2 class="text-primary">LOAN ELIGIBILITY CRITERIA</h2>
+                    <p>Applicant must meet at least one of the two criteria. (Criterion 2 is used only for the study period.)</p>
+                    
+                    <h3 class="text-info">1. Loan with Collateral</h3>
+                    <ul>
+                        <li>Applicant must have collateral worth more than forty percent (40%) of the loan amount.</li>
+                        <li>Collateral will remain in the office until the loan is repaid.</li>
+                        <li>Collateral can be a Phone, PC, TV, Motorcycle, etc.</li>
+                    </ul>
+                    
+                    <div class="alert alert-info">
+                        <h3>Repayment Terms (Criterion 1)</h3>
+                        <p><strong>A.</strong> Applicant must repay the loan amount with 20%(Mbeya) / 25%(Dar es salaam) interest within the specified loan agreement period (30 days).</p>
+                        <p><strong>B.</strong> If any issue arises within the loan period, an extension request will be processed with an additional 20%(Mbeya) / 25%(Dar es salaam) interest on the amount due.</p>
+                        <p><strong>C.</strong> Contrary to (A/B), the collateral will be auctioned to recover the loan amount.</p>
                     </div>
+                    
+                    <h3 class="text-info">2. Loan with Loan Board Guarantee</h3>
+                    <p>If the applicant is guaranteed by the loan board and needs a loan to make repayments through self-sustaining funds from the loan board, the maximum amount is TShs 50,000/=.</p>
+                    
+                    <h3>Loan Board Guarantee Requirements</h3>
+                    <ul>
+                        <li>Visit the office with the bank card used to receive self-sustaining funds, HESLB and college information.</li>
+                        <li>One of the following identification documents:
+                            <ul>
+                                <li>Form Four Certificate</li>
+                                <li>Form Six Certificate</li>
+                                <li>National Identification (NIDA)</li>
+                                <li>Passport</li>
+                                <li>Driver's License</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <div class="alert alert-info">
+                        <h3>Repayment Terms (Criterion 2)</h3>
+                        <p><strong>A)</strong> Applicant must repay the loan amount with 20%(Mbeya) / 25%(Dar es salaam) interest within the specified loan agreement period (30 days).</p>
+                        <p><strong>B)</strong> If the loan exceeds the agreement period (30 days), and the applicant fails to repay due to delayed self-sustaining funds, the following terms will apply to the loan and interest calculation:
+                            <ul>
+                                <li><strong>Days 1 to 15:</strong> Additional 15% of the amount due.</li>
+                                <li><strong>Days 16 to 30:</strong> Additional 20%(Mbeya) / 25%(Dar es salaam) of the amount due.</li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="section mb-4">
+                    <h2 class="text-primary">DIGITAL SYSTEM REGISTRATION</h2>
+                    <p>Applicant will register on the Mwanasheria-Mikopo digital system for tracking, reminders, and record keeping for the applicant's and office's benefit.</p>
+                </div>
+                
+                <div class="section mb-4">
+                    <h2 class="text-primary">LOAN VERIFICATION</h2>
+                    <p>By accepting a loan from Mwanasheria-Mikopo Co. Ltd, the applicant agrees to all terms set forth and commits to fully comply.</p>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="terms_conditions.pdf" download class="btn btn-outline-primary mt-3">Download Signed Terms & Conditions PDF</a>
                 </div>
             </div>
         </section>
@@ -706,7 +741,7 @@
         </style>
 
         <script>
-            // Restore showSection function
+            // Ensure proper navigation and section switching
             function showSection(sectionId) {
                 // Hide all sections
                 ['home', 'about', 'terms', 'contact'].forEach(id => {
@@ -728,52 +763,28 @@
                 if (location.hash !== '#' + sectionId) {
                     history.replaceState(null, '', '#' + sectionId);
                 }
+
+                // Close mobile menu after selection
+                const navbarToggler = document.querySelector('.navbar-toggler');
+                const navbarCollapse = document.querySelector('.navbar-collapse');
+                if (navbarToggler && navbarCollapse) {
+                    navbarToggler.classList.add('collapsed');
+                    navbarCollapse.classList.remove('show');
+                }
             }
 
-            // Ensure proper viewport handling
+            // Ensure Bootstrap functionality is loaded
             document.addEventListener('DOMContentLoaded', function() {
+                // Attach click event to nav links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        const sectionId = this.getAttribute('href').replace('#', '');
+                        showSection(sectionId);
+                    });
+                });
+
                 // Set current year
                 document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-                // Prevent automatic text zooming on mobile
-                const metaViewport = document.createElement('meta');
-                metaViewport.name = 'viewport';
-                metaViewport.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
-                document.head.appendChild(metaViewport);
-
-                // Restore hash navigation
-                function handleHashNavigation() {
-                    const hash = (location.hash || '#home').replace('#','');
-                    const allowed = ['home','about','terms','contact'];
-                    showSection(allowed.includes(hash) ? hash : 'home');
-                }
-
-                window.addEventListener('hashchange', handleHashNavigation);
-                handleHashNavigation();
-
-                // Responsive image handling
-                const heroImage = document.querySelector('.hero-image img');
-                if (heroImage) {
-                    heroImage.addEventListener('load', function() {
-                        this.style.maxWidth = window.innerWidth < 768 ? '250px' : '400px';
-                    });
-                }
-
-                // Adjust layout on resize
-                window.addEventListener('resize', function() {
-                    const heroContent = document.querySelector('.hero-content');
-                    const heroImage = document.querySelector('.hero-image img');
-                    
-                    if (window.innerWidth < 768) {
-                        heroContent.classList.add('text-center');
-                        heroContent.classList.remove('text-lg-start');
-                        if (heroImage) heroImage.style.maxWidth = '250px';
-                    } else {
-                        heroContent.classList.remove('text-center');
-                        heroContent.classList.add('text-lg-start');
-                        if (heroImage) heroImage.style.maxWidth = '400px';
-                    }
-                });
             });
     </script>
 </body>
