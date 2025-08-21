@@ -5,7 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard - MWANASHERIA</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
@@ -86,10 +89,11 @@
             <button class="btn btn-sm btn-light" onclick="toggleSidebar()">☰</button> Admin Dashboard
         </div>
         <div class="dropdown">
-            <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                <img id="topAvatar" src="logo.jpg" alt="avatar" class="rounded-circle" style="width:34px;height:34px;object-fit:cover;">
+            <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" id="adminDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <img id="topAvatar" src="logo.jpg" alt="avatar" class="rounded-circle me-2" style="width:34px;height:34px;object-fit:cover;">
+                <span id="adminNameDisplay">Admin</span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end">
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
                 <li><span class="dropdown-item-text" id="adminNameItem">Admin</span></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><button class="dropdown-item text-danger" onclick="logout()">Logout</button></li>
@@ -220,7 +224,7 @@
 
         function statusBadge(status) {
             const s = (status || '').toLowerCase();
-            if (s === 'approved') return '<span class="badge text-bg-success">Approved</span>';
+            if (s === 'approved') return '<span class="badge text-bg-secondary">Approved</span>';
             if (s === 'declined') return '<span class="badge text-bg-danger">Declined</span>';
             return '<span class="badge text-bg-secondary">Pending</span>';
         }
@@ -235,38 +239,64 @@
         }
 
         function attachLoansListener() {
-            const tbody = document.querySelector('#loansTable tbody');
-            if (loansUnsubscribe) { loansUnsubscribe(); loansUnsubscribe = null; }
-            loansUnsubscribe = db.collection('loans').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-                tbody.innerHTML = '';
-                let pending = 0, approved = 0, declined = 0;
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const tr = document.createElement('tr');
-                    const q = data.collateralQuality || {};
-                    const quality = q.condition ? `${q.condition}${q.hasReceipt ? ', Receipt: '+q.hasReceipt : ''}` : '';
-                    tr.innerHTML = `
-                        <td>${data.city || ''}</td>
-                        <td>${data.name || ''}</td>
-                        <td>${data.contact || ''}</td>
-                        <td>${data.university || ''}</td>
-                        <td>${data.collateral || ''}</td>
-                        <td>${quality}</td>
-                        <td>${data.amount || ''}</td>
-                        <td>${statusBadge(data.status)}</td>
-                        <td class="d-flex gap-1 flex-wrap">
-                            <button class="btn btn-info btn-sm" onclick="viewLoan('${doc.id}')">View</button>
-                            <button class="btn btn-success btn-sm" onclick="approveLoan('${doc.id}')">Approve</button>
-                            <button class="btn btn-danger btn-sm" onclick="declineLoan('${doc.id}')">Decline</button>
-                            <button class="btn btn-outline-danger btn-sm" onclick="deleteLoan('${doc.id}')">Delete</button>
-                        </td>`;
-                    tbody.appendChild(tr);
-                    const s = (data.status || '').toLowerCase();
-                    if (s === 'approved') approved++; else if (s === 'declined') declined++; else pending++;
+            const loansTable = document.getElementById('loansTable');
+            const loansTableBody = loansTable.querySelector('tbody');
+            loansTableBody.innerHTML = ''; // Clear existing rows
+
+            db.collection('loans').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                snapshot.docChanges().forEach(change => {
+                    if (change.type === 'added' || change.type === 'modified') {
+                        const doc = change.doc;
+                        const d = doc.data();
+                        const row = document.createElement('tr');
+                        
+                        // Determine status badge color
+                        let statusBadgeClass = 'bg-warning';
+                        if (d.status === 'Approved') statusBadgeClass = 'bg-success';
+                        else if (d.status === 'Declined') statusBadgeClass = 'bg-danger';
+
+                        row.innerHTML = `
+                            <td>${d.name || 'N/A'}</td>
+                            <td>${d.university || 'N/A'}</td>
+                            <td>${d.city || 'N/A'}</td>
+                            <td>${d.amount ? 'TShs ' + d.amount.toLocaleString() : 'N/A'}</td>
+                            <td>
+                                <span class="badge ${statusBadgeClass}">
+                                    ${d.status || 'Pending'}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button onclick="viewLoan('${doc.id}')" class="btn btn-sm btn-info">
+                                        <i class="fas fa-eye"></i> View
+                                    </button>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                            Change Status
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#" onclick="changeLoanStatus('${doc.id}', 'Approved')">
+                                                <i class="fas fa-check text-success"></i> Approve
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="changeLoanStatus('${doc.id}', 'Declined')">
+                                                <i class="fas fa-times text-danger"></i> Decline
+                                            </a></li>
+                                            <li><a class="dropdown-item" href="#" onclick="changeLoanStatus('${doc.id}', 'Pending')">
+                                                <i class="fas fa-clock text-warning"></i> Reset to Pending
+                                            </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        `;
+                        
+                        // Prepend new row to maintain descending order
+                        loansTableBody.insertBefore(row, loansTableBody.firstChild);
+                    }
                 });
-                document.getElementById('countPending').textContent = `Pending: ${pending}`;
-                document.getElementById('countApproved').textContent = `Approved: ${approved}`;
-                document.getElementById('countDeclined').textContent = `Declined: ${declined}`;
+            }, error => {
+                console.error("Error fetching loans:", error);
+                Swal.fire('Error', 'Failed to load loan applications', 'error');
             });
         }
 
@@ -349,62 +379,99 @@
 
         function viewLoan(id) {
             db.collection('loans').doc(id).get().then(doc => {
-                if (!doc.exists) return;
+                if (!doc.exists) {
+                    Swal.fire('Error', 'Loan application not found', 'error');
+                    return;
+                }
+                
                 const d = doc.data();
                 const q = d.collateralQuality || {};
+                
+                // Prepare HTML for modal
                 const html = `
                     <div id="loanDetailsPrintable">
-                        <h5 class="mb-2">Applicant</h5>
-                        <div class="row g-2">
-                            <div class="col-md-4"><strong>City:</strong> ${d.city || ''}</div>
-                            <div class="col-md-4"><strong>Name:</strong> ${d.name || ''}</div>
-                            <div class="col-md-4"><strong>Contact:</strong> ${d.contact || ''}</div>
-                            <div class="col-md-4"><strong>University:</strong> ${d.university || ''}</div>
-                            <div class="col-md-4"><strong>Reg No:</strong> ${d.regNumber || ''}</div>
-                            <div class="col-md-4"><strong>NIDA:</strong> ${d.nida || ''}</div>
-                            <div class="col-md-4"><strong>Address:</strong> ${d.place || ''}</div>
+                        <div class="container">
+                            <h2 class="text-center mb-4">Loan Application Details</h2>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Applicant Information</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>City:</strong> ${d.city || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Name:</strong> ${d.name || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>University:</strong> ${d.university || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Reg No:</strong> ${d.regNumber || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>NIDA:</strong> ${d.nida || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Contact:</strong> ${d.contact || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Guarantor Details</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>Name:</strong> ${d.guarantor || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Relation:</strong> ${d.relation || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Contact:</strong> ${d.gcontact || 'N/A'}</div>
+                                        <div class="col-md-12"><strong>Address:</strong> ${d.guarantorAddress || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Loan Details</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>Amount:</strong> TShs ${d.amount ? d.amount.toLocaleString() : 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Interest Rate:</strong> ${d.interestRate || 'N/A'}%</div>
+                                        <div class="col-md-4"><strong>Processing Fee:</strong> TShs ${d.processingFee ? d.processingFee.toLocaleString() : 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Total Amount:</strong> TShs ${d.totalAmount ? d.totalAmount.toLocaleString() : 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Start Date:</strong> ${d.startDate || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>End Date:</strong> ${d.endDate || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Collateral Details</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>Collateral:</strong> ${d.collateral || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Device RAM:</strong> ${d.ram || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Device Storage:</strong> ${d.storage || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Device Brand:</strong> ${d.brand || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Collateral Quality</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>Purchase Date:</strong> ${q.purchaseDate || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Condition:</strong> ${q.condition || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Receipt Available:</strong> ${q.hasReceipt || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Serial/IMEI:</strong> ${q.serialNumber || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Estimated Value:</strong> TShs ${q.estimatedValue ? q.estimatedValue.toLocaleString() : 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Application Status</h4>
+                                    <div class="row">
+                                        <div class="col-md-6"><strong>Status:</strong> ${d.status || 'N/A'}</div>
+                                        <div class="col-md-6"><strong>Message:</strong> ${d.message || 'No additional message'}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <hr/>
-                        <h5 class="mb-2">Guarantor</h5>
-                        <div class="row g-2">
-                            <div class="col-md-4"><strong>Name:</strong> ${d.guarantor || ''}</div>
-                            <div class="col-md-4"><strong>Relation:</strong> ${d.relation || ''}</div>
-                            <div class="col-md-4"><strong>Contact:</strong> ${d.gcontact || ''}</div>
-                            <div class="col-md-4"><strong>Address:</strong> ${d.guarantorAddress || ''}</div>
-                        </div>
-                        <hr/>
-                        <h5 class="mb-2">Loan</h5>
-                        <div class="row g-2">
-                            <div class="col-md-3"><strong>Amount:</strong> ${d.amount ?? ''}</div>
-                            <div class="col-md-3"><strong>Interest %:</strong> ${d.interestRate ?? ''}</div>
-                            <div class="col-md-3"><strong>Processing Fee:</strong> ${d.processingFee ?? ''}</div>
-                            <div class="col-md-3"><strong>Total:</strong> ${d.totalAmount ?? ''}</div>
-                            <div class="col-md-3"><strong>Start:</strong> ${d.startDate || ''}</div>
-                            <div class="col-md-3"><strong>End:</strong> ${d.endDate || ''}</div>
-                            <div class="col-md-6"><strong>Collateral:</strong> ${d.collateral || ''}</div>
-                        </div>
-                        <hr/>
-                        <h5 class="mb-2">Collateral Quality</h5>
-                        <div class="row g-2">
-                            <div class="col-md-4"><strong>Purchase Date:</strong> ${q.purchaseDate || ''}</div>
-                            <div class="col-md-4"><strong>Condition:</strong> ${q.condition || ''}</div>
-                            <div class="col-md-4"><strong>Receipt:</strong> ${q.hasReceipt || ''}</div>
-                            <div class="col-md-6"><strong>Serial/IMEI:</strong> ${q.serialNumber || ''}</div>
-                            <div class="col-md-6"><strong>Estimated Value:</strong> ${q.estimatedValue ?? ''}</div>
-                        </div>
-                        <hr/>
-                        <div><strong>Status:</strong> ${d.status || ''}</div>
-                        <div><strong>Message:</strong> ${d.message || ''}</div>
-                        <div class="small text-muted mt-2">ID: ${id}</div>
                     </div>
                 `;
+                
+                // Populate modal content
                 const container = document.getElementById('loanDetailsContent');
                 container.innerHTML = html;
+                
+                // Show modal
                 const modal = new bootstrap.Modal(document.getElementById('loanDetailsModal'));
                 modal.show();
 
-                const btn = document.getElementById('downloadPdfBtn');
-                btn.onclick = () => {
+                // Setup PDF download
+                const downloadBtn = document.getElementById('downloadPdfBtn');
+                downloadBtn.onclick = () => {
                     const element = document.getElementById('loanDetailsPrintable');
                     const opt = {
                         margin:       10,
@@ -415,6 +482,9 @@
                     };
                     html2pdf().set(opt).from(element).save();
                 };
+            }).catch(error => {
+                console.error("Error fetching loan details:", error);
+                Swal.fire('Error', 'Failed to retrieve loan details', 'error');
             });
         }
 
@@ -528,10 +598,9 @@
                         window.location.href = "user.html";
                     } else {
                         // Set dropdown name text
-                        const dropdownNameItem = document.querySelector('.dropdown-menu .dropdown-item-text');
-                        if (dropdownNameItem) {
-                            dropdownNameItem.textContent = user.displayName || user.email || 'Admin';
-                        }
+                        const displayName = user.displayName || user.email || 'Admin';
+                        document.getElementById('adminNameDisplay').textContent = displayName;
+                        document.getElementById('adminNameItem').textContent = displayName;
                         
                         // Load avatar
                         const a = doc.data().avatar;
