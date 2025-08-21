@@ -250,6 +250,121 @@
             });
         }
 
+        function viewLoan(docId) {
+            db.collection('loans').doc(docId).get().then(doc => {
+                if (!doc.exists) {
+                    Swal.fire('Error', 'Loan application not found', 'error');
+                    return;
+                }
+                
+                const d = doc.data();
+                const q = d.collateralQuality || {};
+                
+                // Prepare HTML for modal with all details and status
+                const html = `
+                    <div id="loanDetailsPrintable">
+                        <div class="container">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <h2 class="text-center mb-4">Loan Application Details</h2>
+                                    <div class="alert ${
+                                        d.status === 'Approved' ? 'alert-success' : 
+                                        d.status === 'Declined' ? 'alert-danger' : 
+                                        'alert-warning'
+                                    }">
+                                        <strong>Current Status:</strong> ${d.status || 'Pending'}
+                                        ${d.message ? `<p class="mt-2"><strong>Admin Message:</strong> ${d.message}</p>` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Applicant Information</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>City:</strong> ${d.city || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Name:</strong> ${d.name || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>University:</strong> ${d.university || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Reg No:</strong> ${d.regNumber || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>NIDA:</strong> ${d.nida || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Contact:</strong> ${d.contact || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Guarantor Details</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>Name:</strong> ${d.guarantor || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Relation:</strong> ${d.relation || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Contact:</strong> ${d.gcontact || 'N/A'}</div>
+                                        <div class="col-md-12"><strong>Address:</strong> ${d.guarantorAddress || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Loan Details</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>Amount:</strong> TShs ${d.amount ? d.amount.toLocaleString() : 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Interest Rate:</strong> ${d.interestRate || 'N/A'}%</div>
+                                        <div class="col-md-4"><strong>Processing Fee:</strong> TShs ${d.processingFee ? d.processingFee.toLocaleString() : 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Total Amount:</strong> TShs ${d.totalAmount ? d.totalAmount.toLocaleString() : 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Start Date:</strong> ${d.startDate || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>End Date:</strong> ${d.endDate || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Collateral Details</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>Collateral:</strong> ${d.collateral || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Device RAM:</strong> ${d.ram || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Device Storage:</strong> ${d.storage || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Device Brand:</strong> ${d.brand || 'N/A'}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <h4 class="bg-light p-3 rounded">Collateral Quality</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4"><strong>Purchase Date:</strong> ${q.purchaseDate || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Condition:</strong> ${q.condition || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Receipt Available:</strong> ${q.hasReceipt || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Serial/IMEI:</strong> ${q.serialNumber || 'N/A'}</div>
+                                        <div class="col-md-4"><strong>Estimated Value:</strong> TShs ${q.estimatedValue ? q.estimatedValue.toLocaleString() : 'N/A'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Populate modal content
+                const container = document.getElementById('loanDetailsContent');
+                container.innerHTML = html;
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('loanDetailsModal'));
+                modal.show();
+
+                // Setup PDF download
+                const downloadBtn = document.getElementById('downloadPdfBtn');
+                downloadBtn.onclick = () => {
+                    const element = document.getElementById('loanDetailsPrintable');
+                    const opt = {
+                        margin:       10,
+                        filename:     `loan_${docId}.pdf`,
+                        image:        { type: 'jpeg', quality: 0.98 },
+                        html2canvas:  { scale: 2 },
+                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    };
+                    html2pdf().set(opt).from(element).save();
+                };
+            }).catch(error => {
+                console.error("Error fetching loan details:", error);
+                Swal.fire('Error', 'Failed to retrieve loan details', 'error');
+            });
+        }
+
         function changeLoanStatus(docId, status) {
             // Ensure user is authenticated and is an admin
             const user = auth.currentUser;
@@ -510,117 +625,6 @@
                 link.href = url;
                 link.download = 'loan_requests.csv';
                 link.click();
-            });
-        }
-
-        function viewLoan(id) {
-            db.collection('loans').doc(id).get().then(doc => {
-                if (!doc.exists) {
-                    Swal.fire('Error', 'Loan application not found', 'error');
-                    return;
-                }
-                
-                const d = doc.data();
-                const q = d.collateralQuality || {};
-                
-                // Prepare HTML for modal
-                const html = `
-                    <div id="loanDetailsPrintable">
-                        <div class="container">
-                            <h2 class="text-center mb-4">Loan Application Details</h2>
-                            
-                            <div class="row">
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Applicant Information</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>City:</strong> ${d.city || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Name:</strong> ${d.name || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>University:</strong> ${d.university || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Reg No:</strong> ${d.regNumber || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>NIDA:</strong> ${d.nida || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Contact:</strong> ${d.contact || 'N/A'}</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Guarantor Details</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Name:</strong> ${d.guarantor || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Relation:</strong> ${d.relation || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Contact:</strong> ${d.gcontact || 'N/A'}</div>
-                                        <div class="col-md-12"><strong>Address:</strong> ${d.guarantorAddress || 'N/A'}</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Loan Details</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Amount:</strong> TShs ${d.amount ? d.amount.toLocaleString() : 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Interest Rate:</strong> ${d.interestRate || 'N/A'}%</div>
-                                        <div class="col-md-4"><strong>Processing Fee:</strong> TShs ${d.processingFee ? d.processingFee.toLocaleString() : 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Total Amount:</strong> TShs ${d.totalAmount ? d.totalAmount.toLocaleString() : 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Start Date:</strong> ${d.startDate || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>End Date:</strong> ${d.endDate || 'N/A'}</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Collateral Details</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Collateral:</strong> ${d.collateral || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Device RAM:</strong> ${d.ram || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Device Storage:</strong> ${d.storage || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Device Brand:</strong> ${d.brand || 'N/A'}</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Collateral Quality</h4>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4"><strong>Purchase Date:</strong> ${q.purchaseDate || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Condition:</strong> ${q.condition || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Receipt Available:</strong> ${q.hasReceipt || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Serial/IMEI:</strong> ${q.serialNumber || 'N/A'}</div>
-                                        <div class="col-md-4"><strong>Estimated Value:</strong> TShs ${q.estimatedValue ? q.estimatedValue.toLocaleString() : 'N/A'}</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-12">
-                                    <h4 class="bg-light p-3 rounded">Application Status</h4>
-                                    <div class="row">
-                                        <div class="col-md-6"><strong>Status:</strong> ${d.status || 'N/A'}</div>
-                                        <div class="col-md-6"><strong>Message:</strong> ${d.message || 'No additional message'}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                // Populate modal content
-                const container = document.getElementById('loanDetailsContent');
-                container.innerHTML = html;
-                
-                // Show modal
-                const modal = new bootstrap.Modal(document.getElementById('loanDetailsModal'));
-                modal.show();
-
-                // Setup PDF download
-                const downloadBtn = document.getElementById('downloadPdfBtn');
-                downloadBtn.onclick = () => {
-                    const element = document.getElementById('loanDetailsPrintable');
-                    const opt = {
-                        margin:       10,
-                        filename:     `loan_${id}.pdf`,
-                        image:        { type: 'jpeg', quality: 0.98 },
-                        html2canvas:  { scale: 2 },
-                        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                    };
-                    html2pdf().set(opt).from(element).save();
-                };
-            }).catch(error => {
-                console.error("Error fetching loan details:", error);
-                Swal.fire('Error', 'Failed to retrieve loan details', 'error');
             });
         }
 
