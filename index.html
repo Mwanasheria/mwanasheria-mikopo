@@ -122,8 +122,8 @@
                 <img src="logo.jpg" alt="Mwanasheria Mikopo" style="max-height: 50px;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <span class="navbar-toggler-icon"></span>
+      </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -181,8 +181,8 @@
                                 <img src="logo.jpg" alt="Mwanasheria Mikopo" 
                                      class="img-fluid rounded-circle shadow-lg animate__animated animate__zoomIn" 
                                      style="max-width: 400px; border: 8px solid rgba(0,0,0,0.1);">
-                            </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -463,7 +463,7 @@
                             <ul>
                                 <li><strong>Days 1 to 15:</strong> Additional 15% of the amount due.</li>
                                 <li><strong>Days 16 to 30:</strong> Additional 20%(Mbeya) / 25%(Dar es salaam) of the amount due.</li>
-                            </ul>
+            </ul>
                         </p>
                     </div>
                 </div>
@@ -495,7 +495,7 @@
                                 Get in touch with us through our office locations
                             </p>
                         </div>
-                    </div>
+                </div>
 
                     <div class="row g-4">
                         <div class="col-md-6">
@@ -561,8 +561,8 @@
         <footer class="text-center py-3">
             <div class="container">
                 <p class="mb-0 text-primary">&copy; <span id="currentYear"></span> Mwanasheria Mikopo. All Rights Reserved.</p>
-            </div>
-        </footer>
+        </div>
+    </footer>
 
         <style>
             /* Professional Button Styles */
@@ -740,7 +740,8 @@
             /* <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> */
         </style>
 
-        <script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
             // Ensure showSection is globally accessible for inline onclick handlers
             window.showSection = function(sectionId) {
                 ['home', 'about', 'terms', 'contact'].forEach(id => {
@@ -751,11 +752,16 @@
                     }
                 });
                 if (location.hash !== '#' + sectionId) {
-                    history.replaceState(null, '', '#' + sectionId);
-                }
+                history.replaceState(null, '', '#' + sectionId);
+            }
                 const navbarCollapse = document.querySelector('.navbar-collapse');
+                const navbarToggler = document.querySelector('.navbar-toggler');
                 if (navbarCollapse && navbarCollapse.classList.contains('show')) {
                     navbarCollapse.classList.remove('show');
+                    if (navbarToggler) {
+                        navbarToggler.classList.add('collapsed');
+                        navbarToggler.setAttribute('aria-expanded', 'false');
+                    }
                 }
             }
 
@@ -771,6 +777,51 @@
 
                 // Set current year
                 document.getElementById('currentYear').textContent = new Date().getFullYear();
+        });
+    </script>
+        <style>
+            /* Navbar Apply button - enforce standard blue inside navbar */
+            .navbar .btn-primary {
+                background-color: #0d6efd !important;
+                border-color: #0d6efd !important;
+                color: #fff !important;
+            }
+        </style>
+
+        <script>
+            // Fallback: ensure navbar toggler works even if Bootstrap's JS fails to init
+            document.addEventListener('DOMContentLoaded', function() {
+                const toggler = document.querySelector('.navbar-toggler');
+                const target = document.getElementById('navbarNav');
+                if (toggler && target) {
+                    toggler.addEventListener('click', function() {
+                        try {
+                            if (window.bootstrap && bootstrap.Collapse) {
+                                const instance = bootstrap.Collapse.getOrCreateInstance(target);
+                                instance.toggle();
+                            } else {
+                                target.classList.toggle('show');
+                                toggler.classList.toggle('collapsed');
+                                toggler.setAttribute('aria-expanded', target.classList.contains('show') ? 'true' : 'false');
+                            }
+                        } catch (e) {
+                            target.classList.toggle('show');
+                            toggler.classList.toggle('collapsed');
+                            toggler.setAttribute('aria-expanded', target.classList.contains('show') ? 'true' : 'false');
+                        }
+                    });
+                }
+
+                // Close collapse after clicking a nav link on mobile
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', function() {
+                        if (target && target.classList.contains('show')) {
+                            target.classList.remove('show');
+                            toggler?.classList.add('collapsed');
+                            toggler?.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                });
             });
         </script>
 </body>
