@@ -334,6 +334,25 @@
                     </div>
                 </div>
 
+                <!-- Payment Method Section -->
+                <div class="border rounded p-3 mb-2">
+                    <label class="form-label fw-semibold">Payment Method</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <select class="form-control" id="payment-method" name="payment-method" required>
+                                <option value="">Select method</option>
+                                <option value="Tigo Pesa (Yas)">Tigo Pesa (Yas)</option>
+                                <option value="Airtel Money">Airtel Money</option>
+                                <option value="M-Pesa">M-Pesa</option>
+                                <option value="HaloPesa">HaloPesa</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2" id="payment-account-wrapper" style="display:none;">
+                            <input class="form-control" id="payment-account" name="payment-account" placeholder="Enter phone/account number">
+                        </div>
+                    </div>
+                </div>
+
                 <button class="btn btn-primary mt-2" type="submit">Submit Loan</button>
             </form>
         </div>
@@ -344,21 +363,21 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Choose Avatar</h5>
+                    <h5 class="modal-title">Avatar Settings</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Upload your profile photo (optional)</label>
+                        <label class="form-label fw-semibold">Option A: Upload Photo</label>
                         <input type="file" class="form-control" accept="image/*" onchange="uploadCustomAvatar(event)">
-                        <div class="form-text">If not uploaded, you can select one of the preset avatars below. Default is our logo.</div>
+                        <div class="form-text">Optional. If you skip, choose from available avatars below. Default is our logo.</div>
                     </div>
+                    <div class="mb-2"><span class="fw-semibold">Option B: Choose Available Avatar</span></div>
                     <div class="d-flex gap-3 flex-wrap justify-content-center">
-                        <img class="avatar-option rounded-circle" src="poster1.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
-                        <img class="avatar-option rounded-circle" src="poster2.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
-                        <img class="avatar-option rounded-circle" src="poster3.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
-                        <img class="avatar-option rounded-circle" src="ceo.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
-                        <img class="avatar-option rounded-circle" src="gm.jpg" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="logo.jpg" title="Logo" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="poster1.jpg" title="Poster 1" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="poster2.jpg" title="Poster 2" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
+                        <img class="avatar-option rounded-circle" src="poster3.jpg" title="Poster 3" style="width:64px;height:64px;cursor:pointer;object-fit:cover;" onclick="selectAvatar(this.src)">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -418,11 +437,23 @@
         function showDashboard() {
             document.getElementById("dashboardSection").style.display = "block";
             document.getElementById("loanFormSection").style.display = "none";
+            const sidebar = document.getElementById('sidebar');
+            const topbar = document.getElementById('topbar');
+            const mainContent = document.getElementById('mainContent');
+            if (sidebar) sidebar.style.display = '';
+            if (topbar) topbar.style.left = '220px';
+            if (mainContent) mainContent.style.marginLeft = '220px';
         }
 
         function showLoanForm() {
             document.getElementById("dashboardSection").style.display = "none";
             document.getElementById("loanFormSection").style.display = "block";
+            const sidebar = document.getElementById('sidebar');
+            const topbar = document.getElementById('topbar');
+            const mainContent = document.getElementById('mainContent');
+            if (sidebar) sidebar.style.display = 'none';
+            if (topbar) topbar.style.left = '0';
+            if (mainContent) mainContent.style.marginLeft = '0';
         }
 
         function logout() {
@@ -545,7 +576,8 @@
                     `${prefix}-end-date`, `${prefix}-loan-amount`,
                     `${prefix}-ram`, `${prefix}-storage`, `${prefix}-brand`,
                     'purchase-date', 'condition', 'has-receipt', 
-                    'serial-number', 'estimated-value'
+                    'serial-number', 'estimated-value',
+                    'payment-method', 'payment-account'
                 ];
 
                 let invalidFields = [];
@@ -621,6 +653,10 @@
                     ram: document.getElementById(`${prefix}-ram`).value,
                     storage: document.getElementById(`${prefix}-storage`).value,
                     brand: document.getElementById(`${prefix}-brand`).value,
+                    payment: {
+                        method: document.getElementById('payment-method').value,
+                        account: document.getElementById('payment-account').value
+                    },
                     collateralQuality: {
                         purchaseDate: document.getElementById('purchase-date').value,
                         condition: document.getElementById('condition').value,
@@ -836,6 +872,27 @@
                 };
                 mbeyaLoanAmount.addEventListener('input', calcMbeya);
                 calcMbeya();
+            }
+
+            // Payment method dynamic field behavior
+            const paymentMethod = document.getElementById('payment-method');
+            const paymentAccountWrapper = document.getElementById('payment-account-wrapper');
+            const paymentAccount = document.getElementById('payment-account');
+            if (paymentMethod && paymentAccountWrapper && paymentAccount) {
+                paymentMethod.addEventListener('change', () => {
+                    const method = paymentMethod.value;
+                    if (method) {
+                        paymentAccountWrapper.style.display = 'block';
+                        paymentAccount.required = true;
+                        paymentAccount.placeholder = (method.includes('Money') || method.includes('Pesa'))
+                            ? 'Phone number (e.g. 07XXXXXXXX)'
+                            : 'Account number';
+                    } else {
+                        paymentAccountWrapper.style.display = 'none';
+                        paymentAccount.required = false;
+                        paymentAccount.value = '';
+                    }
+                });
             }
         })();
 
