@@ -570,6 +570,7 @@
                                     <option value="Airtel Money">Airtel Money</option>
                                     <option value="M-Pesa">M-Pesa</option>
                                     <option value="HaloPesa">HaloPesa</option>
+                                    <option value="HaloPesa">Azampesa</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-2" id="payment-account-wrapper" style="display:none;">
@@ -581,65 +582,6 @@
 
                     <button class="btn btn-primary mt-2" type="submit">Submit Loan Application</button>
                 </div>
-
-                <!-- Collateral Quality Section -->
-                <div class="border rounded p-3 mb-2">
-                    <label class="form-label fw-semibold">Collateral Quality Details</label>
-                <div class="row">
-                        <div class="col-md-4 mb-2">
-                            <label class="form-label">Purchase Date</label>
-                            <input class="form-control" id="purchase-date" name="purchase-date" type="date" required />
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <label class="form-label">Condition</label>
-                            <select class="form-control" id="condition" name="condition" required>
-                                <option value="">Select condition</option>
-                                <option value="New">New</option>
-                                <option value="Very Good">Very Good</option>
-                                <option value="Good">Good</option>
-                                <option value="Fair">Fair</option>
-                                <option value="Poor">Poor</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-2">
-                            <label class="form-label">Receipt Available</label>
-                            <select class="form-control" id="has-receipt" name="has-receipt" required>
-                                <option value="">Select</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-            </select>
-                    </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label">Serial/IMEI Number</label>
-                            <input class="form-control" id="serial-number" name="serial-number" placeholder="Serial or IMEI" required />
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label">Estimated Current Value (TShs)</label>
-                            <input class="form-control" id="estimated-value" name="estimated-value" type="number" placeholder="Enter value" required />
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Payment Method Section -->
-                <div class="border rounded p-3 mb-2">
-                    <label class="form-label fw-semibold">Payment Method</label>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <select class="form-control" id="payment-method" name="payment-method" required>
-                                <option value="">Select method</option>
-                                <option value="Tigo Pesa (Yas)">Tigo Pesa (Yas)</option>
-                                <option value="Airtel Money">Airtel Money</option>
-                                <option value="M-Pesa">M-Pesa</option>
-                                <option value="HaloPesa">HaloPesa</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-2" id="payment-account-wrapper" style="display:none;">
-                            <input class="form-control" id="payment-account" name="payment-account" placeholder="Enter phone/account number">
-                        </div>
-                    </div>
-                </div>
-
-                <button class="btn btn-primary mt-2" type="submit">Submit Loan</button>
             </form>
         </div>
     </div>
