@@ -326,7 +326,7 @@
                                     <div class="card-header bg-primary text-white">Loan Details</div>
                                     <div class="card-body">
                                         <p><strong>City:</strong> ${d.city || 'N/A'}</p>
-                                        <p><strong>Amount:</strong> TShs ${d.amount ? d.amount.toLocaleString() : 'N/A'}</p>
+                                        <p><strong>Amount:</strong> TShs ${(d.loanAmount ?? d.amount) ? (d.loanAmount ?? d.amount).toLocaleString() : 'N/A'}</p>
                                         <p><strong>Interest Rate:</strong> ${d.interestRate || 'N/A'}%</p>
                                         <p><strong>Processing Fee:</strong> TShs ${d.processingFee ? d.processingFee.toLocaleString() : 'N/A'}</p>
                                         <p><strong>Total Amount:</strong> TShs ${d.totalAmount ? d.totalAmount.toLocaleString() : 'N/A'}</p>
@@ -340,7 +340,7 @@
                                 <div class="card mb-3">
                                     <div class="card-header bg-primary text-white">Collateral Details</div>
                                     <div class="card-body">
-                                        <p><strong>Collateral:</strong> ${d.collateral || 'N/A'}</p>
+                                        <p><strong>Collateral:</strong> ${d.collateralType === 'OTHER' ? (d.otherCollateral || 'Other') : (d.collateralType || 'N/A')}</p>
                                         <p><strong>Device RAM:</strong> ${d.ram || 'N/A'}</p>
                                         <p><strong>Device Storage:</strong> ${d.storage || 'N/A'}</p>
                                         <p><strong>Device Brand:</strong> ${d.brand || 'N/A'}</p>
@@ -620,7 +620,7 @@
                     tr.innerHTML = `
                         <td>${data.city || 'N/A'}</td>
                         <td>${truncateName(data.name)}</td>
-                        <td>${formatAmount(data.amount)}</td>
+                        <td>${formatAmount((data.loanAmount ?? data.amount))}</td>
                         <td>${statusBadge(data.status)}</td>
                         <td>
                             <div class="d-flex justify-content-start align-items-center">
@@ -707,12 +707,12 @@
                         d.name,
                         d.contact,
                         d.university,
-                        d.collateral,
+                        (d.collateralType === 'OTHER' ? (d.otherCollateral || 'Other') : (d.collateralType || '')),
                         q.condition,
                         q.hasReceipt,
                         q.serialNumber,
                         q.estimatedValue,
-                        d.amount,
+                        (d.loanAmount ?? d.amount),
                         d.interestRate,
                         d.processingFee,
                         d.totalAmount,
