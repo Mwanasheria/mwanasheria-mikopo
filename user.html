@@ -22,6 +22,7 @@
             padding-top: 60px;
             color: white;
             transition: all 0.3s ease;
+            z-index: 1045;
         }
         
         .sidebar a {
@@ -38,6 +39,7 @@
         .main-content {
             margin-left: 220px;
             padding: 20px;
+            padding-top: 80px;
             transition: margin-left 0.3s ease;
         }
         
@@ -54,6 +56,7 @@
             padding: 0 20px;
             color: white;
             transition: left 0.3s ease;
+            z-index: 1020;
         }
         
         .toggle-btn {
@@ -141,8 +144,8 @@
 <body>
     <div class="sidebar" id="sidebar">
         <h5 class="text-center">MWANASHERIA</h5>
-        <a href="#" onclick="showDashboard()">📊 Dashboard</a>
-        <a href="#" onclick="showLoanForm()">📝 Apply for Loan</a>
+        <a href="#" onclick="event.preventDefault(); showDashboard();">📊 Dashboard</a>
+        <a href="#" onclick="event.preventDefault(); showLoanForm();">📝 Apply for Loan</a>
         <div class="mt-4 px-3 small" id="userInfo"></div>
     </div>
 
@@ -710,15 +713,34 @@
             }
         }
 
+        function closeSidebarIfMobile() {
+            const isMobile = window.innerWidth <= 768;
+            if (!isMobile) return;
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            sidebar.classList.remove('active');
+            mainContent.classList.remove('shifted');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (overlay) overlay.remove();
+        }
+
         function showDashboard() {
             document.getElementById("dashboardSection").style.display = "block";
             document.getElementById("loanFormSection").style.display = "none";
             const sidebar = document.getElementById('sidebar');
             const topbar = document.getElementById('topbar');
             const mainContent = document.getElementById('mainContent');
-            if (sidebar) sidebar.style.display = '';
-            if (topbar) topbar.style.left = '220px';
-            if (mainContent) mainContent.style.marginLeft = '220px';
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                if (sidebar) sidebar.style.display = '';
+                if (topbar) topbar.style.left = '0';
+                if (mainContent) mainContent.style.marginLeft = '0';
+                closeSidebarIfMobile();
+            } else {
+                if (sidebar) sidebar.style.display = '';
+                if (topbar) topbar.style.left = '220px';
+                if (mainContent) mainContent.style.marginLeft = '220px';
+            }
         }
 
         function showLoanForm() {
@@ -727,9 +749,16 @@
             const sidebar = document.getElementById('sidebar');
             const topbar = document.getElementById('topbar');
             const mainContent = document.getElementById('mainContent');
-            if (sidebar) sidebar.style.display = 'none';
-            if (topbar) topbar.style.left = '0';
-            if (mainContent) mainContent.style.marginLeft = '0';
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                if (topbar) topbar.style.left = '0';
+                if (mainContent) mainContent.style.marginLeft = '0';
+                closeSidebarIfMobile();
+            } else {
+                if (sidebar) sidebar.style.display = 'none';
+                if (topbar) topbar.style.left = '0';
+                if (mainContent) mainContent.style.marginLeft = '0';
+            }
         }
 
         function logout() {
