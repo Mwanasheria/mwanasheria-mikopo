@@ -147,13 +147,13 @@
     </div>
 
     <div class="topbar" id="topbar">
-        <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+        <button id="sidebarToggleBtn" class="toggle-btn" type="button" aria-controls="sidebar" aria-expanded="false" onclick="toggleSidebar()">☰</button>
         <div>User Dashboard</div>
         <div class="dropdown">
-            <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+            <button id="userMenuButton" class="btn btn-link p-0 d-flex align-items-center dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User menu">
                 <img id="topAvatar" src="logo.jpg" alt="avatar" class="rounded-circle" style="width:34px;height:34px;object-fit:cover;">
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton" data-bs-auto-close="true">
                 <li><button class="dropdown-item" onclick="openProfileModal()">My Profile</button></li>
                 <li><button id="notifyMenuItem" class="dropdown-item" onclick="enableNotifications()">Enable Notifications</button></li>
                 <li><button class="dropdown-item" onclick="openAvatarModal()">Choose Avatar</button></li>
@@ -684,8 +684,30 @@
         let currentCity = 'dar';
 
         function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("active");
-            document.getElementById("mainContent").classList.toggle("shifted");
+            const sidebar = document.getElementById("sidebar");
+            const mainContent = document.getElementById("mainContent");
+            const toggleBtn = document.getElementById("sidebarToggleBtn");
+            sidebar.classList.toggle("active");
+            mainContent.classList.toggle("shifted");
+
+            const isActive = sidebar.classList.contains("active");
+            if (toggleBtn) toggleBtn.setAttribute("aria-expanded", isActive ? "true" : "false");
+
+            let overlay = document.getElementById("sidebarOverlay");
+            if (isActive) {
+                if (!overlay) {
+                    overlay = document.createElement('div');
+                    overlay.id = 'sidebarOverlay';
+                    overlay.style.position = 'fixed';
+                    overlay.style.inset = '0';
+                    overlay.style.background = 'rgba(0,0,0,0.3)';
+                    overlay.style.zIndex = '1030';
+                    overlay.addEventListener('click', () => toggleSidebar());
+                    document.body.appendChild(overlay);
+                }
+            } else if (overlay) {
+                overlay.remove();
+            }
         }
 
         function showDashboard() {
@@ -1309,9 +1331,10 @@
                             }));
                             attachUserLoansListener(user.uid);
                         });
-                        if ('Notification' in window && Notification.permission === 'granted') {
-                            const item = document.getElementById('notifyMenuItem');
-                            if (item) item.textContent = 'Notifications On';
+                        const item = document.getElementById('notifyMenuItem');
+                        if (item) {
+                            const enabled = localStorage.getItem('notificationsEnabled') === 'true';
+                            item.textContent = enabled ? 'Disable Notifications' : 'Enable Notifications';
                         }
                     }
                 });
@@ -1407,7 +1430,26 @@
         }
 
         // Call validation setup after DOM is loaded
-        document.addEventListener('DOMContentLoaded', setupFormValidation);
+        document.addEventListener('DOMContentLoaded', () => {
+            setupFormValidation();
+
+            // Ensure dropdown closes after item click on touch devices
+            const userMenuToggle = document.getElementById('userMenuButton');
+            const menu = document.querySelector('.dropdown .dropdown-menu');
+            if (userMenuToggle && menu) {
+                menu.addEventListener('click', () => {
+                    const dd = bootstrap.Dropdown.getOrCreateInstance(userMenuToggle);
+                    dd.hide();
+                });
+            }
+
+            // Initialize notification menu label from storage on load as fallback
+            const item = document.getElementById('notifyMenuItem');
+            if (item) {
+                const enabled = localStorage.getItem('notificationsEnabled') === 'true';
+                item.textContent = enabled ? 'Disable Notifications' : 'Enable Notifications';
+            }
+        });
     </script>
 </body>
 
