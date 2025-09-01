@@ -301,17 +301,17 @@
                                 <label class="form-label">b. Specify Other Collateral</label>
                                 <input class="form-control" id="dar-other-collateral" name="dar-other-collateral" placeholder="Describe other collateral" />
                             </div>
-                            <div class="col-md-6 mb-2" id="mbeya-brand-wrapper" style="display:none;">
+                            <div class="col-md-6 mb-2" id="dar-brand-wrapper" style="display:none;">
                                 <label class="form-label">c. Brand Name</label>
-                                <input class="form-control" id="mbeya-brand" name="mbeya-brand" placeholder="Enter Brand Name" />
+                                <input class="form-control" id="dar-brand" name="dar-brand" placeholder="Enter Brand Name" />
                             </div>
-                            <div class="col-md-6 mb-2" id="mbeya-ram-wrapper" style="display:none;">
+                            <div class="col-md-6 mb-2" id="dar-ram-wrapper" style="display:none;">
                                 <label class="form-label">d. RAM (GB)</label>
-                                <input class="form-control" id="mbeya-ram" name="mbeya-ram" type="number" placeholder="Enter RAM in GB" />
+                                <input class="form-control" id="dar-ram" name="dar-ram" type="number" placeholder="Enter RAM in GB" />
                             </div>
-                            <div class="col-md-6 mb-2" id="mbeya-storage-wrapper" style="display:none;">
+                            <div class="col-md-6 mb-2" id="dar-storage-wrapper" style="display:none;">
                                 <label class="form-label">e. Storage (GB)</label>
-                                <input class="form-control" id="mbeya-storage" name="mbeya-storage" type="number" placeholder="Enter Storage in GB" />
+                                <input class="form-control" id="dar-storage" name="dar-storage" type="number" placeholder="Enter Storage in GB" />
                             </div>
                         </div>
                     </div>
@@ -321,11 +321,11 @@
                         <div class="row">
                             <div class="col-md-4 mb-2">
                                 <label class="form-label">a. Purchase Date</label>
-                                <input class="form-control" id="purchase-date" name="purchase-date" type="date" required />
+                                <input class="form-control" id="dar-purchase-date" name="dar-purchase-date" type="date" required />
                             </div>
                             <div class="col-md-4 mb-2">
                                 <label class="form-label">b. Condition</label>
-                                <select class="form-control" id="condition" name="condition" required>
+                                <select class="form-control" id="dar-condition" name="dar-condition" required>
                                     <option value="">Select condition</option>
                                     <option value="New">New</option>
                                     <option value="Very Good">Very Good</option>
@@ -336,7 +336,7 @@
                             </div>
                             <div class="col-md-4 mb-2">
                                 <label class="form-label">c. Receipt Available</label>
-                                <select class="form-control" id="has-receipt" name="has-receipt" required>
+                                <select class="form-control" id="dar-has-receipt" name="dar-has-receipt" required>
                                     <option value="">Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -344,11 +344,11 @@
                             </div>
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">d. Serial/IMEI Number</label>
-                                <input class="form-control" id="serial-number" name="serial-number" placeholder="Enter Serial or IMEI" required />
+                                <input class="form-control" id="dar-serial-number" name="dar-serial-number" placeholder="Enter Serial or IMEI" required />
                             </div>
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">e. Estimated Current Value (TShs)</label>
-                                <input class="form-control" id="estimated-value" name="estimated-value" type="number" placeholder="Enter estimated value" required />
+                                <input class="form-control" id="dar-estimated-value" name="dar-estimated-value" type="number" placeholder="Enter estimated value" required />
                             </div>
                         </div>
                     </div>
@@ -388,7 +388,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">a. Select Network</label>
-                                <select class="form-control" id="payment-method" name="payment-method" required>
+                                <select class="form-control" id="dar-payment-method" name="dar-payment-method" required>
                                     <option value="">Select Payment Method</option>
                                     <option value="Tigo Pesa">Tigo Pesa</option>
                                     <option value="Airtel Money">Airtel Money</option>
@@ -397,9 +397,9 @@
                                     <option value="HaloPesa">Azampesa</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-2" id="payment-account-wrapper" style="display:none;">
+                            <div class="col-md-6 mb-2" id="dar-payment-account-wrapper" style="display:none;">
                                 <label class="form-label">b. Account Number (Phone Number)</label>
-                                <input class="form-control" id="payment-account" name="payment-account" placeholder="Enter Phone Number" />
+                                <input class="form-control" id="dar-payment-account" name="dar-payment-account" placeholder="Enter Phone Number" />
                             </div>
                         </div>
                     </div>
@@ -590,7 +590,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-2">
                                 <label class="form-label">a. Select Network</label>
-                                <select class="form-control" id="payment-method" name="payment-method" required>
+                                <select class="form-control" id="mbeya-payment-method" name="mbeya-payment-method" required>
                                     <option value="">Select Payment Method</option>
                                     <option value="Tigo Pesa">Tigo Pesa</option>
                                 <option value="Airtel Money">Airtel Money</option>
@@ -599,13 +599,9 @@
                                     <option value="HaloPesa">Azampesa</option>
                             </select>
                             </div>
-                            <div class="col-md-6 mb-2" id="payment-account-wrapper" style="display:none;">
+                            <div class="col-md-6 mb-2" id="mbeya-payment-account-wrapper" style="display:none;">
                                 <label class="form-label">b. Account Number (Phone Number)</label>
-                                <input class="form-control" id="payment-account" name="payment-account" placeholder="Enter Phone Number" />
-                            </div>
-                            <div class="col-md-6 mb-2" id="payment-account-wrapper" style="display:none;">
-                                <label class="form-label">b. Account Number (Phone Number)</label>
-                                <input class="form-control" id="payment-account" name="payment-account" placeholder="Enter Phone Number" />
+                                <input class="form-control" id="mbeya-payment-account" name="mbeya-payment-account" placeholder="Enter Phone Number" />
                             </div>
                         </div>
                     </div>
@@ -838,9 +834,9 @@
                     `${prefix}-address`, `${prefix}-guarantor-name`, `${prefix}-relationship`,
                     `${prefix}-guarantor-address`, `${prefix}-guarantor-contact`,
                     `${prefix}-collateral-type`,
-                    'purchase-date', 'condition', 'has-receipt',
-                    'serial-number', 'estimated-value',
-                    'payment-method', 'payment-account'
+                    `${prefix}-purchase-date`, `${prefix}-condition`, `${prefix}-has-receipt`,
+                    `${prefix}-serial-number`, `${prefix}-estimated-value`,
+                    `${prefix}-payment-method`, `${prefix}-payment-account`
                 ];
 
                 // Add conditional validation for other collateral and device details
@@ -859,7 +855,7 @@
                     const field = document.getElementById(fieldId);
                     if (!field || !field.value.trim()) {
                         invalidFields.push(fieldId);
-                        field ? .classList.add('is-invalid');
+                        field?.classList.add('is-invalid');
                     }
                 });
 
@@ -930,17 +926,21 @@
                     ram: document.getElementById(`${prefix}-ram`).value,
                     storage: document.getElementById(`${prefix}-storage`).value,
                     payment: {
-                        method: document.getElementById('payment-method').value,
-                        account: document.getElementById('payment-account').value,
+                        method: document.getElementById(`${prefix}-payment-method`).value,
+                        account: document.getElementById(`${prefix}-payment-account`).value,
                         name: document.getElementById(`${prefix}-borrower-name`).value
                     },
                     collateralQuality: {
-                        purchaseDate: document.getElementById('purchase-date').value,
-                        condition: document.getElementById('condition').value,
-                        hasReceipt: document.getElementById('has-receipt').value,
-                        serialNumber: document.getElementById('serial-number').value,
-                        estimatedValue: parseFloat(document.getElementById('estimated-value').value || '0')
-                    }
+                        purchaseDate: document.getElementById(`${prefix}-purchase-date`).value,
+                        condition: document.getElementById(`${prefix}-condition`).value,
+                        hasReceipt: document.getElementById(`${prefix}-has-receipt`).value,
+                        serialNumber: document.getElementById(`${prefix}-serial-number`).value,
+                        estimatedValue: parseFloat(document.getElementById(`${prefix}-estimated-value`).value || '0')
+                    },
+                    loanAmount: parseFloat(document.getElementById(`${prefix}-loan-amount`).value || '0'),
+                    interestRate: parseFloat(document.getElementById(`${prefix}-interest-rate`).value || '0'),
+                    processingFee: parseFloat(document.getElementById(`${prefix}-processing-fee`).value || '0'),
+                    totalAmount: parseFloat(document.getElementById(`${prefix}-total-amount`).value || '0')
                 };
 
                 console.log("Preparing to submit loan data:", loanData);
@@ -957,7 +957,7 @@
                         <p>Your loan application has been successfully submitted.</p>
                         <p><strong>Application ID:</strong> ${docRef.id}</p>
                         <p><strong>City:</strong> ${loanData.city}</p>
-                        <p><strong>Amount:</strong> TShs ${loanData.amount.toLocaleString()}</p>
+                        <p><strong>Amount:</strong> TShs ${loanData.loanAmount.toLocaleString()}</p>
                     `,
                     footer: 'We will review your application and contact you soon.'
                 });
@@ -1151,41 +1151,81 @@
                 calcMbeya();
             }
 
-            // Payment method dynamic field behavior
-            const paymentMethod = document.getElementById('payment-method');
-            const paymentAccountWrapper = document.getElementById('payment-account-wrapper');
-            const paymentAccount = document.getElementById('payment-account');
-            if (paymentMethod && paymentAccountWrapper && paymentAccount) {
-                paymentMethod.addEventListener('change', () => {
-                    const method = paymentMethod.value;
+            // Payment method dynamic field behavior (Dar)
+            const darPaymentMethod = document.getElementById('dar-payment-method');
+            const darPaymentAccountWrapper = document.getElementById('dar-payment-account-wrapper');
+            const darPaymentAccount = document.getElementById('dar-payment-account');
+            if (darPaymentMethod && darPaymentAccountWrapper && darPaymentAccount) {
+                darPaymentMethod.addEventListener('change', () => {
+                    const method = darPaymentMethod.value;
                     if (method) {
-                        paymentAccountWrapper.style.display = 'block';
-                        paymentAccount.required = true;
-                        paymentAccount.placeholder = (method.includes('Money') || method.includes('Pesa'))
+                        darPaymentAccountWrapper.style.display = 'block';
+                        darPaymentAccount.required = true;
+                        darPaymentAccount.placeholder = (method.includes('Money') || method.includes('Pesa'))
                             ? 'Enter Phone Number (e.g. 07XXXXXXXX)'
                             : 'Enter Account Number';
                     } else {
-                        paymentAccountWrapper.style.display = 'none';
-                        paymentAccount.required = false;
-                        paymentAccount.value = '';
+                        darPaymentAccountWrapper.style.display = 'none';
+                        darPaymentAccount.required = false;
+                        darPaymentAccount.value = '';
                     }
                 });
             }
 
-            // Collateral type dynamic field behavior
-            const collateralType = document.getElementById('dar-collateral-type');
-            const otherCollateralWrapper = document.getElementById('dar-other-collateral-wrapper');
-            const otherCollateral = document.getElementById('dar-other-collateral');
-            if (collateralType && otherCollateralWrapper && otherCollateral) {
-                collateralType.addEventListener('change', () => {
-                    const type = collateralType.value;
-                    if (type === 'OTHER') {
-                        otherCollateralWrapper.style.display = 'block';
-                        otherCollateral.required = true;
+            // Payment method dynamic field behavior (Mbeya)
+            const mbeyaPaymentMethod = document.getElementById('mbeya-payment-method');
+            const mbeyaPaymentAccountWrapper = document.getElementById('mbeya-payment-account-wrapper');
+            const mbeyaPaymentAccount = document.getElementById('mbeya-payment-account');
+            if (mbeyaPaymentMethod && mbeyaPaymentAccountWrapper && mbeyaPaymentAccount) {
+                mbeyaPaymentMethod.addEventListener('change', () => {
+                    const method = mbeyaPaymentMethod.value;
+                    if (method) {
+                        mbeyaPaymentAccountWrapper.style.display = 'block';
+                        mbeyaPaymentAccount.required = true;
+                        mbeyaPaymentAccount.placeholder = (method.includes('Money') || method.includes('Pesa'))
+                            ? 'Enter Phone Number (e.g. 07XXXXXXXX)'
+                            : 'Enter Account Number';
                     } else {
-                        otherCollateralWrapper.style.display = 'none';
-                        otherCollateral.required = false;
-                        otherCollateral.value = '';
+                        mbeyaPaymentAccountWrapper.style.display = 'none';
+                        mbeyaPaymentAccount.required = false;
+                        mbeyaPaymentAccount.value = '';
+                    }
+                });
+            }
+
+            // Collateral type dynamic field behavior (Dar)
+            const darCollateralType = document.getElementById('dar-collateral-type');
+            const darOtherCollateralWrapper = document.getElementById('dar-other-collateral-wrapper');
+            const darOtherCollateral = document.getElementById('dar-other-collateral');
+            const darBrandWrapper = document.getElementById('dar-brand-wrapper');
+            const darBrand = document.getElementById('dar-brand');
+            const darRamWrapper = document.getElementById('dar-ram-wrapper');
+            const darRam = document.getElementById('dar-ram');
+            const darStorageWrapper = document.getElementById('dar-storage-wrapper');
+            const darStorage = document.getElementById('dar-storage');
+            if (darCollateralType && darOtherCollateralWrapper && darOtherCollateral && darBrandWrapper && darBrand && darRamWrapper && darRam && darStorageWrapper && darStorage) {
+                darCollateralType.addEventListener('change', () => {
+                    const type = darCollateralType.value;
+                    if (type === 'OTHER') {
+                        darOtherCollateralWrapper.style.display = 'block';
+                        darOtherCollateral.required = true;
+                    } else {
+                        darOtherCollateralWrapper.style.display = 'none';
+                        darOtherCollateral.required = false;
+                        darOtherCollateral.value = '';
+                    }
+
+                    const showDetails = ['PC', 'PHONE', 'TV'].includes(type);
+                    darBrandWrapper.style.display = showDetails ? 'block' : 'none';
+                    darRamWrapper.style.display = showDetails ? 'block' : 'none';
+                    darStorageWrapper.style.display = showDetails ? 'block' : 'none';
+                    darBrand.required = showDetails;
+                    darRam.required = showDetails;
+                    darStorage.required = showDetails;
+                    if (!showDetails) {
+                        darBrand.value = '';
+                        darRam.value = '';
+                        darStorage.value = '';
                     }
                 });
             }
@@ -1300,8 +1340,9 @@
                     `${prefix}-address`, `${prefix}-guarantor-name`, `${prefix}-relationship`, 
                     `${prefix}-guarantor-address`, `${prefix}-guarantor-contact`, 
                     `${prefix}-collateral-type`, 
-                    'purchase-date', 'condition', 'has-receipt', 
-                    'serial-number', 'estimated-value'
+                    `${prefix}-purchase-date`, `${prefix}-condition`, `${prefix}-has-receipt`, 
+                    `${prefix}-serial-number`, `${prefix}-estimated-value`,
+                    `${prefix}-payment-method`, `${prefix}-payment-account`
                 ];
 
                 let isValid = true;
