@@ -734,7 +734,7 @@
                 const rowHtml = `
                     <tr>
                       <td>${dateStr}</td>
-                      <td>${data.amount}</td>
+                      <td>${(data.loanAmount ?? data.amount) ? `TShs ${(data.loanAmount ?? data.amount).toLocaleString()}` : 'N/A'}</td>
                       <td>${statusBadge(data.status)}</td>
                       <td>${data.message || ''}</td>
                     </tr>`;
