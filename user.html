@@ -191,12 +191,68 @@
                 <!-- Dar es Salaam form -->
                 <div id="darForm" class="border rounded p-3 mb-3" style="display:block;">
                     <div class="row">
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-borrower-name" name="dar-borrower-name" placeholder="Jina Kamili" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-university" name="dar-university" placeholder="Chuo / Kozi" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-reg-number" name="dar-reg-number" placeholder="Reg No." required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-nida" name="dar-nida" placeholder="NIDA" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-contact" name="dar-contact" placeholder="Mawasiliano (simu)" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="dar-address" name="dar-address" placeholder="Mahali anapoishi" required /></div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Full Name</label>
+                            <input class="form-control" id="dar-borrower-name" name="dar-borrower-name" placeholder="Enter Full Name" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">NIDA Number</label>
+                            <input class="form-control" id="dar-nida" name="dar-nida" placeholder="20-digit NIDA Number" pattern="[0-9]{20}" maxlength="20" minlength="20" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">University</label>
+                            <select class="form-control" id="dar-university" name="dar-university" required>
+                                <option value="">Select University</option>
+                                <option value="TIA">Tanzania Institute of Accountancy (TIA)</option>
+                                <option value="DIT">Dar es Salaam Institute of Technology (DIT)</option>
+                                <option value="CBE">College of Business Education (CBE)</option>
+                                <option value="UDSM">University of Dar es Salaam (UDSM)</option>
+                                <option value="WATER">Water Institute</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Course Name</label>
+                            <input class="form-control" id="dar-course" name="dar-course" placeholder="Enter Course Name" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Year of Study</label>
+                            <select class="form-control" id="dar-year-of-study" name="dar-year-of-study" required>
+                                <option value="">Select Year</option>
+                                <option value="1">First Year</option>
+                                <option value="2">Second Year</option>
+                                <option value="3">Third Year</option>
+                                <option value="4">Fourth Year</option>
+                                <option value="5">Fifth Year</option>
+                                <option value="PG">Postgraduate</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Collateral Type</label>
+                            <select class="form-control" id="dar-collateral-type" name="dar-collateral-type" required>
+                                <option value="">Select Collateral Type</option>
+                                <option value="PC">Personal Computer</option>
+                                <option value="PHONE">Mobile Phone</option>
+                                <option value="TV">Television</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2" id="dar-other-collateral-wrapper" style="display:none;">
+                            <label class="form-label">Specify Other Collateral</label>
+                            <input class="form-control" id="dar-other-collateral" name="dar-other-collateral" placeholder="Describe other collateral" />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Brand Name</label>
+                            <input class="form-control" id="dar-brand" name="dar-brand" placeholder="Enter Brand Name" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">RAM (GB)</label>
+                            <input class="form-control" id="dar-ram" name="dar-ram" type="number" placeholder="RAM in GB" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Storage (GB)</label>
+                            <input class="form-control" id="dar-storage" name="dar-storage" type="number" placeholder="Storage in GB" required />
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2"><input class="form-control" id="dar-guarantor-name" name="dar-guarantor-name" placeholder="Jina la Mdhamini" required /></div>
@@ -245,12 +301,66 @@
                 <!-- Mbeya form -->
                 <div id="mbeyaForm" class="border rounded p-3 mb-3" style="display:none;">
                     <div class="row">
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-borrower-name" name="mbeya-borrower-name" placeholder="Jina Kamili" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-university" name="mbeya-university" placeholder="Chuo / Kozi" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-reg-number" name="mbeya-reg-number" placeholder="Reg No." required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-nida" name="mbeya-nida" placeholder="NIDA" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-contact" name="mbeya-contact" placeholder="Mawasiliano (simu)" required /></div>
-                        <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-address" name="mbeya-address" placeholder="Mahali anapoishi" required /></div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Full Name</label>
+                            <input class="form-control" id="mbeya-borrower-name" name="mbeya-borrower-name" placeholder="Enter Full Name" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">NIDA Number</label>
+                            <input class="form-control" id="mbeya-nida" name="mbeya-nida" placeholder="20-digit NIDA Number" pattern="[0-9]{20}" maxlength="20" minlength="20" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">University</label>
+                            <select class="form-control" id="mbeya-university" name="mbeya-university" required>
+                                <option value="">Select University</option>
+                                <option value="MUST">Mzumbe University (MUST)</option>
+                                <option value="CUOM">Catholic University of Mbeya (CUOM)</option>
+                                <option value="TIA">Tanzania Institute of Accountancy (TIA)</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Course Name</label>
+                            <input class="form-control" id="mbeya-course" name="mbeya-course" placeholder="Enter Course Name" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Year of Study</label>
+                            <select class="form-control" id="mbeya-year-of-study" name="mbeya-year-of-study" required>
+                                <option value="">Select Year</option>
+                                <option value="1">First Year</option>
+                                <option value="2">Second Year</option>
+                                <option value="3">Third Year</option>
+                                <option value="4">Fourth Year</option>
+                                <option value="5">Fifth Year</option>
+                                <option value="PG">Postgraduate</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Collateral Type</label>
+                            <select class="form-control" id="mbeya-collateral-type" name="mbeya-collateral-type" required>
+                                <option value="">Select Collateral Type</option>
+                                <option value="PC">Personal Computer</option>
+                                <option value="PHONE">Mobile Phone</option>
+                                <option value="TV">Television</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2" id="mbeya-other-collateral-wrapper" style="display:none;">
+                            <label class="form-label">Specify Other Collateral</label>
+                            <input class="form-control" id="mbeya-other-collateral" name="mbeya-other-collateral" placeholder="Describe other collateral" />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Brand Name</label>
+                            <input class="form-control" id="mbeya-brand" name="mbeya-brand" placeholder="Enter Brand Name" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">RAM (GB)</label>
+                            <input class="form-control" id="mbeya-ram" name="mbeya-ram" type="number" placeholder="RAM in GB" required />
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label class="form-label">Storage (GB)</label>
+                            <input class="form-control" id="mbeya-storage" name="mbeya-storage" type="number" placeholder="Storage in GB" required />
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-2"><input class="form-control" id="mbeya-guarantor-name" name="mbeya-guarantor-name" placeholder="Jina la Mdhamini" required /></div>
@@ -568,17 +678,23 @@
                 
                 // Validate all required fields
                 const requiredFields = [
-                    `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-reg-number`, 
-                    `${prefix}-nida`, `${prefix}-contact`, `${prefix}-address`, 
-                    `${prefix}-guarantor-name`, `${prefix}-relationship`, 
+                    `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-course`, 
+                    `${prefix}-year-of-study`, `${prefix}-nida`, `${prefix}-contact`, 
+                    `${prefix}-address`, `${prefix}-guarantor-name`, `${prefix}-relationship`, 
                     `${prefix}-guarantor-address`, `${prefix}-guarantor-contact`, 
-                    `${prefix}-collateral1`, `${prefix}-start-date`, 
-                    `${prefix}-end-date`, `${prefix}-loan-amount`,
-                    `${prefix}-ram`, `${prefix}-storage`, `${prefix}-brand`,
+                    `${prefix}-collateral-type`, `${prefix}-brand`, 
+                    `${prefix}-ram`, `${prefix}-storage`, 
+                    `${prefix}-start-date`, `${prefix}-end-date`, `${prefix}-loan-amount`,
                     'purchase-date', 'condition', 'has-receipt', 
                     'serial-number', 'estimated-value',
                     'payment-method', 'payment-account'
                 ];
+
+                // Add conditional validation for other collateral
+                const collateralType = document.getElementById(`${prefix}-collateral-type`);
+                if (collateralType && collateralType.value === 'OTHER') {
+                    requiredFields.push(`${prefix}-other-collateral`);
+                }
 
                 let invalidFields = [];
                 requiredFields.forEach(fieldId => {
@@ -588,6 +704,13 @@
                         field?.classList.add('is-invalid');
                     }
                 });
+
+                // NIDA number validation (exactly 20 digits)
+                const nidaField = document.getElementById(`${prefix}-nida`);
+                if (nidaField && (!/^\d{20}$/.test(nidaField.value))) {
+                    invalidFields.push(`${prefix}-nida`);
+                    nidaField.classList.add('is-invalid');
+                }
 
                 // Date validation
                 const startDateField = document.getElementById(`${prefix}-start-date`);
@@ -632,7 +755,8 @@
                     city: currentCity === 'dar' ? 'Dar es Salaam' : 'Mbeya',
                     name: document.getElementById(`${prefix}-borrower-name`).value,
                     university: document.getElementById(`${prefix}-university`).value,
-                    regNumber: document.getElementById(`${prefix}-reg-number`).value,
+                    course: document.getElementById(`${prefix}-course`).value,
+                    yearOfStudy: document.getElementById(`${prefix}-year-of-study`).value,
                     nida: document.getElementById(`${prefix}-nida`).value,
                     contact: document.getElementById(`${prefix}-contact`).value,
                     place: document.getElementById(`${prefix}-address`).value,
@@ -640,6 +764,10 @@
                     relation: document.getElementById(`${prefix}-relationship`).value,
                     guarantorAddress: document.getElementById(`${prefix}-guarantor-address`).value,
                     gcontact: document.getElementById(`${prefix}-guarantor-contact`).value,
+                    collateralType: document.getElementById(`${prefix}-collateral-type`).value,
+                    otherCollateral: document.getElementById(`${prefix}-collateral-type`).value === 'OTHER' 
+                        ? document.getElementById(`${prefix}-other-collateral`).value 
+                        : '',
                     collateral: [
                         document.getElementById(`${prefix}-collateral1`).value, 
                         document.getElementById(`${prefix}-collateral2`).value
@@ -650,9 +778,9 @@
                     interestRate: parseFloat(document.getElementById(`${prefix}-interest-rate`).value) || 0,
                     processingFee: parseFloat(document.getElementById(`${prefix}-processing-fee`).value) || 0,
                     totalAmount: parseFloat(document.getElementById(`${prefix}-total-amount`).value) || 0,
+                    brand: document.getElementById(`${prefix}-brand`).value,
                     ram: document.getElementById(`${prefix}-ram`).value,
                     storage: document.getElementById(`${prefix}-storage`).value,
-                    brand: document.getElementById(`${prefix}-brand`).value,
                     payment: {
                         method: document.getElementById('payment-method').value,
                         account: document.getElementById('payment-account').value
@@ -894,6 +1022,42 @@
                     }
                 });
             }
+
+            // Collateral type dynamic field behavior
+            const collateralType = document.getElementById('dar-collateral-type');
+            const otherCollateralWrapper = document.getElementById('dar-other-collateral-wrapper');
+            const otherCollateral = document.getElementById('dar-other-collateral');
+            if (collateralType && otherCollateralWrapper && otherCollateral) {
+                collateralType.addEventListener('change', () => {
+                    const type = collateralType.value;
+                    if (type === 'OTHER') {
+                        otherCollateralWrapper.style.display = 'block';
+                        otherCollateral.required = true;
+                    } else {
+                        otherCollateralWrapper.style.display = 'none';
+                        otherCollateral.required = false;
+                        otherCollateral.value = '';
+                    }
+                });
+            }
+
+            // Mbeya Collateral type dynamic field behavior
+            const mbeyaCollateralType = document.getElementById('mbeya-collateral-type');
+            const mbeyaOtherCollateralWrapper = document.getElementById('mbeya-other-collateral-wrapper');
+            const mbeyaOtherCollateral = document.getElementById('mbeya-other-collateral');
+            if (mbeyaCollateralType && mbeyaOtherCollateralWrapper && mbeyaOtherCollateral) {
+                mbeyaCollateralType.addEventListener('change', () => {
+                    const type = mbeyaCollateralType.value;
+                    if (type === 'OTHER') {
+                        mbeyaOtherCollateralWrapper.style.display = 'block';
+                        mbeyaOtherCollateral.required = true;
+                    } else {
+                        mbeyaOtherCollateralWrapper.style.display = 'none';
+                        mbeyaOtherCollateral.required = false;
+                        mbeyaOtherCollateral.value = '';
+                    }
+                });
+            }
         })();
 
         auth.onAuthStateChanged(user => {
@@ -952,13 +1116,13 @@
 
                 // Validate form fields
                 const requiredFields = [
-                    `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-reg-number`, 
-                    `${prefix}-nida`, `${prefix}-contact`, `${prefix}-address`, 
-                    `${prefix}-guarantor-name`, `${prefix}-relationship`, 
+                    `${prefix}-borrower-name`, `${prefix}-university`, `${prefix}-course`, 
+                    `${prefix}-year-of-study`, `${prefix}-nida`, `${prefix}-contact`, 
+                    `${prefix}-address`, `${prefix}-guarantor-name`, `${prefix}-relationship`, 
                     `${prefix}-guarantor-address`, `${prefix}-guarantor-contact`, 
-                    `${prefix}-collateral1`, `${prefix}-start-date`, 
-                    `${prefix}-end-date`, `${prefix}-loan-amount`,
-                    `${prefix}-ram`, `${prefix}-storage`, `${prefix}-brand`,
+                    `${prefix}-collateral-type`, `${prefix}-brand`, 
+                    `${prefix}-ram`, `${prefix}-storage`, 
+                    `${prefix}-start-date`, `${prefix}-end-date`, `${prefix}-loan-amount`,
                     'purchase-date', 'condition', 'has-receipt', 
                     'serial-number', 'estimated-value'
                 ];
